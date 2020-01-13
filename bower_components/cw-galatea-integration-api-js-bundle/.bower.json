@@ -1,0 +1,12 @@
+{
+  "name": "cw-galatea-integration-api-js-bundle",
+  "_cacheHeaders": {
+    "Content-Language": "en",
+    "Content-Type": "text/html;charset=UTF-8"
+  },
+  "main": "index",
+  "_source": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle",
+  "_target": "*",
+  "_originalSource": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle",
+  "_direct": true
+}

@@ -1,0 +1,112 @@
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.main > div {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  min-height: 40px;
+}
+
+.main > div.header {
+  mask-image: url("../../../images/pwd_by_nuxiba.svg");
+  -webkit-mask-image: url("../../../images/pwd_by_nuxiba.svg");
+  background-color: rgb(89, 90, 89);
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: left;
+  -webkit-mask-position: left;
+  max-height: 40px;
+}
+
+.main > div > div {
+  margin-left: 10px;
+  width: 25%;
+  height: 50px;
+  justify-content: center;
+}
+
+.main > div > textarea {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.main > div.end {
+  justify-content: flex-end;
+  -webkit-justify-content: flex-end;
+}
+
+.minMargin {
+  margin-right: 10px;
+}
+
+.main > div.labels > div {
+  width: auto;
+  display: flex;
+  align-items: center;
+  height: 30px;
+}
+
+.main > div.labels {
+  height: 30px;
+  margin-bottom: 5px;
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bold {
+  font-weight: bolder;
+}
+
+.marginRight {
+  margin-right: 10px;
+}
+
+div.btnStatesEnd.marginRight {
+  width: 75%;
+}
+
+select.selectInput:not([size]):not([multiple]) {
+  height: 50px;
+}
+
+/*****/
+
+.rowNumbers {
+  display: flex;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.rowNumbers > div {
+  flex: 1;
+  margin: 1px;
+  background-color: rgb(226, 223, 223);
+  line-height: 45px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+.imageExt {
+  mask-image: url("../../../images/download.svg");
+  -webkit-mask-image: url("../../../images/download.svg");
+  background-color: rgb(23, 174, 11);
+  width: 40px;
+  height: 40px;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
