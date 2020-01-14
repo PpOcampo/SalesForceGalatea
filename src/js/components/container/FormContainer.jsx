@@ -18,7 +18,9 @@ class FormContainer extends Component {
     this.state = {
       logged: false,
       integration: undefined,
-      agentStatus: undefined
+      agentStatus: undefined,
+      socketOpen: true,
+      error: { show: false }
     };
   }
 
@@ -30,6 +32,10 @@ class FormContainer extends Component {
 
     window.onLogin = function() {
       _this.setState({ logged: true });
+    };
+    window.remoteLoginError = function(message) {
+      message.show = true;
+      _this.setState({ error: message });
     };
   }
 
@@ -51,10 +57,27 @@ class FormContainer extends Component {
         case "logout":
           this.setState({ logged: false });
           return;
+        case "NotConnected":
+          this.state.integration.connectToServer();
+          return;
+        case "SocketClosed":
+          if (this.state.socketOpen) {
+            this.setState({ socketOpen: false });
+          }
+          return;
         default:
           console.log(this.state.agentStatus.currentState);
-          this.state.integration.connectToServer();
+          return;
+        // console.log(this.state.agentStatus.currentState);
+        // this.state.integration.connectToServer();
       }
+    }
+
+    if (
+      this.state.socketOpen !== prevState.socketOpen &&
+      !this.state.socketOpen
+    ) {
+      console.log("Verificar Integracion ");
     }
   }
 
@@ -89,7 +112,10 @@ class FormContainer extends Component {
           {this.state.logged ? (
             <MainScreen />
           ) : (
-            <LoginScreen onSubmit={this.onLoginSubmit} />
+            <LoginScreen
+              onSubmit={this.onLoginSubmit}
+              error={this.state.error}
+            />
           )}
         </div>
       </>

@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  Alert
+} from "reactstrap";
 import * as LCC from "lightning-container";
 
 import image from "../../../images/agentLogo.png";
@@ -11,19 +19,23 @@ class LoginScreen extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onUserChange = this.onUserChange.bind(this);
     this.onPwdChange = this.onPwdChange.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
   }
   onSubmit() {
     this.props.onSubmit(this.state.user, this.state.password);
   }
 
   onUserChange(e) {
-    console.log(e.target.value);
     this.setState({ user: e.target.value });
   }
 
   onPwdChange(e) {
-    console.log(e.target.value);
     this.setState({ password: e.target.value });
+  }
+  onKeyPress(e) {
+    if (e.which === 13) {
+      this.onSubmit();
+    }
   }
 
   render() {
@@ -33,6 +45,9 @@ class LoginScreen extends Component {
           <img src={image} className={styles.image} />
         </div>
         <div className={styles.form}>
+          {this.props.error.show && (
+            <Alert color="danger">{this.props.error.message}</Alert>
+          )}
           <FormGroup>
             <div className={styles.divInput}>
               <div>
@@ -57,6 +72,7 @@ class LoginScreen extends Component {
                 name="fname"
                 placeholder="Contraseña"
                 onChange={this.onPwdChange}
+                onKeyPress={this.onKeyPress}
               />
             </div>
           </FormGroup>
