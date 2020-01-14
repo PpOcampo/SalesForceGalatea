@@ -1,0 +1,11 @@
+## Ignore code coverage generated files
+coverage/
+.nyc_output/
+
+## Ignore visual studio code generated files
+.vscode/
+
+## Ignore node_modules generated files
+node_modules/
+
+Bundle/

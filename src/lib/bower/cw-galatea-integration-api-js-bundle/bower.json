@@ -1,0 +1,27 @@
+{
+  "name": "cw-galatea-integration-api-js-bundle",
+  "description": "Library that exposes all the methods to control Centerware Kolob with another application or web page.",
+  "main": "index.js",
+  "authors": [
+    "Copyright © 2018 Nuxiba Technologies Inc. All Rights Reserved."
+  ],
+  "license": "ISC",
+  "keywords": [
+    "integration",
+    "API"
+  ],
+  "homepage": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    ".nyc_output",
+    "coverage"
+  ],
+  "dependencies": {
+    "global-web-socket-client-js-bundle": "global-web-socket-client-js-bundle#latest"
+  }
+}

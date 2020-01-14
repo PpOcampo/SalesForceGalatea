@@ -616,7 +616,7 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
             }
             // open connection
             var connectionType = "wss";
-            // var connectionType = secureConnection ? "wss" : "ws";
+
             connection = new WebSocket(connectionType + '://' + this.WSParameter.serverIP + ':' + this.WSParameter.port);
             var _this = this;
 

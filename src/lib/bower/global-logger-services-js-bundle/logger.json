@@ -1,0 +1,7 @@
+{  
+    "_ENABLE_DEFAULT":true, 
+    "_ENABLE_AJAX":true,
+    "_SERVER":"http://localhost:11217/", 
+    "_DOMAIN":"/api/Logger",
+    "_SEVERITY":"Trace"
+}

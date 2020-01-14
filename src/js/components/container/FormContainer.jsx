@@ -7,32 +7,59 @@ import BaseBtn from "./BaseBtn.jsx";
 import MainScreen from "./MainScreen.jsx";
 import LoginScreen from "./LoginScreen.jsx";
 
+import { IntegrationApiFactory } from "../../../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
+
 class FormContainer extends Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
-    this.createScript = this.createScript.bind(this);
+    this.windowsFunctions = this.windowsFunctions.bind(this);
     this.state = {
-      logged: false
+      logged: false,
+      integration: undefined,
+      agentStatus: undefined
     };
   }
-  onLoginSubmit() {
-    this.setState({ logged: true });
-  }
 
-  createScript(file) {
-    const script = document.createElement("script");
-    script.src = file;
-    script.async = true;
-    script.onload = () => this.scriptLoaded();
-    document.body.appendChild(script);
+  windowsFunctions() {
+    let _this = this;
+    window.onAgentStatus = function(agentStatus) {
+      _this.setState({ agentStatus: agentStatus });
+    };
+
+    window.onLogin = function() {
+      _this.setState({ logged: true });
+    };
   }
 
   componentDidMount() {
-    console.log("Connecting server");
-    window.connectToServer();
-    console.log("----");
+    this.windowsFunctions();
+    let integration = new IntegrationApiFactory().buildClient();
+    let server = "192.168.0.107";
+    // let server = "demo.nuxiba.com";
+    let secureConnection = false;
+    integration.WSParameters.server = server;
+    integration.WSParameters.secureConnection = secureConnection;
+    integration.connectToServer();
+    this.setState({ integration: integration });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.agentStatus !== prevState.agentStatus) {
+      switch (this.state.agentStatus.currentState) {
+        case "logout":
+          this.setState({ logged: false });
+          return;
+        default:
+          console.log(this.state.agentStatus.currentState);
+          this.state.integration.connectToServer();
+      }
+    }
+  }
+
+  onLoginSubmit(username, password) {
+    this.state.integration.login(username, password);
   }
 
   onClick() {
@@ -52,13 +79,20 @@ class FormContainer extends Component {
   }
   render() {
     return (
-      <div className={styles.main}>
-        {this.state.logged ? (
-          <MainScreen />
-        ) : (
-          <LoginScreen onSubmit={this.onLoginSubmit} />
-        )}
-      </div>
+      <>
+        {/* <iframe
+          src="https://demo.nuxiba.com/AgentKolob/?softphone=WebRTC"
+          name="theFrame"
+          style={{ display: "none" }}
+        ></iframe> */}
+        <div className={styles.main}>
+          {this.state.logged ? (
+            <MainScreen />
+          ) : (
+            <LoginScreen onSubmit={this.onLoginSubmit} />
+          )}
+        </div>
+      </>
     );
   }
 }

@@ -1,0 +1,39 @@
+{
+  "name": "global-web-socket-client-js-bundle",
+  "description": "Library that exposes basic connection to a websocket server methods.",
+  "main": "index.js",
+  "authors": [
+    "Copyright © 2018 Nuxiba Technologies Inc. All Rights Reserved."
+  ],
+  "license": "ISC",
+  "keywords": [
+    "global",
+    "websocket",
+    "client",
+    "js"
+  ],
+  "homepage": "https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js-bundle",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    ".nyc_output",
+    "coverage"
+  ],
+  "dependencies": {
+    "global-logger-services-js-bundle": "global-logger-services-js-bundle#latest"
+  },
+  "version": "0.0.5",
+  "_release": "0.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.5",
+    "commit": "1f6a3cf318a87cb6de628724b74391762a0c3d59"
+  },
+  "_source": "https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js-bundle.git",
+  "_target": "*",
+  "_originalSource": "global-web-socket-client-js-bundle"
+}

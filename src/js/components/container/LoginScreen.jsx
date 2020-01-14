@@ -9,9 +9,21 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onUserChange = this.onUserChange.bind(this);
+    this.onPwdChange = this.onPwdChange.bind(this);
   }
   onSubmit() {
-    this.props.onSubmit();
+    this.props.onSubmit(this.state.user, this.state.password);
+  }
+
+  onUserChange(e) {
+    console.log(e.target.value);
+    this.setState({ user: e.target.value });
+  }
+
+  onPwdChange(e) {
+    console.log(e.target.value);
+    this.setState({ password: e.target.value });
   }
 
   render() {
@@ -26,7 +38,13 @@ class LoginScreen extends Component {
               <div>
                 <div className={styles.pwdMask}></div>
               </div>
-              <input type="text" name="fname" placeholder="Usuario" />
+              <input
+                id="loginUserName"
+                type="text"
+                name="fname"
+                placeholder="Usuario"
+                onChange={this.onUserChange}
+              />
             </div>
           </FormGroup>
           <FormGroup>
@@ -34,7 +52,12 @@ class LoginScreen extends Component {
               <div>
                 <div className={styles.pwdMask}></div>
               </div>
-              <input type="password" name="fname" placeholder="Contraseña" />
+              <input
+                type="password"
+                name="fname"
+                placeholder="Contraseña"
+                onChange={this.onPwdChange}
+              />
             </div>
           </FormGroup>
 

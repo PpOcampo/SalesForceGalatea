@@ -1,0 +1,10 @@
+{
+  "name": "global-logger-services-js-bundle",
+  "description": "Exposes services that allows to log messages in console and server side from Javascript projects.",
+  "main": "index.js",
+  "authors": [
+    "Copyright © 2018 Nuxiba Technologies Inc. All Rights Reserved."
+  ],
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/nuxibatechnologies/global-logger-services-js-bundle"
+}
