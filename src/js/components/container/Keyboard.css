@@ -1,0 +1,14 @@
+.rowNumbers {
+  display: flex;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.rowNumbers > div {
+  flex: 1;
+  margin: 1px;
+  background-color: rgb(226, 223, 223);
+  line-height: 45px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
