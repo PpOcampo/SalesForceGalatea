@@ -16,6 +16,13 @@ class MainScreen extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { showKeyBoard } = this.state;
+    if (showKeyBoard && prevState.showKeyBoard !== showKeyBoard) {
+      this.props.getCampaignsRelated();
+    }
+  }
+
   onKeyboardClick() {
     this.setState({ showKeyBoard: !this.state.showKeyBoard });
   }
@@ -92,7 +99,7 @@ class MainScreen extends Component {
             <span className={`${styles.marginRight} ${styles.bold}`}>
               Status:{" "}
             </span>{" "}
-            DIALOG
+            {this.props.agentStatus.currentState}
           </div>
         </div>
 
@@ -130,6 +137,8 @@ class MainScreen extends Component {
           <Keyboard
             onKeyboardClick={this.onKeyboardClick}
             show={this.state.showKeyBoard}
+            campaigns={this.props.campaigns}
+            makeManualCall={this.props.makeManualCall}
           />
         </>
       </div>

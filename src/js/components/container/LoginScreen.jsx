@@ -45,14 +45,18 @@ class LoginScreen extends Component {
           <img src={image} className={styles.image} />
         </div>
         <div className={styles.form}>
-          {this.props.error.show && (
-            <Alert color="danger">{this.props.error.message}</Alert>
-          )}
           <FormGroup>
+            <div
+              className={`${styles.alert} ${
+                this.props.error.show ? styles.show : styles.hide
+              }`}
+            >
+              <Alert color="primary">{this.props.error.message}</Alert>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <div className={styles.divLabel}>User</div>
             <div className={styles.divInput}>
-              <div>
-                <div className={styles.pwdMask}></div>
-              </div>
               <input
                 id="loginUserName"
                 type="text"
@@ -63,10 +67,8 @@ class LoginScreen extends Component {
             </div>
           </FormGroup>
           <FormGroup>
+            <div className={styles.divLabel}>Password</div>
             <div className={styles.divInput}>
-              <div>
-                <div className={styles.pwdMask}></div>
-              </div>
               <input
                 type="password"
                 name="fname"
@@ -79,7 +81,7 @@ class LoginScreen extends Component {
 
           <FormGroup className={styles.submitBtn}>
             <Button onClick={this.onSubmit} color="primary">
-              Entrar
+              Login
             </Button>
           </FormGroup>
         </div>

@@ -8,6 +8,8 @@ import LoginScreen from "./LoginScreen.jsx";
 
 import { IntegrationApiFactory } from "../../../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
 
+/*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
+
 class Container extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +20,8 @@ class Container extends Component {
     this.onLogOutClick = this.onLogOutClick.bind(this);
     this.setUnavailable = this.setUnavailable.bind(this);
     this.setAvailable = this.setAvailable.bind(this);
-    this.microphoneUse = this.microphoneUse.bind(this);
+    this.getCampaignsRelated = this.getCampaignsRelated.bind(this);
+    this.makeManualCall = this.makeManualCall.bind(this);
 
     this.state = {
       logged: false,
@@ -26,7 +29,8 @@ class Container extends Component {
       socketOpen: true,
       error: { show: false },
       validating: false,
-      unavailables: undefined
+      unavailables: undefined,
+      campaigns: undefined
     };
     this.integration = undefined;
   }
@@ -51,6 +55,14 @@ class Container extends Component {
 
     window.onUnavailableTypes = function(unavailables) {
       _this.setState({ unavailables: unavailables });
+    };
+
+    window.onCampaigns = function(json) {
+      if (json === "") {
+        _this.getCampaignsRelated();
+      } else {
+        _this.setState({ campaigns: Object.values(json) });
+      }
     };
   }
 
@@ -79,8 +91,6 @@ class Container extends Component {
         case "NotReady":
           return;
         case "Ready":
-          console.log("prev");
-          this.microphoneUse();
           this.integration.getUnavailables();
           this.setState({ logged: true });
           return;
@@ -113,6 +123,14 @@ class Container extends Component {
     this.integration.SetAvailable();
   }
 
+  getCampaignsRelated() {
+    this.integration.GetCampaignsRelated();
+  }
+
+  makeManualCall(phoneNum, campId, clientName, callKey) {
+    this.integration.makeManualCall(phoneNum, campId, clientName, callKey);
+  }
+
   onClick() {
     // fetch("https://pokeapi.co/api/v2/pokemon/ditto")
     //   .then(response => {
@@ -129,17 +147,6 @@ class Container extends Component {
     });
   }
 
-  microphoneUse() {
-    // navigator.mediaDevices
-    //   .getUserMedia({ audio: true })
-    //   .then(function(stream) {
-    //     console.log("You let me use your mic!");
-    //   })
-    //   .catch(function(err) {
-    //     console.log("No mic for you!");
-    //   });
-  }
-
   render() {
     const { error, unavailables } = this.state;
     return (
@@ -152,6 +159,16 @@ class Container extends Component {
           }}
           allow="geolocation; microphone;"
         ></iframe>
+
+        {/* <iframe
+          src="https://demo.nuxiba.com/AgentKolob/?softphone=WebRTC"
+          name="theFrame"
+          style={{
+            width: "100%",
+            height: "250px"
+          }}
+          allow="geolocation; microphone;"
+        ></iframe> */}
         {/* <div>
           <Spinner color="primary" />
         </div> */}
@@ -162,6 +179,10 @@ class Container extends Component {
               unavailables={unavailables}
               setUnavailable={this.setUnavailable}
               setAvailable={this.setAvailable}
+              getCampaignsRelated={this.getCampaignsRelated}
+              campaigns={this.state.campaigns}
+              makeManualCall={this.makeManualCall}
+              agentStatus={this.state.agentStatus}
             />
           ) : (
             <LoginScreen onSubmit={this.onLoginSubmit} error={error} />

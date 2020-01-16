@@ -16,8 +16,11 @@ class Keyboard extends Component {
     super(props);
     this.onKeyPressed = this.onKeyPressed.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
+    this.onCampaignSelection = this.onCampaignSelection.bind(this);
+    this.manualCall = this.manualCall.bind(this);
     this.state = {
-      keyboardValue: ""
+      keyboardValue: "",
+      campaignSelection: 0
     };
   }
 
@@ -28,6 +31,14 @@ class Keyboard extends Component {
   onKeyPressed(value) {
     this.setState({ keyboardValue: this.state.keyboardValue + value });
   }
+  onCampaignSelection(e) {
+    this.setState({ campaignSelection: e.target.value });
+  }
+
+  manualCall() {
+    const { keyboardValue, campaignSelection } = this.state;
+    this.props.makeManualCall(keyboardValue, campaignSelection, "", "");
+  }
 
   render() {
     return (
@@ -35,6 +46,20 @@ class Keyboard extends Component {
         <Modal isOpen={this.props.show} toggle={this.props.onKeyboardClick}>
           <ModalHeader toggle={this.props.onKeyboardClick} />
           <ModalBody>
+            <div>
+              <Input
+                className={styles.selectInput}
+                type="select"
+                name="select"
+                id="campaignCallSelection"
+                onChange={this.onCampaignSelection}
+              >
+                {this.props.campaigns &&
+                  this.props.campaigns.map(campaign => (
+                    <option value={campaign.ID}>{campaign.Description}</option>
+                  ))}
+              </Input>
+            </div>
             <div>
               <Input
                 type="text"
@@ -63,7 +88,7 @@ class Keyboard extends Component {
               <div onClick={() => this.onKeyPressed("#")}>#</div>
             </div>
             <div>
-              <Button>Marcar</Button>
+              <Button onClick={this.manualCall}>Marcar</Button>
             </div>
           </ModalBody>
         </Modal>
