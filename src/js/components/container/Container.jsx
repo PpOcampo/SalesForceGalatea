@@ -41,16 +41,15 @@ class Container extends Component {
       _this.setState({ agentStatus: agentStatus });
     };
 
-    window.onLogin = function() {
-      _this.setState({ logged: true });
-    };
+    window.onLogin = function() {};
+
     window.remoteLoginError = function(message) {
       message.show = true;
       _this.setState({ error: message });
     };
 
     window.onLogOut = function() {
-      _this.setState({ logged: false });
+      _this.setState({ logged: false, error: { show: false } });
     };
 
     window.onUnavailableTypes = function(unavailables) {
@@ -80,7 +79,7 @@ class Container extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { socketOpen, agentStatus } = this.state;
     if (agentStatus !== prevState.agentStatus) {
-      console.log(agentStatus);
+      console.log("agentStatus=>", agentStatus);
       switch (agentStatus.currentState) {
         case "logout":
           this.setState({ logged: false });
@@ -89,6 +88,7 @@ class Container extends Component {
           this.integration.connectToServer();
           return;
         case "NotReady":
+          this.setState({ error: { show: true, message: "Not Ready" } });
           return;
         case "Ready":
           this.integration.getUnavailables();
@@ -98,6 +98,7 @@ class Container extends Component {
           if (socketOpen) {
             this.setState({ socketOpen: false, logged: false });
           }
+          this.setState({ error: { show: true, message: "Socket Closed" } });
           return;
       }
     }

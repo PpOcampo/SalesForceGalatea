@@ -13,6 +13,12 @@
     flex-wrap: initial;
     flex-direction: column;
   }
+
+  .main > div.form {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
 }
 
 .main > div.form {
@@ -28,6 +34,7 @@
   display: flex;
   align-self: center;
   justify-content: center;
+  margin-top: 40px;
 }
 
 .submitBtn > button {
@@ -74,6 +81,7 @@
   border: 2px solid rgb(68, 67, 67, 0.1);
   border-radius: 5px;
   border: 1px solid #667178;
+  width: 100%;
 }
 
 .divInput > input {
@@ -106,6 +114,12 @@
 .divLabel {
   color: #667178;
   margin-bottom: 5px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  color: #cc9e1f;
 }
 
 /* .divInput > div {

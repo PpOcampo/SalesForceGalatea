@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Alert
-} from "reactstrap";
+import { Button, Form, FormGroup, Spinner, Alert } from "reactstrap";
 import * as LCC from "lightning-container";
 
 import image from "../../../images/agentLogo.png";
@@ -20,8 +12,15 @@ class LoginScreen extends Component {
     this.onUserChange = this.onUserChange.bind(this);
     this.onPwdChange = this.onPwdChange.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
+    this.state = {
+      loading: false,
+      disabledBtn: true,
+      user: "",
+      password: ""
+    };
   }
   onSubmit() {
+    this.setState({ loading: true });
     this.props.onSubmit(this.state.user, this.state.password);
   }
 
@@ -35,6 +34,20 @@ class LoginScreen extends Component {
   onKeyPress(e) {
     if (e.which === 13) {
       this.onSubmit();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { loading, user, password, disabledBtn } = this.state;
+    const { error } = this.props;
+    if (loading && error.show && prevProps.error.show !== error.show) {
+      this.setState({ loading: false });
+    }
+    if (user.length === 0 && password.length === 0 && !disabledBtn) {
+      this.setState({ disabledBtn: true });
+    }
+    if (user.length > 0 && password.length > 0 && disabledBtn) {
+      this.setState({ disabledBtn: false });
     }
   }
 
@@ -80,9 +93,13 @@ class LoginScreen extends Component {
           </FormGroup>
 
           <FormGroup className={styles.submitBtn}>
-            <Button onClick={this.onSubmit} color="primary">
-              Login
-            </Button>
+            {this.state.loading ? (
+              <Spinner className={styles.spinner} />
+            ) : (
+              <Button onClick={this.onSubmit} disabled={this.state.disabledBtn}>
+                Login
+              </Button>
+            )}
           </FormGroup>
         </div>
       </div>
