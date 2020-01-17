@@ -5,6 +5,7 @@ import * as LCC from "lightning-container";
 import styles from "./Container.css";
 import MainScreen from "./MainScreen.jsx";
 import LoginScreen from "./LoginScreen.jsx";
+import Keyboard from "./Keyboard.jsx";
 
 import { IntegrationApiFactory } from "../../../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
 
@@ -196,4 +197,16 @@ class Container extends Component {
 export default Container;
 
 const wrapper = document.getElementById("root");
-wrapper ? ReactDOM.render(<Container />, wrapper) : false;
+
+wrapper
+  ? ReactDOM.render(
+      <Keyboard
+        onKeyboardClick={() => {}}
+        show={true}
+        campaigns={null}
+        makeManualCall={true}
+      />,
+      wrapper
+    )
+  : false;
+// wrapper ? ReactDOM.render(<Container />, wrapper) : false;

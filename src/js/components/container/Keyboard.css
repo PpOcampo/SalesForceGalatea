@@ -1,14 +1,94 @@
+.keyboardMain,
+.keyboardMain > div {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: #0d1f2a;
+  max-width: 100%;
+}
+
 .rowNumbers {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.rowNumbers > div {
+  display: flex;
+  justify-content: center;
+  margin: 0 5px 0 5px;
+  background-color: #192a34;
+  line-height: 40px;
+  min-width: 40px;
+  color: #b2b7bb;
+  max-width: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  text-align: center;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.selectInput,
+.selectInput:hover,
+.selectInput:focus {
+  background-color: inherit;
+  border-color: #667178;
+}
+
+.body {
   margin-left: 30px;
   margin-right: 30px;
+  color: #99a0a5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 300px;
+  display: flex;
+  align-self: center;
+  justify-content: center;
 }
-.rowNumbers > div {
-  flex: 1;
-  margin: 1px;
-  background-color: rgb(226, 223, 223);
-  line-height: 45px;
+.body > div {
+  margin-top: 10px;
+}
+
+.header {
+  color: #99a0a5;
+  font-size: 14px;
+}
+
+.rowNumbers.telephone > div {
+  min-width: 50px;
+  min-height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  border-radius: 50px;
+  background-color: #06c10d;
+  margin: 15px;
+}
+
+.rowNumbers > div:hover {
+  background-color: #4a5b66;
+}
+
+.simulateClick {
+  background-color: #4a5b66 !important;
+}
+
+/* .rowNumbers > div {
+  background-color: #4a5b66;
+} */
+
+.rowNumbers.telephone > div > div.iconTelephone {
+  background-color: white;
+  mask-image: url("../../../images/Icon-call.svg");
+  -webkit-mask-image: url("../../../images/Icon-call.svg");
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
   width: 50px;
   height: 50px;
-  text-align: center;
 }

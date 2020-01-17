@@ -1,20 +1,12 @@
 import React, { Component } from "react";
 import styles from "./Keyboard.css";
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input
-} from "reactstrap";
+import { Modal, ModalHeader, ModalBody, Input } from "reactstrap";
 
 class Keyboard extends Component {
   constructor(props) {
     super(props);
     this.onKeyPressed = this.onKeyPressed.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
     this.onCampaignSelection = this.onCampaignSelection.bind(this);
     this.manualCall = this.manualCall.bind(this);
@@ -24,12 +16,28 @@ class Keyboard extends Component {
     };
   }
 
+  onKeyDown(e) {
+    /* if is *, # or number*/
+    if (/^[0-9*#]$/i.test(e.key)) {
+      let key = e.key === "*" ? "asterisk" : e.key;
+      key = key === "#" ? "hash" : key;
+      key = "k" + key;
+      let keyBtn = document.getElementById(key);
+      keyBtn.classList.add(styles.simulateClick);
+      setTimeout(() => {
+        keyBtn.classList.remove(styles.simulateClick);
+      }, 200);
+    }
+  }
+
   onChangeValue(e) {
     this.setState({ keyboardValue: e.target.value });
   }
 
-  onKeyPressed(value) {
-    this.setState({ keyboardValue: this.state.keyboardValue + value });
+  onKeyPressed(e) {
+    this.setState({
+      keyboardValue: this.state.keyboardValue + e.target.innerText
+    });
   }
   onCampaignSelection(e) {
     this.setState({ campaignSelection: e.target.value });
@@ -43,9 +51,19 @@ class Keyboard extends Component {
   render() {
     return (
       <>
-        <Modal isOpen={this.props.show} toggle={this.props.onKeyboardClick}>
-          <ModalHeader toggle={this.props.onKeyboardClick} />
-          <ModalBody>
+        <Modal
+          isOpen={this.props.show}
+          toggle={this.props.onKeyboardClick}
+          className={styles.keyboardMain}
+        >
+          <ModalHeader
+            toggle={this.props.onKeyboardClick}
+            className={styles.header}
+          >
+            MARCACION MANUAL
+          </ModalHeader>
+          <ModalBody className={styles.body}>
+            <div>Campaña</div>
             <div>
               <Input
                 className={styles.selectInput}
@@ -60,35 +78,67 @@ class Keyboard extends Component {
                   ))}
               </Input>
             </div>
+            <div>Numero</div>
             <div>
               <Input
                 type="text"
                 value={this.state.keyboardValue}
                 onChange={this.onChangeValue}
+                className={styles.selectInput}
+                onKeyDown={this.onKeyDown}
               />
             </div>
             <div className={styles.rowNumbers}>
-              <div onClick={() => this.onKeyPressed("1")}>1</div>
-              <div onClick={() => this.onKeyPressed("2")}>2</div>
-              <div onClick={() => this.onKeyPressed("3")}>3</div>
+              <div id="k1" onClick={this.onKeyPressed}>
+                1
+              </div>
+              <div id="k2" onClick={this.onKeyPressed}>
+                2
+              </div>
+              <div id="k3" onClick={this.onKeyPressed}>
+                3
+              </div>
             </div>
             <div className={styles.rowNumbers}>
-              <div onClick={() => this.onKeyPressed("4")}>4</div>
-              <div onClick={() => this.onKeyPressed("5")}>5</div>
-              <div onClick={() => this.onKeyPressed("6")}>6</div>
+              <div id="k4" onClick={this.onKeyPressed}>
+                4
+              </div>
+              <div id="k5" onClick={this.onKeyPressed}>
+                5
+              </div>
+              <div id="k6" onClick={this.onKeyPressed}>
+                6
+              </div>
             </div>
             <div className={styles.rowNumbers}>
-              <div onClick={() => this.onKeyPressed("7")}>7</div>
-              <div onClick={() => this.onKeyPressed("8")}>8</div>
-              <div onClick={() => this.onKeyPressed("9")}>9</div>
+              <div id="k7" onClick={this.onKeyPressed}>
+                7
+              </div>
+              <div id="k8" onClick={this.onKeyPressed}>
+                8
+              </div>
+              <div id="k9" onClick={this.onKeyPressed}>
+                9
+              </div>
             </div>
             <div className={styles.rowNumbers}>
-              <div onClick={() => this.onKeyPressed("*")}>*</div>
-              <div onClick={() => this.onKeyPressed("0")}>0</div>
-              <div onClick={() => this.onKeyPressed("#")}>#</div>
+              <div id="kasterisk" onClick={this.onKeyPressed}>
+                *
+              </div>
+              <div id="k0" onClick={this.onKeyPressed}>
+                0
+              </div>
+              <div id="khash" onClick={this.onKeyPressed}>
+                #
+              </div>
             </div>
-            <div>
-              <Button onClick={this.manualCall}>Marcar</Button>
+            <div className={`${styles.rowNumbers} ${styles.telephone}`}>
+              <div>
+                <div
+                  className={styles.iconTelephone}
+                  onClick={this.manualCall}
+                />
+              </div>
             </div>
           </ModalBody>
         </Modal>
