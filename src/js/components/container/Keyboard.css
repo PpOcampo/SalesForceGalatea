@@ -7,6 +7,13 @@
   max-width: 100%;
 }
 
+@media (max-height: 550px) {
+  .keyboardMain,
+  .keyboardMain > div {
+    height: auto;
+  }
+}
+
 .rowNumbers {
   display: flex;
   align-items: center;
@@ -56,9 +63,9 @@
   margin-top: 10px;
 }
 
-.header {
+.header > h5 {
   color: #99a0a5;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .rowNumbers.telephone > div {
@@ -71,20 +78,58 @@
   margin: 15px;
 }
 
+.rowNumbers.telephone > div:hover {
+  background-color: #14d31a;
+}
+
+.rowNumbers.telephone > div:active {
+  background-color: #00ff08;
+}
+
 .rowNumbers > div:hover {
   background-color: #666d72;
 }
 .rowNumbers > div:active {
   background-color: #4a5b66;
 }
+.inputKeyBoard {
+  display: flex;
+  flex-direction: row;
+  border-color: khaki;
+  border: 1px solid #667178;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.inputKeyBoard > input {
+  background-color: inherit;
+  border-style: none;
+  width: calc(100% - 40px);
+}
+
+.inputKeyBoard > input:hover,
+.inputKeyBoard > input:focus {
+  background-color: inherit;
+  border-color: #667178;
+  box-shadow: none;
+}
+
+.inputKeyBoard > div {
+  mask-image: url("../../../images/Icon-backspace.svg");
+  -webkit-mask-image: url("../../../images/Icon-backspace.svg");
+  background-color: #667178;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+  width: 40px;
+  height: calc(1.5em + 0.75rem + 2px);
+}
 
 .simulateClick {
   background-color: #4a5b66 !important;
 }
-
-/* .rowNumbers > div {
-  background-color: #4a5b66;
-} */
 
 .rowNumbers.telephone > div > div.iconTelephone {
   background-color: white;

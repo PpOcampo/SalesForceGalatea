@@ -5,3 +5,9 @@
   flex-wrap: wrap;
   flex-direction: row;
 }
+
+@media (max-height: 450px) {
+  .main {
+    height: auto;
+  }
+}

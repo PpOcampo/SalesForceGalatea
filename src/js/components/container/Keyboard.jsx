@@ -10,6 +10,7 @@ class Keyboard extends Component {
     this.onChangeValue = this.onChangeValue.bind(this);
     this.onCampaignSelection = this.onCampaignSelection.bind(this);
     this.manualCall = this.manualCall.bind(this);
+    this.onBackSpaceClick = this.onBackSpaceClick.bind(this);
     this.state = {
       keyboardValue: "",
       campaignSelection: 0
@@ -18,8 +19,9 @@ class Keyboard extends Component {
 
   onKeyDown(e) {
     /* if is *, # or number*/
-    if (/^[0-9*#]$/i.test(e.key)) {
-      let key = e.key === "*" ? "asterisk" : e.key;
+    let key = e.key.toLowerCase();
+    if (/^[0-9*#\b]$/i.test(key) || key === "backspace") {
+      key = key === "*" ? "asterisk" : key;
       key = key === "#" ? "hash" : key;
       key = "k" + key;
       let keyBtn = document.getElementById(key);
@@ -38,6 +40,10 @@ class Keyboard extends Component {
     this.setState({
       keyboardValue: this.state.keyboardValue + e.target.innerText
     });
+  }
+
+  onBackSpaceClick(e) {
+    this.setState({ keyboardValue: this.state.keyboardValue.slice(0, -1) });
   }
   onCampaignSelection(e) {
     this.setState({ campaignSelection: e.target.value });
@@ -79,14 +85,14 @@ class Keyboard extends Component {
               </Input>
             </div>
             <div>Numero</div>
-            <div>
+            <div className={styles.inputKeyBoard}>
               <Input
                 type="text"
                 value={this.state.keyboardValue}
                 onChange={this.onChangeValue}
-                className={styles.selectInput}
                 onKeyDown={this.onKeyDown}
               />
+              <div id="kbackspace" onClick={this.onBackSpaceClick}></div>
             </div>
             <div className={styles.rowNumbers}>
               <div id="k1" onClick={this.onKeyPressed}>

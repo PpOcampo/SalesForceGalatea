@@ -12,11 +12,13 @@ class LoginScreen extends Component {
     this.onUserChange = this.onUserChange.bind(this);
     this.onPwdChange = this.onPwdChange.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
+    this.onPwdEyeClick = this.onPwdEyeClick.bind(this);
     this.state = {
       loading: false,
       disabledBtn: true,
       user: "",
-      password: ""
+      password: "",
+      showPassword: false
     };
   }
   onSubmit() {
@@ -35,6 +37,9 @@ class LoginScreen extends Component {
     if (e.which === 13) {
       this.onSubmit();
     }
+  }
+  onPwdEyeClick() {
+    this.setState({ showPassword: !this.state.showPassword });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -81,14 +86,19 @@ class LoginScreen extends Component {
           </FormGroup>
           <FormGroup>
             <div className={styles.divLabel}>Password</div>
-            <div className={styles.divInput}>
+            <div
+              className={`${styles.divInput} ${styles.password} ${
+                this.state.showPassword ? styles.show : ""
+              }`}
+            >
               <input
-                type="password"
+                type={this.state.showPassword ? "text" : "password"}
                 name="fname"
                 placeholder="Contraseña"
                 onChange={this.onPwdChange}
                 onKeyPress={this.onKeyPress}
               />
+              <div id="pwdEye" onClick={this.onPwdEyeClick}></div>
             </div>
           </FormGroup>
 

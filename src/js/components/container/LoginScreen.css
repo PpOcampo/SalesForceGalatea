@@ -8,7 +8,7 @@
   background-color: #0d1f2a;
 }
 
-@media (max-width: 454px) {
+@media (max-width: 590px) {
   .main {
     flex-wrap: initial;
     flex-direction: column;
@@ -68,7 +68,7 @@
   border-color: #ffbb00;
 }
 
-@media (max-width: 575px) {
+@media (max-width: 590px) {
   .image {
     width: 150px;
     height: 150px;
@@ -91,16 +91,39 @@
   margin-right: 10px;
   background-color: #0d1f2a;
   color: #667178;
+  width: calc(100% - 20px);
+}
+
+.divInput.password > input {
+  width: calc(100% - 60px);
+}
+
+.divInput.password > div {
+  background-color: #667178;
+  mask-image: url("../../../images/Icon-not-show-pass.svg");
+  -webkit-mask-image: url("../../../images/Icon-not-show-pass.svg");
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  width: 40px;
+}
+
+.divInput.password.show > div {
+  mask-image: url("../../../images/icon-pass-show.svg");
+  -webkit-mask-image: url("../../../images/icon-pass-show.svg");
 }
 
 .alert > div {
   color: #ffffff;
   background-color: #f83838;
   border-color: #f83838;
-  height: 36px;
+  min-height: 36px;
   display: flex;
   align-items: center;
   margin-top: 10px;
+  text-align: center;
 }
 
 .alert.show {
@@ -121,21 +144,3 @@
   height: 48px;
   color: #cc9e1f;
 }
-
-/* .divInput > div {
-  background-color: rgb(68, 67, 67, 0.1);
-  border-radius: 3px 0 0 3px;
-} */
-
-/* .pwdMask {
-  mask-image: url("../../../images/download.svg");
-  -webkit-mask-image: url("../../../images/download.svg");
-  width: 30px;
-  height: 30px;
-  background-color: rgb(68, 67, 67);
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  background-attachment: fixed;
-  mask-position: center;
-  -webkit-mask-position: center;
-} */

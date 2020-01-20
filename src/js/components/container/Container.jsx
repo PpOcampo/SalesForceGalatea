@@ -198,15 +198,15 @@ export default Container;
 
 const wrapper = document.getElementById("root");
 
-wrapper
-  ? ReactDOM.render(
-      <Keyboard
-        onKeyboardClick={() => {}}
-        show={true}
-        campaigns={null}
-        makeManualCall={true}
-      />,
-      wrapper
-    )
-  : false;
-// wrapper ? ReactDOM.render(<Container />, wrapper) : false;
+// wrapper
+//   ? ReactDOM.render(
+//       <Keyboard
+//         onKeyboardClick={() => {}}
+//         show={true}
+//         campaigns={null}
+//         makeManualCall={true}
+//       />,
+//       wrapper
+//     )
+//   : false;
+wrapper ? ReactDOM.render(<Container />, wrapper) : false;
