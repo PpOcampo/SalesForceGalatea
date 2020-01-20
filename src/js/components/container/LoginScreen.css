@@ -3,43 +3,34 @@
   flex-wrap: wrap;
   width: 100%;
   height: 100%;
-  align-items: center;
   justify-content: center;
-  background-color: #0d1f2a;
-}
-
-@media (max-width: 590px) {
-  .main {
-    flex-wrap: initial;
-    flex-direction: column;
-  }
-
-  .main > div.form {
-    width: 100%;
-    padding-left: 50px;
-    padding-right: 50px;
-  }
 }
 
 .main > div.form {
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 32px;
+  margin-right: 32px;
+  align-items: flex-start;
 }
 
 .image {
+  margin-top: 56px;
   width: 120px;
   height: 120px;
 }
+
 .submitBtn {
   display: flex;
   align-self: center;
   justify-content: center;
-  margin-top: 40px;
+  max-height: 48px;
+  min-height: 48px;
+  margin-top: 32px;
 }
 
 .submitBtn > button {
   background-color: #cc9e1f;
   border-color: #cc9e1f;
+  max-height: 38px;
 }
 
 .submitBtn > button:hover {
@@ -68,13 +59,6 @@
   border-color: #ffbb00;
 }
 
-@media (max-width: 590px) {
-  .image {
-    width: 150px;
-    height: 150px;
-  }
-}
-
 .divInput {
   display: flex;
   flex-direction: row;
@@ -86,10 +70,10 @@
 
 .divInput > input {
   border-style: none;
-  height: 30px;
+  height: 36px;
   margin-left: 10px;
   margin-right: 10px;
-  background-color: #0d1f2a;
+  background-color: inherit;
   color: #667178;
   width: calc(100% - 20px);
 }
@@ -120,10 +104,11 @@
   background-color: #f83838;
   border-color: #f83838;
   min-height: 36px;
+  max-height: 36px;
   display: flex;
   align-items: center;
-  margin-top: 10px;
   text-align: center;
+  margin-top: 15px;
 }
 
 .alert.show {
