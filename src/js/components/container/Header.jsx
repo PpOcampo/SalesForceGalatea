@@ -10,12 +10,21 @@ import {
 class MainScreen extends Component {
   constructor(props) {
     super(props);
+    this.onBack = this.onBack.bind(this);
+  }
+
+  onBack() {
+    this.props.onBack();
   }
 
   render() {
-    return (
+    const { showBack, show } = this.props;
+    return show ? (
       <div className={styles.main}>
-        <div className={styles.title}>Centerware Kolob</div>
+        <div className={styles.title}>
+          {showBack && <div className={styles.arrow} onClick={this.onBack} />}
+          <div className={styles.text}>Centerware Kolob</div>
+        </div>
         <UncontrolledDropdown direction="down">
           <DropdownToggle className={styles.dropdownBtn}>
             <div className={styles.dropdownIcon} />
@@ -29,6 +38,8 @@ class MainScreen extends Component {
           </DropdownMenu>
         </UncontrolledDropdown>
       </div>
+    ) : (
+      <></>
     );
   }
 }

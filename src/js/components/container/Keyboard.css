@@ -1,21 +1,5 @@
-.keyboardMain,
-.keyboardMain > div {
-  min-width: 296px;
-  min-height: 496px;
-  max-width: 296px;
-  max-height: 496px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  background-color: #0d1f2a;
-}
-
-@media (max-height: 550px) {
-  .keyboardMain,
-  .keyboardMain > div {
-    height: auto;
-  }
+.main {
+  margin: 0 32px 0 32px;
 }
 
 .rowNumbers {
@@ -49,6 +33,8 @@
 .selectInput:focus {
   background-color: inherit;
   border-color: #667178;
+  height: 36px;
+  margin: 16px 0 16px 0;
 }
 
 .body {

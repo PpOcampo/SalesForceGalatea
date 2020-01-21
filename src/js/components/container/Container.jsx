@@ -175,11 +175,11 @@ class Container extends Component {
           <Spinner color="primary" />
         </div> */}
 
-        <div className={styles.main}>
-          <MainScreen></MainScreen>
-        </div>
-
         {/* <div className={styles.main}>
+          <MainScreen></MainScreen>
+        </div> */}
+
+        <div className={styles.main}>
           {this.state.logged ? (
             <MainScreen
               onLogOut={this.onLogOutClick}
@@ -194,7 +194,7 @@ class Container extends Component {
           ) : (
             <LoginScreen onSubmit={this.onLoginSubmit} error={error} />
           )}
-        </div> */}
+        </div>
       </>
     );
   }

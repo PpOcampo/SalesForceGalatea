@@ -1,7 +1,66 @@
 .main {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+}
+
+.title,
+.notAvailable {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 15px 24px 0px 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notAvailable > .icon,
+.notAvailable > .arrow {
+  mask-image: url("../../../images/Icon-no-available.svg");
+  -webkit-mask-image: url("../../../images/Icon-no-available.svg");
+  background-color: #99a0a5;
+  width: 24px;
+  height: 24px;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+.notAvailable > .arrow {
+  mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
+  -webkit-mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
+  width: 15px;
+}
+
+.notAvailable {
+  height: 56px;
+  cursor: pointer;
+}
+
+.body {
+  height: calc(100% - 92px);
+  width: 100%;
+  position: relative;
+}
+
+.body.maximize {
+  height: calc(100% - 56px);
+}
+
+.body.dMargin {
+  margin: 0px 24px 0 24px;
+}
+
+.keyboardBtn {
+  width: 48px;
+  height: 48px;
+  background: #cc9e1f 0% 0% no-repeat padding-box;
+  z-index: 500;
+  position: absolute;
+  bottom: 10px;
+  right: 24px;
+  border-radius: 24px;
 }

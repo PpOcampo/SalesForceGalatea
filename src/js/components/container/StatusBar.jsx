@@ -7,8 +7,10 @@ class StatusBar extends Component {
   }
 
   render() {
-    return (
+    return this.props.show ? (
       <div className={`${styles.main} ${styles["green"]}`}>Disponible</div>
+    ) : (
+      <></>
     );
   }
 }

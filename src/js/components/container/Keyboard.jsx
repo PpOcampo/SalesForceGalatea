@@ -55,100 +55,87 @@ class Keyboard extends Component {
   }
 
   render() {
-    return (
-      <>
-        <Modal
-          isOpen={this.props.show}
-          toggle={this.props.onKeyboardClick}
-          className={styles.keyboardMain}
-        >
-          <ModalHeader
-            toggle={this.props.onKeyboardClick}
-            className={styles.header}
+    return this.props.show ? (
+      <div className={styles.main}>
+        <div>Campaña</div>
+        <div>
+          <Input
+            className={styles.selectInput}
+            type="select"
+            name="select"
+            id="campaignCallSelection"
+            onChange={this.onCampaignSelection}
           >
-            MARCACION MANUAL
-          </ModalHeader>
-          <ModalBody className={styles.body}>
-            <div>Campaña</div>
-            <div>
-              <Input
-                className={styles.selectInput}
-                type="select"
-                name="select"
-                id="campaignCallSelection"
-                onChange={this.onCampaignSelection}
-              >
-                {this.props.campaigns &&
-                  this.props.campaigns.map(campaign => (
-                    <option value={campaign.ID}>{campaign.Description}</option>
-                  ))}
-              </Input>
-            </div>
-            <div>Numero</div>
-            <div className={styles.inputKeyBoard}>
-              <Input
-                type="text"
-                value={this.state.keyboardValue}
-                onChange={this.onChangeValue}
-                onKeyDown={this.onKeyDown}
-              />
-              <div id="kbackspace" onClick={this.onBackSpaceClick}></div>
-            </div>
-            <div className={styles.rowNumbers}>
-              <div id="k1" onClick={this.onKeyPressed}>
-                1
-              </div>
-              <div id="k2" onClick={this.onKeyPressed}>
-                2
-              </div>
-              <div id="k3" onClick={this.onKeyPressed}>
-                3
-              </div>
-            </div>
-            <div className={styles.rowNumbers}>
-              <div id="k4" onClick={this.onKeyPressed}>
-                4
-              </div>
-              <div id="k5" onClick={this.onKeyPressed}>
-                5
-              </div>
-              <div id="k6" onClick={this.onKeyPressed}>
-                6
-              </div>
-            </div>
-            <div className={styles.rowNumbers}>
-              <div id="k7" onClick={this.onKeyPressed}>
-                7
-              </div>
-              <div id="k8" onClick={this.onKeyPressed}>
-                8
-              </div>
-              <div id="k9" onClick={this.onKeyPressed}>
-                9
-              </div>
-            </div>
-            <div className={styles.rowNumbers}>
-              <div id="kasterisk" onClick={this.onKeyPressed}>
-                *
-              </div>
-              <div id="k0" onClick={this.onKeyPressed}>
-                0
-              </div>
-              <div id="khash" onClick={this.onKeyPressed}>
-                #
-              </div>
-            </div>
-            <div className={`${styles.rowNumbers} ${styles.telephone}`}>
-              <div>
-                <div
-                  className={styles.iconTelephone}
-                  onClick={this.manualCall}
-                />
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
-      </>
+            {this.props.campaigns &&
+              this.props.campaigns.map(campaign => (
+                <option value={campaign.ID}>{campaign.Description}</option>
+              ))}
+          </Input>
+        </div>
+        <div>Numero</div>
+        <div className={styles.inputKeyBoard}>
+          <Input
+            type="text"
+            value={this.state.keyboardValue}
+            onChange={this.onChangeValue}
+            onKeyDown={this.onKeyDown}
+          />
+          {this.state.keyboardValue.length > 0 && (
+            <div id="kbackspace" onClick={this.onBackSpaceClick} />
+          )}
+        </div>
+        <div className={styles.rowNumbers}>
+          <div id="k1" onClick={this.onKeyPressed}>
+            1
+          </div>
+          <div id="k2" onClick={this.onKeyPressed}>
+            2
+          </div>
+          <div id="k3" onClick={this.onKeyPressed}>
+            3
+          </div>
+        </div>
+        <div className={styles.rowNumbers}>
+          <div id="k4" onClick={this.onKeyPressed}>
+            4
+          </div>
+          <div id="k5" onClick={this.onKeyPressed}>
+            5
+          </div>
+          <div id="k6" onClick={this.onKeyPressed}>
+            6
+          </div>
+        </div>
+        <div className={styles.rowNumbers}>
+          <div id="k7" onClick={this.onKeyPressed}>
+            7
+          </div>
+          <div id="k8" onClick={this.onKeyPressed}>
+            8
+          </div>
+          <div id="k9" onClick={this.onKeyPressed}>
+            9
+          </div>
+        </div>
+        <div className={styles.rowNumbers}>
+          <div id="kasterisk" onClick={this.onKeyPressed}>
+            *
+          </div>
+          <div id="k0" onClick={this.onKeyPressed}>
+            0
+          </div>
+          <div id="khash" onClick={this.onKeyPressed}>
+            #
+          </div>
+        </div>
+        <div className={`${styles.rowNumbers} ${styles.telephone}`}>
+          <div>
+            <div className={styles.iconTelephone} onClick={this.manualCall} />
+          </div>
+        </div>
+      </div>
+    ) : (
+      <></>
     );
   }
 }

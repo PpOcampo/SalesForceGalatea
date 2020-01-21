@@ -33,5 +33,26 @@
   background-color: #b2b7bb;
 }
 .title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: calc(100% - 15px);
+}
+
+.title > .text {
   margin: auto;
+}
+
+.title > .arrow {
+  mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
+  -webkit-mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
+  background-color: #99a0a5;
+  width: 24px;
+  height: 24px;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+  transform: rotate(180deg);
 }
