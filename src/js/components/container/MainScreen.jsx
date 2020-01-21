@@ -4,6 +4,8 @@ import { Modal, ModalHeader, ModalBody, Input } from "reactstrap";
 import styles from "./MainScreen.css";
 import BaseBtn from "./BaseBtn.jsx";
 import Keyboard from "./Keyboard.jsx";
+import Header from "./Header.jsx";
+import StatusBar from "./StatusBar.jsx";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -42,29 +44,12 @@ class MainScreen extends Component {
   render() {
     return (
       <div className={styles.main}>
-        <div className={styles.header} />
+        <Header />
+        <StatusBar></StatusBar>
 
-        <div>
-          <button onClick={this.onLogOut}>logout</button>
-        </div>
+        {/* <BaseBtn type={"keyboard"} onClick={this.onKeyboardClick} /> */}
 
-        <div className={styles.end}>
-          <div className={styles.minMargin}>
-            <BaseBtn type={"xfer"} />
-          </div>
-        </div>
-
-        <div>
-          <div className={styles.btnStates}>
-            <BaseBtn />
-          </div>
-          <div className={`${styles.marginRight} ${styles.btnStatesEnd}`}>
-            <div>
-              <BaseBtn type={"call"} />
-            </div>
-            <div>
-              {" "}
-              <Input
+        {/* <Input
                 className={styles.selectInput}
                 type="select"
                 name="select"
@@ -78,69 +63,16 @@ class MainScreen extends Component {
                       {unavailable.Description}
                     </option>
                   ))}
-              </Input>
-            </div>
-          </div>
-        </div>
+              </Input> */}
 
-        <div>
-          <textarea rows="2" />
-        </div>
-
-        <div className={styles.labels}>
-          <div>
-            <div className={styles.imageExt} />
-            2011
-          </div>
-        </div>
-
-        <div className={styles.labels}>
-          <div>
-            <span className={`${styles.marginRight} ${styles.bold}`}>
-              Status:{" "}
-            </span>{" "}
-            {this.props.agentStatus.currentState}
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <BaseBtn type={"call"} />
-          </div>
-          <div>
-            <BaseBtn type={"keyboard"} onClick={this.onKeyboardClick} />
-          </div>
-          <div>
-            <BaseBtn type={"pause"} />
-          </div>
-          <div className={styles.minMargin}>
-            <BaseBtn type={"stop"} />
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <BaseBtn type={"xfer"} />
-          </div>
-          <div>
-            <BaseBtn type={"blindXfer"} />
-          </div>
-          <div>
-            <BaseBtn type={"note"} />
-          </div>
-          <div className={styles.minMargin}>
-            <div></div>
-          </div>
-        </div>
-
-        <>
+        {/* <>
           <Keyboard
             onKeyboardClick={this.onKeyboardClick}
             show={this.state.showKeyBoard}
             campaigns={this.props.campaigns}
             makeManualCall={this.props.makeManualCall}
           />
-        </>
+        </> */}
       </div>
     );
   }

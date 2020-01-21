@@ -174,7 +174,12 @@ class Container extends Component {
         {/* <div>
           <Spinner color="primary" />
         </div> */}
+
         <div className={styles.main}>
+          <MainScreen></MainScreen>
+        </div>
+
+        {/* <div className={styles.main}>
           {this.state.logged ? (
             <MainScreen
               onLogOut={this.onLogOutClick}
@@ -189,7 +194,7 @@ class Container extends Component {
           ) : (
             <LoginScreen onSubmit={this.onLoginSubmit} error={error} />
           )}
-        </div>
+        </div> */}
       </>
     );
   }
@@ -209,4 +214,5 @@ const wrapper = document.getElementById("root");
 //       wrapper
 //     )
 //   : false;
+
 wrapper ? ReactDOM.render(<Container />, wrapper) : false;

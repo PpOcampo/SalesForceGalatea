@@ -1,0 +1,37 @@
+.main {
+  height: 56px;
+  width: 100%;
+  background-color: initial;
+  color: #b2b7bb;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 24px;
+  padding-right: 24px;
+  justify-content: flex-end;
+  margin-bottom: unset;
+}
+
+.dropdownBtn {
+  padding: 0;
+  background-color: inherit;
+  border-style: none;
+}
+.dropdownBtn:hover,
+.dropdownBtn:active,
+.dropdownBtn:focus,
+.dropdownBtn:not(:disabled):not(.disabled):active:focus {
+  background-color: inherit;
+  box-shadow: none;
+}
+
+.dropdownIcon {
+  width: 15px;
+  height: 20px;
+  mask-image: url("../../../images/Icon-more.svg");
+  -webkit-mask-image: url("../../../images/Icon-more.svg");
+  background-color: #b2b7bb;
+}
+.title {
+  margin: auto;
+}

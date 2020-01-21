@@ -1,0 +1,11 @@
+.main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+}
+
+.green {
+  background-color: #06c10d;
+}
