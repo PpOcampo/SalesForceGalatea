@@ -13,8 +13,14 @@ class Keyboard extends Component {
     this.onBackSpaceClick = this.onBackSpaceClick.bind(this);
     this.state = {
       keyboardValue: "",
-      campaignSelection: 0
+      campaign: undefined
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.show !== this.props.show && this.props.show) {
+      this.setState({ keyboardValue: "", campaign: undefined });
+    }
   }
 
   onKeyDown(e) {
@@ -45,16 +51,23 @@ class Keyboard extends Component {
   onBackSpaceClick(e) {
     this.setState({ keyboardValue: this.state.keyboardValue.slice(0, -1) });
   }
+
   onCampaignSelection(e) {
-    this.setState({ campaignSelection: e.target.value });
+    let campaign = this.props.campaigns.find(
+      campaign => campaign.ID == e.target.value
+    );
+    this.setState({ campaign });
   }
 
   manualCall() {
-    const { keyboardValue, campaignSelection } = this.state;
-    this.props.makeManualCall(keyboardValue, campaignSelection, "", "");
+    const { keyboardValue, campaign } = this.state;
+    this.props.makeManualCall(keyboardValue, campaign, "", "");
   }
 
   render() {
+    const { keyboardValue, campaign } = this.state;
+    let allData =
+      keyboardValue.length > 1 && campaign && /^\d+$/.test(keyboardValue);
     return this.props.show ? (
       <div className={styles.main}>
         <div>Campaña</div>
@@ -66,6 +79,9 @@ class Keyboard extends Component {
             id="campaignCallSelection"
             onChange={this.onCampaignSelection}
           >
+            <option hidden selected>
+              Seleccione una campaña
+            </option>
             {this.props.campaigns &&
               this.props.campaigns.map(campaign => (
                 <option value={campaign.ID}>{campaign.Description}</option>
@@ -128,9 +144,13 @@ class Keyboard extends Component {
             #
           </div>
         </div>
-        <div className={`${styles.rowNumbers} ${styles.telephone}`}>
+        <div
+          className={`${styles.rowNumbers} ${styles.telephone} ${!allData &&
+            styles.disabled}`}
+          onClick={allData ? this.manualCall : null}
+        >
           <div>
-            <div className={styles.iconTelephone} onClick={this.manualCall} />
+            <div className={styles.iconTelephone} />
           </div>
         </div>
       </div>

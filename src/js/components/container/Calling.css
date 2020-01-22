@@ -7,14 +7,61 @@
   height: 100%;
 }
 
-.title {
-}
-
+.title,
 .number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
+.title > .label {
+  font-size: 14px;
+}
+
+.title > .name {
+  font-size: 16px;
+}
+
+.number > .logo {
+  mask-image: url("../../../images/Icon-account.svg");
+  -webkit-mask-image: url("../../../images/Icon-account.svg");
+  background-color: #99a0a5;
+  width: 64px;
+  height: 64px;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+  margin-bottom: 15px;
+}
+
+.number > .num {
+  font-size: 20px;
+}
+
+.number > .timer {
+  font-size: 34px;
+}
 .btn {
+  min-width: 50px;
+  min-height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  border-radius: 50px;
+  background-color: #ff2f2f;
+  margin-bottom: 45px;
+}
+.btn > div {
   width: 48px;
   height: 48px;
-  margin-bottom: 45px;
+  background-color: white;
+  mask-image: url("../../../images/Icon-call.svg");
+  -webkit-mask-image: url("../../../images/Icon-call.svg");
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
 }

@@ -7,6 +7,22 @@
   color: #ffffff;
 }
 
-.green {
+.ready {
   background-color: #06c10d;
+}
+
+.dialog {
+  background-color: #04baed;
+}
+
+.notready {
+  background-color: #ff0011;
+}
+
+.problem {
+  background-color: #c60000;
+}
+
+.wrapup {
+  background-color: #ffa61d;
 }

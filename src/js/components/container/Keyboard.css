@@ -133,3 +133,8 @@
   width: 50px;
   height: 50px;
 }
+
+.rowNumbers.telephone.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}

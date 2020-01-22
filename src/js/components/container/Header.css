@@ -55,4 +55,18 @@
   mask-position: center;
   -webkit-mask-position: center;
   transform: rotate(180deg);
+  cursor: pointer;
+}
+
+div.dropdown > div {
+  background-color: #192a34;
+}
+
+div.dropdown > div > button {
+  color: #7f888e;
+}
+
+div.dropdown > div > button:hover {
+  background-color: #273a46;
+  color: #7f888e;
 }

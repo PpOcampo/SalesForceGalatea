@@ -7,8 +7,11 @@ class StatusBar extends Component {
   }
 
   render() {
+    let className = this.props.title.toLowerCase();
     return this.props.show ? (
-      <div className={`${styles.main} ${styles["green"]}`}>Disponible</div>
+      <div className={`${styles.main} ${styles[className]}`}>
+        {this.props.title}
+      </div>
     ) : (
       <></>
     );

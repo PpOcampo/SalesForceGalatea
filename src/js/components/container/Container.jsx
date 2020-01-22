@@ -23,6 +23,7 @@ class Container extends Component {
     this.setAvailable = this.setAvailable.bind(this);
     this.getCampaignsRelated = this.getCampaignsRelated.bind(this);
     this.makeManualCall = this.makeManualCall.bind(this);
+    this.hangUp = this.hangUp.bind(this);
 
     this.state = {
       logged: false,
@@ -31,7 +32,8 @@ class Container extends Component {
       error: { show: false },
       validating: false,
       unavailables: undefined,
-      campaigns: undefined
+      campaigns: undefined,
+      wrongNumber: false
     };
     this.integration = undefined;
   }
@@ -55,6 +57,10 @@ class Container extends Component {
 
     window.onUnavailableTypes = function(unavailables) {
       _this.setState({ unavailables: unavailables });
+    };
+
+    window.wrongNumber = function(phoneNumber) {
+      _this.setState({ wrongNumber: true });
     };
 
     window.onCampaigns = function(json) {
@@ -129,8 +135,13 @@ class Container extends Component {
     this.integration.GetCampaignsRelated();
   }
 
-  makeManualCall(phoneNum, campId, clientName, callKey) {
-    this.integration.makeManualCall(phoneNum, campId, clientName, callKey);
+  makeManualCall(phoneNum, campaign, clientName, callKey) {
+    console.log("===>", campaign);
+    this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
+  }
+
+  hangUp() {
+    this.integration.HangUpCall();
   }
 
   onClick() {
@@ -150,7 +161,7 @@ class Container extends Component {
   }
 
   render() {
-    const { error, unavailables } = this.state;
+    const { error, unavailables, wrongNumber } = this.state;
     return (
       <>
         <iframe
@@ -190,6 +201,8 @@ class Container extends Component {
               campaigns={this.state.campaigns}
               makeManualCall={this.makeManualCall}
               agentStatus={this.state.agentStatus}
+              onHangUp={this.hangUp}
+              wrongNumber={wrongNumber}
             />
           ) : (
             <LoginScreen onSubmit={this.onLoginSubmit} error={error} />

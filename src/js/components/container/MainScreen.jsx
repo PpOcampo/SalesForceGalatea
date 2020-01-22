@@ -16,12 +16,14 @@ class MainScreen extends Component {
     this.onLogOut = this.onLogOut.bind(this);
     this.backButtonHandler = this.backButtonHandler.bind(this);
     this.makeManualCall = this.makeManualCall.bind(this);
+    this.onHangUp = this.onHangUp.bind(this);
     this.state = {
       showKeyBoard: false,
       showNotReady: false,
       showStatusBar: true,
       showCalling: false,
-      showHeader: true
+      showHeader: true,
+      callData: undefined
     };
   }
 
@@ -58,14 +60,30 @@ class MainScreen extends Component {
     }
   }
 
-  makeManualCall(phoneNum, campId, clientName, callKey) {
+  makeManualCall(phoneNum, campaign, clientName, callKey) {
     this.setState({
       showCalling: true,
       showKeyBoard: false,
       showStatusBar: true,
-      showHeader: !this.state.showHeader
+      showHeader: !this.state.showHeader,
+      callData: {
+        campaign: campaign,
+        phoneNum: phoneNum,
+        clientName: clientName
+      }
     });
-    // this.props.makeManualCall(phoneNum, campId, clientName, callKey);
+    this.props.makeManualCall(phoneNum, campaign, clientName, callKey);
+  }
+
+  onHangUp() {
+    this.setState({
+      showCalling: false,
+      showKeyBoard: false,
+      showHeader: true,
+      showStatusBar: true,
+      callData: undefined
+    });
+    this.props.onHangUp();
   }
 
   render() {
@@ -83,9 +101,12 @@ class MainScreen extends Component {
           show={showHeader}
           onBack={this.backButtonHandler}
           showBack={!mainScreen}
-          main
+          onLogOut={this.onLogOut}
         />
-        <StatusBar show={showStatusBar} />
+        <StatusBar
+          show={showStatusBar}
+          title={this.props.agentStatus.currentState}
+        />
         <div className={`${styles.body} ${!showStatusBar && styles.maximize}`}>
           <NotReady
             unavailables={this.props.unavailables}
@@ -98,7 +119,12 @@ class MainScreen extends Component {
             makeManualCall={this.makeManualCall}
           />
 
-          <Calling show={this.state.showCalling} />
+          <Calling
+            show={this.state.showCalling}
+            callData={this.state.callData}
+            onHangUp={this.onHangUp}
+            wrongNumber={this.props.wrongNumber}
+          />
 
           {mainScreen && (
             <>
