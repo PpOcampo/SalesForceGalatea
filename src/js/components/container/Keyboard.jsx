@@ -71,7 +71,7 @@ class Keyboard extends Component {
     return this.props.show ? (
       <div className={styles.main}>
         <div>Campaña</div>
-        <div>
+        <div className={styles.divInput}>
           <Input
             className={styles.selectInput}
             type="select"

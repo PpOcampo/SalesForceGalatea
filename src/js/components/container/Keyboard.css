@@ -65,7 +65,7 @@
   min-height: 50px;
   border-radius: 50px;
   background-color: #06c10d;
-  margin: 15px;
+  margin: 15px 15px 0 15px;
 }
 
 .rowNumbers.telephone > div:hover {
@@ -137,4 +137,8 @@
 .rowNumbers.telephone.disabled {
   pointer-events: none;
   opacity: 0.4;
+}
+
+.main > div.divInput {
+  background-color: #0d1f2a;
 }

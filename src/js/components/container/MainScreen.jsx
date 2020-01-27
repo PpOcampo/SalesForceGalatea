@@ -7,6 +7,7 @@ import Header from "./Header.jsx";
 import StatusBar from "./StatusBar.jsx";
 import NotReady from "./NotReady.jsx";
 import Calling from "./Calling.jsx";
+import Locked from "./Locked.jsx";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -83,6 +84,7 @@ class MainScreen extends Component {
       showStatusBar: true,
       callData: undefined
     });
+
     this.props.onHangUp();
   }
 
@@ -105,7 +107,11 @@ class MainScreen extends Component {
         />
         <StatusBar
           show={showStatusBar}
-          title={this.props.agentStatus.currentState}
+          title={
+            this.props.wrongNumber
+              ? "Problem"
+              : this.props.agentStatus.currentState
+          }
         />
         <div className={`${styles.body} ${!showStatusBar && styles.maximize}`}>
           <NotReady
@@ -124,7 +130,15 @@ class MainScreen extends Component {
             callData={this.state.callData}
             onHangUp={this.onHangUp}
             wrongNumber={this.props.wrongNumber}
+            status={this.props.agentStatus.currentState}
           />
+
+          {/* <Locked
+            show={true}
+            unavailable={
+              this.props.unavailables ? this.props.unavailables[0] : undefined
+            }
+          /> */}
 
           {mainScreen && (
             <>
@@ -141,10 +155,9 @@ class MainScreen extends Component {
           )}
 
           {!showKeyBoard && !showCalling && (
-            <div
-              className={styles.keyboardBtn}
-              onClick={this.onKeyboardClick}
-            />
+            <div className={styles.keyboardBtn} onClick={this.onKeyboardClick}>
+              <div />
+            </div>
           )}
         </div>
       </div>

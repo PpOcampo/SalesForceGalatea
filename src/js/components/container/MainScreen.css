@@ -63,4 +63,17 @@
   bottom: 10px;
   right: 24px;
   border-radius: 24px;
+  cursor: pointer;
+}
+.keyboardBtn > div {
+  mask-image: url("../../../images/Icon-keyboard.svg");
+  -webkit-mask-image: url("../../../images/Icon-keyboard.svg");
+  background-color: #667178;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+  width: 48px;
+  height: 48px;
 }

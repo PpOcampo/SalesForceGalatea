@@ -24,6 +24,7 @@ class Container extends Component {
     this.getCampaignsRelated = this.getCampaignsRelated.bind(this);
     this.makeManualCall = this.makeManualCall.bind(this);
     this.hangUp = this.hangUp.bind(this);
+    this.reset = this.reset.bind(this);
 
     this.state = {
       logged: false,
@@ -69,6 +70,10 @@ class Container extends Component {
       } else {
         _this.setState({ campaigns: Object.values(json) });
       }
+    };
+
+    window.onDialingNumber = function(message) {
+      console.log("dialingNumber=>", phoneNumber);
     };
   }
 
@@ -142,6 +147,15 @@ class Container extends Component {
 
   hangUp() {
     this.integration.HangUpCall();
+    this.reset();
+  }
+
+  reset() {
+    this.setState({
+      error: { show: false },
+      validating: false,
+      wrongNumber: false
+    });
   }
 
   onClick() {

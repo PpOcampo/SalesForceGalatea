@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styles from "./Calling.css";
 
-class Calling extends Component {
+class Locked extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,20 +40,25 @@ class Calling extends Component {
   }
 
   tick() {
-    let seconds = this.state.seconds + 1;
+    let seconds = this.state.seconds - 1;
     let minutes = this.state.minutes;
     let hours = this.state.hours;
 
-    if (seconds === 60) {
-      seconds = 0;
-      minutes = minutes + 1;
+    if (seconds === -1) {
+      seconds = 59;
+      minutes = minutes - 1;
     }
 
-    if (minutes === 60) {
-      seconds = 0;
-      minutes = 0;
-      hours = hours + 1;
+    if (minutes === -1) {
+      seconds = 59;
+      minutes = 59;
+      hours = hours - 1;
     }
+
+    if (hours === -1) {
+      return this.handleResetClick();
+    }
+
     this.update(seconds, minutes, hours);
   }
 
@@ -75,48 +80,35 @@ class Calling extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (this.props.show && this.props.show !== prevProps.show) {
-
-    //   this.handleStartClick();
-    // }
     if (
-      this.props.show &&
-      this.props.wrongNumber !== prevProps.wrongNumber &&
-      this.props.wrongNumber
+      prevProps.unavailable !== this.props.unavailable &&
+      this.props.unavailable
     ) {
-      setTimeout(this.onHangUp, 2000);
-    }
-    if (
-      this.props.status.toLowerCase() === "dialog" &&
-      prevProps.status !== this.props.status
-    ) {
+      const [hours, minutes, seconds] = this.props.unavailable.Max.split(":");
+      this.setState({
+        hours: parseInt(3),
+        minutes: parseInt(1),
+        seconds: parseInt(5)
+      });
       this.handleStartClick();
     }
   }
 
   render() {
-    console.log("=======> status", this.props.status);
-    const { callData, show } = this.props;
-    return show && callData ? (
+    const { show, unavailable } = this.props;
+
+    return show ? (
       <div className={styles.main}>
         <div className={styles.title}>
           <div className={styles.label}>Campaña</div>
-          <div className={styles.name}>{callData.campaign.Description}</div>
         </div>
 
         <div className={styles.number}>
-          <div className={styles.logo} />
-          <div className={styles.num}>{callData.phoneNum}</div>
-          {this.state.running && (
-            <div className={styles.timer}>
-              <span>{this.zeroPad(this.state.hours)}:</span>
-              <span>{this.zeroPad(this.state.minutes)}:</span>
-              <span>{this.zeroPad(this.state.seconds)}</span>
-            </div>
-          )}
-        </div>
-        <div className={` ${styles.btn}`} onClick={this.onHangUp}>
-          <div />
+          <div className={styles.timer}>
+            <span>{this.zeroPad(this.state.hours)}:</span>
+            <span>{this.zeroPad(this.state.minutes)}:</span>
+            <span>{this.zeroPad(this.state.seconds)}</span>
+          </div>
         </div>
       </div>
     ) : (
@@ -124,4 +116,4 @@ class Calling extends Component {
     );
   }
 }
-export default Calling;
+export default Locked;
