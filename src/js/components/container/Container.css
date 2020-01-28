@@ -7,3 +7,9 @@
   max-height: 496px;
   background-color: #0d1f2a;
 }
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  color: #cc9e1f;
+}
