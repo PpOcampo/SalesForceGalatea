@@ -25,6 +25,8 @@ class Container extends Component {
     this.makeManualCall = this.makeManualCall.bind(this);
     this.hangUp = this.hangUp.bind(this);
     this.reset = this.reset.bind(this);
+    this.salesForceListener = this.salesForceListener.bind(this);
+    this.setConfiguration = this.setConfiguration.bind(this);
 
     this.state = {
       logged: false,
@@ -35,7 +37,8 @@ class Container extends Component {
       unavailables: undefined,
       campaigns: undefined,
       wrongNumber: false,
-      notReady: false
+      notReady: false,
+      configuration: undefined
     };
     this.integration = undefined;
   }
@@ -78,15 +81,35 @@ class Container extends Component {
     };
   }
 
-  componentDidMount() {
-    this.windowListenerFunctions();
-    this.integration = new IntegrationApiFactory().buildClient();
-    // let server = "192.168.0.107";
-    let server = "demo.nuxiba.com";
-    let secureConnection = false;
-    this.integration.WSParameters.server = server;
+  salesForceListener(message) {
+    console.log("SalesforceMessage=>", message);
+    switch (message.name) {
+      case "configuration":
+        this.setConfiguration(message.value);
+        break;
+      default:
+        break;
+    }
+  }
+
+  setConfiguration(configuration) {
+    let secureConnection = true;
+    this.integration.WSParameters.server = configuration.server;
     this.integration.WSParameters.secureConnection = secureConnection;
     this.integration.connectToServer();
+    this.setState({ configuration });
+  }
+
+  componentDidMount() {
+    this.windowListenerFunctions();
+    LCC.addMessageHandler(this.salesForceListener);
+    LCC.sendMessage({
+      event: "LccEvent",
+      value: "GetConfig"
+    });
+    this.integration = new IntegrationApiFactory().buildClient();
+
+    this.setConfiguration({ server: "demo.nuxiba.com" });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -161,15 +184,6 @@ class Container extends Component {
   }
 
   onClick() {
-    // fetch("https://pokeapi.co/api/v2/pokemon/ditto")
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(myJson => {
-    //     console.log(myJson);
-    //   });
-
-    // this.setState({ clicked: !this.state.clicked });
     LCC.sendMessage({
       event: "LccEvent",
       value: "Hello World"
@@ -177,35 +191,17 @@ class Container extends Component {
   }
 
   render() {
-    const { error, unavailables, wrongNumber } = this.state;
-    return (
+    const { error, unavailables, wrongNumber, configuration } = this.state;
+    return configuration ? (
       <>
         <iframe
-          src="https://demo.nuxiba.com/AgentKolob/?softphone=WebRTC"
+          src={`https://${configuration.server}/AgentKolob/?softphone=WebRTC`}
           name="theFrame"
           style={{
             display: "none"
           }}
           allow="geolocation; microphone;"
         ></iframe>
-
-        {/* <iframe
-          src="https://demo.nuxiba.com/AgentKolob/?softphone=WebRTC"
-          name="theFrame"
-          style={{
-            width: "100%",
-            height: "250px"
-          }}
-          allow="geolocation; microphone;"
-        ></iframe> */}
-        {/* <div>
-          <Spinner color="primary" />
-        </div> */}
-
-        {/* <div className={styles.main}>
-          <MainScreen></MainScreen>
-        </div> */}
-
         <div className={styles.main}>
           {this.state.logged ? (
             <MainScreen
@@ -226,23 +222,13 @@ class Container extends Component {
           )}
         </div>
       </>
+    ) : (
+      <Spinner className={styles.spinner} />
     );
   }
 }
 export default Container;
 
 const wrapper = document.getElementById("root");
-
-// wrapper
-//   ? ReactDOM.render(
-//       <Keyboard
-//         onKeyboardClick={() => {}}
-//         show={true}
-//         campaigns={null}
-//         makeManualCall={true}
-//       />,
-//       wrapper
-//     )
-//   : false;
 
 wrapper ? ReactDOM.render(<Container />, wrapper) : false;
