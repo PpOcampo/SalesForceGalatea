@@ -6,6 +6,11 @@ class NotReady extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.onUnavailable = this.onUnavailable.bind(this);
+  }
+
+  onUnavailable(unavailable) {
+    this.props.onUnavailable(unavailable);
   }
 
   render() {
@@ -13,7 +18,10 @@ class NotReady extends Component {
       <div className={styles.main}>
         {this.props.unavailables &&
           this.props.unavailables.map(unavailable => (
-            <div className={styles.item}>
+            <div
+              className={styles.item}
+              onClick={() => this.onUnavailable(unavailable)}
+            >
               <div className={styles.icon} />
               <div className={styles.content}>
                 <div>{unavailable.Description}</div>
@@ -22,7 +30,7 @@ class NotReady extends Component {
                 </div>
                 <div className={styles.time}>
                   <span>{unavailable.Max}</span>
-                  <span>2/5</span>
+                  <span>{unavailable.NumberOfEvents}</span>
                 </div>
               </div>
             </div>

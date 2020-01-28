@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import styles from "./Calling.css";
+import styles from "./Locked.css";
+import { Button, FormGroup } from "reactstrap";
 
 class Locked extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class Locked extends Component {
     this.handleStartClick = this.handleStartClick.bind(this);
     this.handleStopClick = this.handleStopClick.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
+    this.onLockedEnd = this.onLockedEnd.bind(this);
     this.onHangUp = this.onHangUp.bind(this);
   }
 
@@ -84,32 +86,55 @@ class Locked extends Component {
       prevProps.unavailable !== this.props.unavailable &&
       this.props.unavailable
     ) {
-      const [hours, minutes, seconds] = this.props.unavailable.Max.split(":");
-      this.setState({
-        hours: parseInt(3),
-        minutes: parseInt(1),
-        seconds: parseInt(5)
-      });
+      if (this.props.unavailable.Max) {
+        const [hours, minutes, seconds] = this.props.unavailable.Max.split(":");
+        this.setState({
+          hours: parseInt(hours),
+          minutes: parseInt(minutes),
+          seconds: parseInt(seconds)
+        });
+      } else {
+        let time = "00:00:00";
+        if (this.props.unavailable.time > 0) {
+          var measuredTime = new Date(null);
+          measuredTime.setSeconds(this.props.unavailable.time);
+          time = measuredTime.toISOString().substr(11, 8);
+        }
+        const [hours, minutes, seconds] = time.split(":");
+        this.setState({
+          hours: parseInt(hours),
+          minutes: parseInt(minutes),
+          seconds: parseInt(seconds)
+        });
+      }
+
       this.handleStartClick();
     }
   }
 
+  onLockedEnd() {
+    this.props.onLockedEnd();
+  }
+
   render() {
     const { show, unavailable } = this.props;
-
+    console.log("========>", unavailable);
     return show ? (
       <div className={styles.main}>
-        <div className={styles.title}>
-          <div className={styles.label}>Campaña</div>
+        <div className={styles.icon} />
+        <div className={styles.label}>
+          {unavailable.Description
+            ? unavailable.Description
+            : unavailable.description}
         </div>
-
-        <div className={styles.number}>
-          <div className={styles.timer}>
-            <span>{this.zeroPad(this.state.hours)}:</span>
-            <span>{this.zeroPad(this.state.minutes)}:</span>
-            <span>{this.zeroPad(this.state.seconds)}</span>
-          </div>
+        <div className={styles.timer}>
+          <span>{this.zeroPad(this.state.hours)}:</span>
+          <span>{this.zeroPad(this.state.minutes)}:</span>
+          <span>{this.zeroPad(this.state.seconds)}</span>
         </div>
+        <FormGroup className={styles.submitBtn}>
+          <Button onClick={this.onLockedEnd}>Salir</Button>
+        </FormGroup>
       </div>
     ) : (
       <></>

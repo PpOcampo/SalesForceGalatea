@@ -18,14 +18,31 @@ class MainScreen extends Component {
     this.backButtonHandler = this.backButtonHandler.bind(this);
     this.makeManualCall = this.makeManualCall.bind(this);
     this.onHangUp = this.onHangUp.bind(this);
+    this.onUnavailable = this.onUnavailable.bind(this);
+    this.onLockedEnd = this.onLockedEnd.bind(this);
+
     this.state = {
       showKeyBoard: false,
       showNotReady: false,
       showStatusBar: true,
       showCalling: false,
       showHeader: true,
-      callData: undefined
+      showUnavailable: false,
+      callData: undefined,
+      unavailable: undefined
     };
+  }
+
+  componentDidMount() {
+    if (this.props.notReady) {
+      console.log("logger =====>", this.props.agentStatus);
+      this.setState({
+        unavailable: this.props.agentStatus,
+        showUnavailable: true,
+        showNotReady: false,
+        showHeader: false
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -82,10 +99,31 @@ class MainScreen extends Component {
       showKeyBoard: false,
       showHeader: true,
       showStatusBar: true,
+      showUnavailable: false,
       callData: undefined
     });
 
     this.props.onHangUp();
+  }
+
+  onUnavailable(unavailable) {
+    this.props.setUnavailable(unavailable.TypeNotReadyId);
+    this.setState({
+      showUnavailable: true,
+      unavailable,
+      showNotReady: false,
+      showHeader: false
+    });
+  }
+
+  onLockedEnd() {
+    this.props.setAvailable();
+    this.setState({
+      showUnavailable: false,
+      unavailable: undefined,
+      showNotReady: false,
+      showHeader: true
+    });
   }
 
   render() {
@@ -94,9 +132,11 @@ class MainScreen extends Component {
       showNotReady,
       showKeyBoard,
       showCalling,
+      showUnavailable,
       showHeader
     } = this.state;
-    let mainScreen = !showNotReady && !showKeyBoard && !showCalling;
+    let mainScreen =
+      !showNotReady && !showKeyBoard && !showCalling && !showUnavailable;
     return (
       <div className={styles.main}>
         <Header
@@ -117,6 +157,7 @@ class MainScreen extends Component {
           <NotReady
             unavailables={this.props.unavailables}
             show={showNotReady}
+            onUnavailable={this.onUnavailable}
           />
 
           <Keyboard
@@ -133,12 +174,13 @@ class MainScreen extends Component {
             status={this.props.agentStatus.currentState}
           />
 
-          {/* <Locked
-            show={true}
+          <Locked
+            show={this.state.showUnavailable}
+            onLockedEnd={this.onLockedEnd}
             unavailable={
-              this.props.unavailables ? this.props.unavailables[0] : undefined
+              this.state.unavailable ? this.state.unavailable : undefined
             }
-          /> */}
+          />
 
           {mainScreen && (
             <>
@@ -154,7 +196,7 @@ class MainScreen extends Component {
             </>
           )}
 
-          {!showKeyBoard && !showCalling && (
+          {!showKeyBoard && !showCalling && !showUnavailable && (
             <div className={styles.keyboardBtn} onClick={this.onKeyboardClick}>
               <div />
             </div>

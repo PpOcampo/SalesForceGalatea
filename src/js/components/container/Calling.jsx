@@ -95,7 +95,6 @@ class Calling extends Component {
   }
 
   render() {
-    console.log("=======> status", this.props.status);
     const { callData, show } = this.props;
     return show && callData ? (
       <div className={styles.main}>

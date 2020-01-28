@@ -34,7 +34,8 @@ class Container extends Component {
       validating: false,
       unavailables: undefined,
       campaigns: undefined,
-      wrongNumber: false
+      wrongNumber: false,
+      notReady: false
     };
     this.integration = undefined;
   }
@@ -100,7 +101,8 @@ class Container extends Component {
           this.integration.connectToServer();
           return;
         case "NotReady":
-          this.setState({ error: { show: true, message: "Not Ready" } });
+          this.integration.getUnavailables();
+          this.setState({ notReady: true, logged: true });
           return;
         case "Ready":
           this.integration.getUnavailables();
@@ -217,6 +219,7 @@ class Container extends Component {
               agentStatus={this.state.agentStatus}
               onHangUp={this.hangUp}
               wrongNumber={wrongNumber}
+              notReady={this.state.notReady}
             />
           ) : (
             <LoginScreen onSubmit={this.onLoginSubmit} error={error} />
