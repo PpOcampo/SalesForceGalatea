@@ -21,6 +21,13 @@ class Keyboard extends Component {
     if (prevProps.show !== this.props.show && this.props.show) {
       this.setState({ keyboardValue: "", campaign: undefined });
     }
+    if (
+      this.props.campaigns &&
+      this.props.campaigns[0].Default &&
+      !this.state.campaign
+    ) {
+      this.setState({ campaign: this.props.campaigns[0] });
+    }
   }
 
   onKeyDown(e) {
@@ -65,12 +72,13 @@ class Keyboard extends Component {
   }
 
   render() {
+    const { labels } = this.props;
     const { keyboardValue, campaign } = this.state;
     let allData =
       keyboardValue.length > 1 && campaign && /^\d+$/.test(keyboardValue);
     return this.props.show ? (
       <div className={styles.main}>
-        <div>Campaña</div>
+        <div>{labels.campaignTitle}</div>
         <div className={styles.divInput}>
           <Input
             className={styles.selectInput}
@@ -80,15 +88,23 @@ class Keyboard extends Component {
             onChange={this.onCampaignSelection}
           >
             <option hidden selected>
-              Seleccione una campaña
+              {labels.defaultOption}
             </option>
             {this.props.campaigns &&
               this.props.campaigns.map(campaign => (
-                <option value={campaign.ID}>{campaign.Description}</option>
+                <option
+                  value={campaign.ID}
+                  selected={
+                    this.state.campaign &&
+                    campaign.ID === this.state.campaign.ID
+                  }
+                >
+                  {campaign.Description}
+                </option>
               ))}
           </Input>
         </div>
-        <div>Numero</div>
+        <div>{labels.number}</div>
         <div className={styles.inputKeyBoard}>
           <Input
             type="text"

@@ -6,7 +6,6 @@ var secs = 0;
 var acdId;
 
 function connectToServer() {
-  console.log("here");
   integration = new IntegrationEntryPoint.IntegrationApiFactory().buildClient();
   let server = "demo.nuxiba.com";
   let secureConnection = false;

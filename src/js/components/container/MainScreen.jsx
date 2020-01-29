@@ -35,7 +35,6 @@ class MainScreen extends Component {
 
   componentDidMount() {
     if (this.props.notReady) {
-      console.log("logger =====>", this.props.agentStatus);
       this.setState({
         unavailable: this.props.agentStatus,
         showUnavailable: true,
@@ -164,6 +163,7 @@ class MainScreen extends Component {
             show={showKeyBoard}
             campaigns={this.props.campaigns}
             makeManualCall={this.makeManualCall}
+            labels={this.props.labels.Keyboard}
           />
 
           <Calling

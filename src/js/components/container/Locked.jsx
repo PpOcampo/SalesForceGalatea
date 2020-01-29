@@ -118,7 +118,6 @@ class Locked extends Component {
 
   render() {
     const { show, unavailable } = this.props;
-    console.log("========>", unavailable);
     return show ? (
       <div className={styles.main}>
         <div className={styles.icon} />

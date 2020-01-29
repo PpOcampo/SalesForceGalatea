@@ -19,18 +19,24 @@ class NotReady extends Component {
         {this.props.unavailables &&
           this.props.unavailables.map(unavailable => (
             <div
-              className={styles.item}
-              onClick={() => this.onUnavailable(unavailable)}
+              className={`${unavailable.NumberOfEvents === "0" &&
+                styles.wrapper}`}
             >
-              <div className={styles.icon} />
-              <div className={styles.content}>
-                <div>{unavailable.Description}</div>
-                <div className={styles.progress}>
-                  <Progress value="463" max={500} />
-                </div>
-                <div className={styles.time}>
-                  <span>{unavailable.Max}</span>
-                  <span>{unavailable.NumberOfEvents}</span>
+              <div
+                className={`${styles.item} ${unavailable.NumberOfEvents ===
+                  "0" && styles.unclickable}`}
+                onClick={() => this.onUnavailable(unavailable)}
+              >
+                <div className={styles.icon} />
+                <div className={styles.content}>
+                  <div>{unavailable.Description}</div>
+                  <div className={styles.progress}>
+                    <Progress value="500" max={500} />
+                  </div>
+                  <div className={styles.time}>
+                    <span>{unavailable.Max}</span>
+                    <span>{unavailable.NumberOfEvents}</span>
+                  </div>
                 </div>
               </div>
             </div>

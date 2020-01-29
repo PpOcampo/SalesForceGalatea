@@ -57,6 +57,7 @@ class LoginScreen extends Component {
   }
 
   render() {
+    const { labels } = this.props;
     return (
       <div className={styles.main}>
         <div className={styles.imageDiv}>
@@ -73,19 +74,19 @@ class LoginScreen extends Component {
             </div>
           </FormGroup>
           <FormGroup>
-            <div className={styles.divLabel}>User</div>
+            <div className={styles.divLabel}>{labels.user}</div>
             <div className={styles.divInput}>
               <input
                 id="loginUserName"
                 type="text"
                 name="fname"
-                placeholder="Usuario"
+                placeholder={labels.inputUserPh}
                 onChange={this.onUserChange}
               />
             </div>
           </FormGroup>
           <FormGroup>
-            <div className={styles.divLabel}>Password</div>
+            <div className={styles.divLabel}>{labels.pwd}</div>
             <div
               className={`${styles.divInput} ${styles.password} ${
                 this.state.showPassword ? styles.show : ""
@@ -94,7 +95,7 @@ class LoginScreen extends Component {
               <input
                 type={this.state.showPassword ? "text" : "password"}
                 name="fname"
-                placeholder="Contraseña"
+                placeholder={labels.inputPwdPh}
                 onChange={this.onPwdChange}
                 onKeyPress={this.onKeyPress}
               />
@@ -107,7 +108,7 @@ class LoginScreen extends Component {
               <Spinner className={styles.spinner} />
             ) : (
               <Button onClick={this.onSubmit} disabled={this.state.disabledBtn}>
-                Login
+                {labels.btnSubmit}
               </Button>
             )}
           </FormGroup>

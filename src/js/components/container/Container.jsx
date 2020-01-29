@@ -6,7 +6,7 @@ import styles from "./Container.css";
 import MainScreen from "./MainScreen.jsx";
 import LoginScreen from "./LoginScreen.jsx";
 import Keyboard from "./Keyboard.jsx";
-
+import getLabels from "../../../languages/selector.js";
 import { IntegrationApiFactory } from "../../../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
 
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
@@ -16,7 +16,6 @@ class Container extends Component {
     super(props);
 
     this.windowListenerFunctions = this.windowListenerFunctions.bind(this);
-    this.onClick = this.onClick.bind(this);
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
     this.onLogOutClick = this.onLogOutClick.bind(this);
     this.setUnavailable = this.setUnavailable.bind(this);
@@ -41,6 +40,7 @@ class Container extends Component {
       configuration: undefined
     };
     this.integration = undefined;
+    this.labels = getLabels("en");
   }
 
   windowListenerFunctions() {
@@ -61,6 +61,7 @@ class Container extends Component {
     };
 
     window.onUnavailableTypes = function(unavailables) {
+      console.log("================", unavailables);
       _this.setState({ unavailables: unavailables });
     };
 
@@ -72,7 +73,12 @@ class Container extends Component {
       if (json === "") {
         _this.getCampaignsRelated();
       } else {
-        _this.setState({ campaigns: Object.values(json) });
+        let arrayCampaigns = Object.values(json);
+        arrayCampaigns[1].Default = true;
+        arrayCampaigns.sort(function(a, b) {
+          return b.Default - a.Default;
+        });
+        _this.setState({ campaigns: arrayCampaigns });
       }
     };
 
@@ -82,10 +88,13 @@ class Container extends Component {
   }
 
   salesForceListener(message) {
-    console.log("SalesforceMessage=>", message);
+    console.log("SalesForce ==> ", message);
     switch (message.name) {
       case "configuration":
         this.setConfiguration(message.value);
+        break;
+      case "credentials":
+        this.onLoginSubmit(message.value.Username, message.value.Id);
         break;
       default:
         break;
@@ -98,6 +107,7 @@ class Container extends Component {
     this.integration.WSParameters.secureConnection = secureConnection;
     this.integration.connectToServer();
     this.setState({ configuration });
+    this.labels = getLabels(configuration.language);
   }
 
   componentDidMount() {
@@ -108,8 +118,7 @@ class Container extends Component {
       value: "GetConfig"
     });
     this.integration = new IntegrationApiFactory().buildClient();
-
-    this.setConfiguration({ server: "demo.nuxiba.com" });
+    this.setConfiguration({ server: "demo.nuxiba.com", language: "en" });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -118,6 +127,10 @@ class Container extends Component {
       console.log("agentStatus=>", agentStatus);
       switch (agentStatus.currentState) {
         case "logout":
+          LCC.sendMessage({
+            event: "LccEvent",
+            value: "GetCredentials"
+          });
           this.setState({ logged: false });
           return;
         case "NotConnected":
@@ -135,6 +148,7 @@ class Container extends Component {
           if (socketOpen) {
             this.setState({ socketOpen: false, logged: false });
           }
+          this.onLogOutClick();
           this.setState({ error: { show: true, message: "Socket Closed" } });
           return;
       }
@@ -146,6 +160,7 @@ class Container extends Component {
   }
 
   onLoginSubmit(username, password) {
+    console.log("SalesForce ==> ", username, password);
     this.integration.login(username, password);
   }
 
@@ -166,7 +181,6 @@ class Container extends Component {
   }
 
   makeManualCall(phoneNum, campaign, clientName, callKey) {
-    console.log("===>", campaign);
     this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
   }
 
@@ -183,20 +197,13 @@ class Container extends Component {
     });
   }
 
-  onClick() {
-    LCC.sendMessage({
-      event: "LccEvent",
-      value: "Hello World"
-    });
-  }
-
   render() {
     const { error, unavailables, wrongNumber, configuration } = this.state;
     return configuration ? (
       <>
         <iframe
           src={`https://${configuration.server}/AgentKolob/?softphone=WebRTC`}
-          name="theFrame"
+          name="KolobAgentFrame"
           style={{
             display: "none"
           }}
@@ -216,9 +223,14 @@ class Container extends Component {
               onHangUp={this.hangUp}
               wrongNumber={wrongNumber}
               notReady={this.state.notReady}
+              labels={this.labels}
             />
           ) : (
-            <LoginScreen onSubmit={this.onLoginSubmit} error={error} />
+            <LoginScreen
+              onSubmit={this.onLoginSubmit}
+              error={error}
+              labels={this.labels.LoginScreen}
+            />
           )}
         </div>
       </>
