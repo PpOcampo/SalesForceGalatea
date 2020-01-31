@@ -37,10 +37,11 @@ class Container extends Component {
       campaigns: undefined,
       wrongNumber: false,
       notReady: false,
-      configuration: undefined
+      configuration: undefined,
+      autologin: true
     };
     this.integration = undefined;
-    this.labels = getLabels("en");
+    this.labels = getLabels("es");
   }
 
   windowListenerFunctions() {
@@ -61,7 +62,6 @@ class Container extends Component {
     };
 
     window.onUnavailableTypes = function(unavailables) {
-      console.log("================", unavailables);
       _this.setState({ unavailables: unavailables });
     };
 
@@ -74,7 +74,7 @@ class Container extends Component {
         _this.getCampaignsRelated();
       } else {
         let arrayCampaigns = Object.values(json);
-        arrayCampaigns[1].Default = true;
+        // arrayCampaigns[1].Default = true;
         arrayCampaigns.sort(function(a, b) {
           return b.Default - a.Default;
         });
@@ -118,7 +118,7 @@ class Container extends Component {
       value: "GetConfig"
     });
     this.integration = new IntegrationApiFactory().buildClient();
-    this.setConfiguration({ server: "demo.nuxiba.com", language: "en" });
+    this.setConfiguration({ server: "demo.nuxiba.com", language: "es" });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -127,11 +127,13 @@ class Container extends Component {
       console.log("agentStatus=>", agentStatus);
       switch (agentStatus.currentState) {
         case "logout":
-          LCC.sendMessage({
-            event: "LccEvent",
-            value: "GetCredentials"
-          });
-          this.setState({ logged: false });
+          if (this.state.autologin) {
+            LCC.sendMessage({
+              event: "LccEvent",
+              value: "GetCredentials"
+            });
+          }
+          this.setState({ logged: false, autologin: false });
           return;
         case "NotConnected":
           this.integration.connectToServer();

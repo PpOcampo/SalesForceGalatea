@@ -143,6 +143,7 @@ class MainScreen extends Component {
           onBack={this.backButtonHandler}
           showBack={!mainScreen}
           onLogOut={this.onLogOut}
+          labels={this.props.labels.Header}
         />
         <StatusBar
           show={showStatusBar}
@@ -151,6 +152,7 @@ class MainScreen extends Component {
               ? "Problem"
               : this.props.agentStatus.currentState
           }
+          labels={this.props.labels.StatusBar}
         />
         <div className={`${styles.body} ${!showStatusBar && styles.maximize}`}>
           <NotReady
@@ -172,6 +174,7 @@ class MainScreen extends Component {
             onHangUp={this.onHangUp}
             wrongNumber={this.props.wrongNumber}
             status={this.props.agentStatus.currentState}
+            labels={this.props.labels.Calling}
           />
 
           <Locked
@@ -180,17 +183,20 @@ class MainScreen extends Component {
             unavailable={
               this.state.unavailable ? this.state.unavailable : undefined
             }
+            labels={this.props.labels.Locked}
           />
 
           {mainScreen && (
             <>
-              <div className={styles.title}>MENU</div>
+              <div className={styles.title}>
+                {this.props.labels.MainScreen.menu}
+              </div>
               <div
                 className={styles.notAvailable}
                 onClick={this.onNotAvailable}
               >
                 <div className={styles.icon} />
-                <div>Seleccion no disponible</div>
+                <div>{this.props.labels.MainScreen.unavailable}</div>
                 <div className={styles.arrow} />
               </div>
             </>

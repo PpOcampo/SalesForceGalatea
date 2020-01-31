@@ -117,7 +117,7 @@ class Locked extends Component {
   }
 
   render() {
-    const { show, unavailable } = this.props;
+    const { show, unavailable, labels } = this.props;
     return show ? (
       <div className={styles.main}>
         <div className={styles.icon} />
@@ -132,7 +132,7 @@ class Locked extends Component {
           <span>{this.zeroPad(this.state.seconds)}</span>
         </div>
         <FormGroup className={styles.submitBtn}>
-          <Button onClick={this.onLockedEnd}>Salir</Button>
+          <Button onClick={this.onLockedEnd}>{labels.exitBtn}</Button>
         </FormGroup>
       </div>
     ) : (

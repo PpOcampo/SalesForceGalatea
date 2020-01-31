@@ -23,19 +23,19 @@ class MainScreen extends Component {
   }
 
   render() {
-    const { showBack, show } = this.props;
+    const { showBack, show, labels } = this.props;
     return show ? (
       <div className={styles.main}>
         <div className={styles.title}>
           {showBack && <div className={styles.arrow} onClick={this.onBack} />}
-          <div className={styles.text}>Centerware Kolob</div>
+          <div className={styles.text}>{labels.title}</div>
         </div>
         <UncontrolledDropdown direction="left" className={styles.dropdown}>
           <DropdownToggle className={styles.dropdownBtn}>
             <div className={styles.dropdownIcon} />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem onClick={this.onLogOut}>Cerrar sesión</DropdownItem>
+            <DropdownItem onClick={this.onLogOut}>{labels.logout}</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
       </div>

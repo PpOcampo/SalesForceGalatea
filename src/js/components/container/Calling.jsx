@@ -95,11 +95,11 @@ class Calling extends Component {
   }
 
   render() {
-    const { callData, show } = this.props;
+    const { callData, show, labels } = this.props;
     return show && callData ? (
       <div className={styles.main}>
         <div className={styles.title}>
-          <div className={styles.label}>Campaña</div>
+          <div className={styles.label}>{labels.campaign}</div>
           <div className={styles.name}>{callData.campaign.Description}</div>
         </div>
 

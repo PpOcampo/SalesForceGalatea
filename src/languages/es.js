@@ -10,5 +10,27 @@ export const labels = {
     campaignTitle: "Campaña",
     defaultOption: "Seleccione una campaña",
     number: "Número:"
+  },
+  Header: {
+    title: "Centerware Kolob",
+    logout: "Cerrar sesión"
+  },
+  Calling: {
+    campaign: "Campaña"
+  },
+  Locked: {
+    exitBtn: "Salir"
+  },
+  MainScreen: {
+    menu: "MENU",
+    unavailable: "Selección no disponible"
+  },
+  StatusBar: {
+    ready: "Disponible",
+    dialog: "Dialogo",
+    notready: "No disponible",
+    problem: "Problema",
+    wrapup: "Notas",
+    ringing: "Llamando"
   }
 };

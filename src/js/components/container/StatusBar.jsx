@@ -7,10 +7,11 @@ class StatusBar extends Component {
   }
 
   render() {
+    const { labels } = this.props;
     let className = this.props.title.toLowerCase();
     return this.props.show ? (
       <div className={`${styles.main} ${styles[className]}`}>
-        {this.props.title}
+        {labels[className]}
       </div>
     ) : (
       <></>
