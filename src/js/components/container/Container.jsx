@@ -74,7 +74,6 @@ class Container extends Component {
         _this.getCampaignsRelated();
       } else {
         let arrayCampaigns = Object.values(json);
-        // arrayCampaigns[1].Default = true;
         arrayCampaigns.sort(function(a, b) {
           return b.Default - a.Default;
         });
