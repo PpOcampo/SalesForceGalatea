@@ -154,7 +154,10 @@ class MainScreen extends Component {
           }
           labels={this.props.labels.StatusBar}
         />
-        <div className={`${styles.body} ${!showStatusBar && styles.maximize}`}>
+        <div
+          className={`${styles.body} ${!showStatusBar &&
+            styles.maximize} ${showCalling && styles.showCalling}`}
+        >
           <NotReady
             unavailables={this.props.unavailables}
             show={showNotReady}

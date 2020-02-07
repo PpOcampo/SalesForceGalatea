@@ -13,6 +13,12 @@
   cursor: pointer;
 }
 
+.item:hover {
+  border-style: solid;
+  border-width: thin;
+  border-color: #cc9e1f;
+}
+
 .item > .icon {
   width: 54px;
   height: 54px;

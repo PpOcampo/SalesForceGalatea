@@ -69,11 +69,11 @@
 }
 
 .rowNumbers.telephone > div:hover {
-  background-color: #14d31a;
+  background-color: #42d047;
 }
 
 .rowNumbers.telephone > div:active {
-  background-color: #00ff08;
+  background-color: #06b40f;
 }
 
 .rowNumbers > div:hover {
@@ -134,9 +134,10 @@
   height: 50px;
 }
 
-.rowNumbers.telephone.disabled {
+.rowNumbers.telephone.disabled > div {
   pointer-events: none;
   opacity: 0.4;
+  background-color: #192a34;
 }
 
 .main > div.divInput {

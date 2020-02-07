@@ -10,9 +10,24 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 15px 24px 0px 24px;
+  padding: 0px 24px 0px 24px;
   align-items: center;
+
   justify-content: space-between;
+  margin: 15px 0 0 0;
+}
+
+.notAvailable:hover {
+  border-radius: 10px;
+  background-color: #263640;
+}
+
+.notAvailable:active {
+  background-color: #263640;
+  border-radius: 10px;
+  border-color: #e0bd5b;
+  border-width: thin;
+  border-style: solid;
 }
 
 .notAvailable > .icon,
@@ -46,6 +61,10 @@
   position: relative;
 }
 
+.body.showCalling {
+  height: calc(100% - 36px);
+}
+
 .body.maximize {
   height: calc(100% - 56px);
 }
@@ -65,10 +84,23 @@
   border-radius: 24px;
   cursor: pointer;
 }
+
+.keyboardBtn:hover {
+  background-color: #d4ad40;
+  border-color: #e5ce8f;
+  border-width: 1px;
+}
+
+.keyboardBtn:active {
+  background-color: #a48522;
+  border-color: #a48522;
+  border-width: thin;
+}
+
 .keyboardBtn > div {
   mask-image: url("../../../images/Icon-keyboard.svg");
   -webkit-mask-image: url("../../../images/Icon-keyboard.svg");
-  background-color: #667178;
+  background-color: #ffffff;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   background-attachment: fixed;

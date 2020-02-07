@@ -29,26 +29,32 @@
 
 .submitBtn > button {
   background-color: #cc9e1f;
-  border-color: #cc9e1f;
+  border-color: #d4ad40;
   max-height: 38px;
 }
 
 .submitBtn > button:hover {
-  background-color: #ffbb00;
-  border-color: #ffbb00;
+  background-color: #a48522;
+  border-color: #cc9e1f;
 }
 
 .submitBtn > button:active {
-  background-color: #ffbb00ab;
-  border-color: #ffbb00ab;
+  background-color: #a48522;
+  border-color: #a48522;
 }
 
 .submitBtn > button.btn-primary.focus,
 .submitBtn > button.btn-primary:focus {
   color: #fff;
-  background-color: #ffbb00;
-  border-color: #ffbb00;
-  box-shadow: 0 0 0 0.2rem #ffbb00;
+  background-color: #cc9e1f;
+  border-color: #dcbb63;
+  box-shadow: 0 0 0 0.2rem #d4ad40;
+}
+
+.submitBtn > button.disabled,
+.submitBtn > button:disabled {
+  background-color: #192a34 !important;
+  border-color: #263640;
 }
 
 .submitBtn > button.btn-primary:not(:disabled):not(.disabled).active,

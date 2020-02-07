@@ -84,6 +84,10 @@ class Container extends Component {
     window.onDialingNumber = function(message) {
       console.log("dialingNumber=>", phoneNumber);
     };
+
+    window.onCallRecieved = function(callData) {
+      console.log("prueba onCallRecieved", callData);
+    };
   }
 
   salesForceListener(message) {
@@ -138,12 +142,13 @@ class Container extends Component {
           this.integration.connectToServer();
           return;
         case "NotReady":
+          console.log("=================>NotReady");
           this.integration.getUnavailables();
           this.setState({ notReady: true, logged: true });
           return;
         case "Ready":
           this.integration.getUnavailables();
-          this.setState({ logged: true });
+          this.setState({ logged: true, notReady: false });
           return;
         case "SocketClosed":
           if (socketOpen) {
@@ -182,7 +187,7 @@ class Container extends Component {
   }
 
   makeManualCall(phoneNum, campaign, clientName, callKey) {
-    this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
+    // this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
   }
 
   hangUp() {
@@ -202,11 +207,21 @@ class Container extends Component {
     const { error, unavailables, wrongNumber, configuration } = this.state;
     return configuration ? (
       <>
+        {/* <iframe
+          src={`http://localhost:8080/?softphone=MizuJS`}
+          name="KolobAgentFrame"
+          // style={{
+          //   display: "none"
+          // }}
+          allow="geolocation; microphone;"
+        ></iframe> */}
         <iframe
           src={`https://${configuration.server}/AgentKolob/?softphone=WebRTC`}
           name="KolobAgentFrame"
           style={{
-            display: "none"
+            // display: "none",
+            width: "300px",
+            height: "500px"
           }}
           allow="geolocation; microphone;"
         ></iframe>

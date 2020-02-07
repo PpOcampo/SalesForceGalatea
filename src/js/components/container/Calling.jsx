@@ -13,6 +13,7 @@ class Calling extends Component {
     this.handleStartClick = this.handleStartClick.bind(this);
     this.handleStopClick = this.handleStopClick.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
+    this.inputData = this.inputData.bind(this);
     this.onHangUp = this.onHangUp.bind(this);
   }
 
@@ -94,28 +95,57 @@ class Calling extends Component {
     }
   }
 
+  inputData(value) {
+    return (
+      <>
+        <div className={styles.dataInput}>
+          <div className={styles.dataInputNo}>{value}</div>
+          <div className={styles.input}>
+            <input placeholder={"Datos del cliente"} />
+          </div>
+        </div>
+        <div />
+      </>
+    );
+  }
+
   render() {
     const { callData, show, labels } = this.props;
     return show && callData ? (
       <div className={styles.main}>
-        <div className={styles.title}>
-          <div className={styles.label}>{labels.campaign}</div>
-          <div className={styles.name}>{callData.campaign.Description}</div>
-        </div>
-
         <div className={styles.number}>
-          <div className={styles.logo} />
-          <div className={styles.num}>{callData.phoneNum}</div>
-          {this.state.running && (
+          {/* {this.state.running && ( */}
+          {true && (
             <div className={styles.timer}>
               <span>{this.zeroPad(this.state.hours)}:</span>
               <span>{this.zeroPad(this.state.minutes)}:</span>
               <span>{this.zeroPad(this.state.seconds)}</span>
             </div>
           )}
+
+          <div className={styles.title}>
+            <div className={styles.label}>{labels.campaign}</div>
+            <div className={styles.name}>{callData.campaign.Description}</div>
+          </div>
+
+          <div className={styles.phoneNumber}>
+            <div className={styles.logo} />
+            <div className={styles.num}>{callData.phoneNum}</div>
+          </div>
         </div>
-        <div className={` ${styles.btn}`} onClick={this.onHangUp}>
-          <div />
+
+        <div className={styles.callData}>
+          <div className={styles.dataTitle}>Datos del cliente</div>
+          {this.inputData(1)}
+          {this.inputData(2)}
+          {this.inputData(3)}
+          {this.inputData(4)}
+          {this.inputData(5)}
+        </div>
+        <div className={styles.footer}>
+          <div className={` ${styles.btn}`} onClick={this.onHangUp}>
+            <div />
+          </div>
         </div>
       </div>
     ) : (
