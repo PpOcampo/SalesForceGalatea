@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import styles from "./Calling.css";
+import { CircularProgressbar } from "react-circular-progressbar";
+
+import "!style-loader!css-loader!react-circular-progressbar/dist/styles.css";
 
 class Calling extends Component {
   constructor(props) {
@@ -8,7 +11,8 @@ class Calling extends Component {
       hours: 0,
       minutes: 0,
       seconds: 0,
-      running: false
+      running: false,
+      wrapNote: false
     };
     this.handleStartClick = this.handleStartClick.bind(this);
     this.handleStopClick = this.handleStopClick.bind(this);
@@ -76,10 +80,6 @@ class Calling extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (this.props.show && this.props.show !== prevProps.show) {
-
-    //   this.handleStartClick();
-    // }
     if (
       this.props.show &&
       this.props.wrongNumber !== prevProps.wrongNumber &&
@@ -96,6 +96,7 @@ class Calling extends Component {
   }
 
   inputData(value) {
+    console.log("data aqui ", this.props.callDataRecived.DataContact);
     return (
       <>
         <div className={styles.dataInput}>
@@ -110,12 +111,13 @@ class Calling extends Component {
   }
 
   render() {
-    const { callData, show, labels } = this.props;
-    return show && callData ? (
+    const { callData, callDataRecived, show, labels } = this.props;
+    console.log("========>", callDataRecived);
+    return show ? (
       <div className={styles.main}>
         <div className={styles.number}>
-          {/* {this.state.running && ( */}
-          {true && (
+          {this.state.running && (
+            // {true && (
             <div className={styles.timer}>
               <span>{this.zeroPad(this.state.hours)}:</span>
               <span>{this.zeroPad(this.state.minutes)}:</span>
@@ -133,20 +135,54 @@ class Calling extends Component {
             <div className={styles.num}>{callData.phoneNum}</div>
           </div>
         </div>
-
-        <div className={styles.callData}>
-          <div className={styles.dataTitle}>Datos del cliente</div>
-          {this.inputData(1)}
-          {this.inputData(2)}
-          {this.inputData(3)}
-          {this.inputData(4)}
-          {this.inputData(5)}
-        </div>
-        <div className={styles.footer}>
-          <div className={` ${styles.btn}`} onClick={this.onHangUp}>
-            <div />
+        {/* {true ? ( */}
+        {this.state.wrapNote ? (
+          <div className={styles.progressBar}>
+            <CircularProgressbar
+              value={20}
+              maxValue={100}
+              text={`${1 * 90}%`}
+              styles={{
+                path: {
+                  // Path color
+                  stroke: `#FFA61D`,
+                  strokeLinecap: "butt",
+                  // Customize transition animation
+                  transition: "stroke-dashoffset 0.5s ease 0s",
+                  // Rotate the path
+                  transform: "rotate(0.25turn)",
+                  transformOrigin: "center center"
+                },
+                path: {
+                  stroke: `#FFA61D`
+                },
+                trail: {
+                  stroke: `#192A34`
+                },
+                text: {
+                  fill: "#FFA61D",
+                  fontSize: "16px"
+                }
+              }}
+            />
           </div>
-        </div>
+        ) : (
+          <>
+            <div className={styles.callData}>
+              <div className={styles.dataTitle}>Datos del cliente</div>
+              {this.inputData(1)}
+              {this.inputData(2)}
+              {this.inputData(3)}
+              {this.inputData(4)}
+              {this.inputData(5)}
+            </div>
+            <div className={styles.footer}>
+              <div className={` ${styles.btn}`} onClick={this.onHangUp}>
+                <div />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     ) : (
       <></>

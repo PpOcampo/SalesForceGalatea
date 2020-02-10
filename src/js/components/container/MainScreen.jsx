@@ -178,6 +178,7 @@ class MainScreen extends Component {
             wrongNumber={this.props.wrongNumber}
             status={this.props.agentStatus.currentState}
             labels={this.props.labels.Calling}
+            callDataRecived={this.props.callDataRecived}
           />
 
           <Locked

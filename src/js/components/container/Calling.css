@@ -147,3 +147,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.progressBar {
+  display: flex;
+  flex-direction: column;
+  width: 60px;
+  height: 60px;
+}

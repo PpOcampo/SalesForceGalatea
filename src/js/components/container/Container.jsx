@@ -38,7 +38,8 @@ class Container extends Component {
       wrongNumber: false,
       notReady: false,
       configuration: undefined,
-      autologin: true
+      autologin: true,
+      callDataRecived: null
     };
     this.integration = undefined;
     this.labels = getLabels("es");
@@ -66,6 +67,7 @@ class Container extends Component {
     };
 
     window.wrongNumber = function(phoneNumber) {
+      console.log("This is the phone number=>>>", phoneNumber);
       _this.setState({ wrongNumber: true });
     };
 
@@ -85,8 +87,9 @@ class Container extends Component {
       console.log("dialingNumber=>", phoneNumber);
     };
 
-    window.onCallRecieved = function(callData) {
-      console.log("prueba onCallRecieved", callData);
+    window.onCallRecieved = function(callDataRecived) {
+      _this.setState({ callDataRecived });
+      console.log("prueba onCallRecieved", callDataRecived);
     };
   }
 
@@ -121,7 +124,8 @@ class Container extends Component {
       value: "GetConfig"
     });
     this.integration = new IntegrationApiFactory().buildClient();
-    this.setConfiguration({ server: "demo.nuxiba.com", language: "es" });
+    this.setConfiguration({ server: "121.nuxiba.com", language: "es" });
+    // this.setConfiguration({ server: "121.nuxiba.com", language: "es" });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -161,7 +165,7 @@ class Container extends Component {
     }
 
     if (socketOpen !== prevState.socketOpen && !socketOpen) {
-      console.log("Verificar Integracion ");
+      console.log("Verificar Integracion");
     }
   }
 
@@ -187,10 +191,11 @@ class Container extends Component {
   }
 
   makeManualCall(phoneNum, campaign, clientName, callKey) {
-    // this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
+    this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
   }
 
   hangUp() {
+    console.log("LLega aqui al hangUp");
     this.integration.HangUpCall();
     this.reset();
   }
@@ -199,7 +204,8 @@ class Container extends Component {
     this.setState({
       error: { show: false },
       validating: false,
-      wrongNumber: false
+      wrongNumber: false,
+      callData: null
     });
   }
 
@@ -208,18 +214,20 @@ class Container extends Component {
     return configuration ? (
       <>
         {/* <iframe
-          src={`http://localhost:8080/?softphone=MizuJS`}
-          name="KolobAgentFrame"
-          // style={{
-          //   display: "none"
-          // }}
-          allow="geolocation; microphone;"
-        ></iframe> */}
-        <iframe
           src={`https://${configuration.server}/AgentKolob/?softphone=WebRTC`}
           name="KolobAgentFrame"
           style={{
             // display: "none",
+            width: "300px",
+            height: "500px"
+          }}
+          allow="geolocation; microphone;"
+        ></iframe> */}
+        <iframe
+          src={`https://121.nuxiba.com/agentkolob`}
+          name="KolobAgentFrame"
+          style={{
+            // display: "none"
             width: "300px",
             height: "500px"
           }}
@@ -240,6 +248,7 @@ class Container extends Component {
               wrongNumber={wrongNumber}
               notReady={this.state.notReady}
               labels={this.labels}
+              callDataRecived={this.state.callDataRecived}
             />
           ) : (
             <LoginScreen
