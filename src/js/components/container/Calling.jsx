@@ -10,7 +10,7 @@ class Calling extends Component {
     this.state = {
       hours: 0,
       minutes: 0,
-      seconds: 0,
+      seconds: 1,
       running: false,
       wrapNote: false
     };
@@ -96,7 +96,10 @@ class Calling extends Component {
   }
 
   inputData(value) {
-    console.log("data aqui ", this.props.callDataRecived.DataContact);
+    if (this.props.callDataRecived) {
+      console.log("data aqui ", this.props.callDataRecived.DataContact);
+    }
+
     return (
       <>
         <div className={styles.dataInput}>
@@ -111,9 +114,8 @@ class Calling extends Component {
   }
 
   render() {
-    const { callData, callDataRecived, show, labels } = this.props;
-    console.log("========>", callDataRecived);
-    return show ? (
+    const { callData, show, labels } = this.props;
+    return show && callData ? (
       <div className={styles.main}>
         <div className={styles.number}>
           {this.state.running && (

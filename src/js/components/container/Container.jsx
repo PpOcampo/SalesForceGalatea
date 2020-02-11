@@ -8,6 +8,7 @@ import LoginScreen from "./LoginScreen.jsx";
 import Keyboard from "./Keyboard.jsx";
 import getLabels from "../../../languages/selector.js";
 import { IntegrationApiFactory } from "../../../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
+import log from "./Logger.jsx";
 
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
 
@@ -35,11 +36,11 @@ class Container extends Component {
       validating: false,
       unavailables: undefined,
       campaigns: undefined,
-      wrongNumber: false,
       notReady: false,
       configuration: undefined,
       autologin: true,
-      callDataRecived: null
+      callDataRecived: null,
+      manualCallData: null
     };
     this.integration = undefined;
     this.labels = getLabels("es");
@@ -48,30 +49,49 @@ class Container extends Component {
   windowListenerFunctions() {
     let _this = this;
     window.onAgentStatus = function(agentStatus) {
+      log("agentStatus=>", agentStatus);
       _this.setState({ agentStatus: agentStatus });
     };
 
-    window.onLogin = function() {};
+    window.onLogin = function() {
+      log("Login success");
+    };
 
     window.remoteLoginError = function(message) {
       message.show = true;
+      log("loginError=>", message);
       _this.setState({ error: message });
     };
 
     window.onLogOut = function() {
+      log("onLogoOut");
       _this.setState({ logged: false, error: { show: false } });
     };
 
     window.onUnavailableTypes = function(unavailables) {
+      log("onUnavailableTypes=>", unavailables);
       _this.setState({ unavailables: unavailables });
     };
 
     window.wrongNumber = function(phoneNumber) {
-      console.log("This is the phone number=>>>", phoneNumber);
-      _this.setState({ wrongNumber: true });
+      log("wrongNumber " + phoneNumber + " ,but dialing anyway");
+      const {
+        phoneNum,
+        campaignID,
+        clientName,
+        callKey
+      } = _this.state.manualCallData;
+      _this.integration.makeManualCall(
+        phoneNum,
+        campaignID,
+        clientName,
+        callKey
+      );
+      // _this.setState({ wrongNumber: true });
     };
 
     window.onCampaigns = function(json) {
+      log("onCampaigns =>", json);
       if (json === "") {
         _this.getCampaignsRelated();
       } else {
@@ -84,23 +104,26 @@ class Container extends Component {
     };
 
     window.onDialingNumber = function(message) {
-      console.log("dialingNumber=>", phoneNumber);
+      log("onDialingNumber => ", message);
     };
 
     window.onCallRecieved = function(callDataRecived) {
       _this.setState({ callDataRecived });
-      console.log("prueba onCallRecieved", callDataRecived);
+      log("onCallRecieved =>", callDataRecived);
     };
   }
 
   salesForceListener(message) {
-    console.log("SalesForce ==> ", message);
+    log("recivedFromSalesForce => ", message);
     switch (message.name) {
       case "configuration":
         this.setConfiguration(message.value);
         break;
       case "credentials":
-        this.onLoginSubmit(message.value.Username, message.value.Id);
+        this.onLoginSubmit(
+          message.value.Username.split("@")[0],
+          message.value.Id
+        );
         break;
       default:
         break;
@@ -124,14 +147,13 @@ class Container extends Component {
       value: "GetConfig"
     });
     this.integration = new IntegrationApiFactory().buildClient();
-    this.setConfiguration({ server: "121.nuxiba.com", language: "es" });
     // this.setConfiguration({ server: "121.nuxiba.com", language: "es" });
+    this.setConfiguration({ server: "demo.nuxiba.com", language: "es" });
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { socketOpen, agentStatus } = this.state;
     if (agentStatus !== prevState.agentStatus) {
-      console.log("agentStatus=>", agentStatus);
       switch (agentStatus.currentState) {
         case "logout":
           if (this.state.autologin) {
@@ -140,21 +162,26 @@ class Container extends Component {
               value: "GetCredentials"
             });
           }
+          log("logOut, waiting for login");
           this.setState({ logged: false, autologin: false });
           return;
         case "NotConnected":
+          log("NotConnected, integration component hasn't connected");
           this.integration.connectToServer();
           return;
         case "NotReady":
-          console.log("=================>NotReady");
+          log("NotReady, integration component hasn't connected");
           this.integration.getUnavailables();
           this.setState({ notReady: true, logged: true });
           return;
         case "Ready":
+          log("Ready");
           this.integration.getUnavailables();
-          this.setState({ logged: true, notReady: false });
+          this.reset();
+          // this.setState({ logged: true, notReady: false });
           return;
         case "SocketClosed":
+          log("SocketClosed, check wss configuration");
           if (socketOpen) {
             this.setState({ socketOpen: false, logged: false });
           }
@@ -165,12 +192,12 @@ class Container extends Component {
     }
 
     if (socketOpen !== prevState.socketOpen && !socketOpen) {
-      console.log("Verificar Integracion");
+      log("Something is wrong (Check integration component)");
     }
   }
 
   onLoginSubmit(username, password) {
-    console.log("SalesForce ==> ", username, password);
+    log("SalesForce ==> ", username, password);
     this.integration.login(username, password);
   }
 
@@ -191,11 +218,14 @@ class Container extends Component {
   }
 
   makeManualCall(phoneNum, campaign, clientName, callKey) {
+    this.setState({
+      manualCallData: { phoneNum, campaignID: campaign.ID, clientName, callKey }
+    });
     this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
   }
 
   hangUp() {
-    console.log("LLega aqui al hangUp");
+    log("hangUp");
     this.integration.HangUpCall();
     this.reset();
   }
@@ -204,17 +234,19 @@ class Container extends Component {
     this.setState({
       error: { show: false },
       validating: false,
-      wrongNumber: false,
-      callData: null
+      callData: null,
+      manualCallData: null,
+      logged: true,
+      notReady: false
     });
   }
 
   render() {
-    const { error, unavailables, wrongNumber, configuration } = this.state;
+    const { error, unavailables, configuration } = this.state;
     return configuration ? (
       <>
-        {/* <iframe
-          src={`https://${configuration.server}/AgentKolob/?softphone=WebRTC`}
+        <iframe
+          src={`https://${configuration.server}/AgentKolob`}
           name="KolobAgentFrame"
           style={{
             // display: "none",
@@ -222,17 +254,8 @@ class Container extends Component {
             height: "500px"
           }}
           allow="geolocation; microphone;"
-        ></iframe> */}
-        <iframe
-          src={`https://121.nuxiba.com/agentkolob`}
-          name="KolobAgentFrame"
-          style={{
-            // display: "none"
-            width: "300px",
-            height: "500px"
-          }}
-          allow="geolocation; microphone;"
         ></iframe>
+
         <div className={styles.main}>
           {this.state.logged ? (
             <MainScreen
@@ -245,7 +268,6 @@ class Container extends Component {
               makeManualCall={this.makeManualCall}
               agentStatus={this.state.agentStatus}
               onHangUp={this.hangUp}
-              wrongNumber={wrongNumber}
               notReady={this.state.notReady}
               labels={this.labels}
               callDataRecived={this.state.callDataRecived}

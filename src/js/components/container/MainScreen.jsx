@@ -8,6 +8,7 @@ import StatusBar from "./StatusBar.jsx";
 import NotReady from "./NotReady.jsx";
 import Calling from "./Calling.jsx";
 import Locked from "./Locked.jsx";
+import log from "./Logger.jsx";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class MainScreen extends Component {
       showHeader: true,
       showUnavailable: false,
       callData: undefined,
-      unavailable: undefined
+      unavailable: undefined,
+      wrongNumber: false
     };
   }
 
@@ -48,6 +50,13 @@ class MainScreen extends Component {
     const { showKeyBoard } = this.state;
     if (showKeyBoard && prevState.showKeyBoard !== showKeyBoard) {
       this.props.getCampaignsRelated();
+    }
+    if (
+      this.props.agentStatus.currentState === "Callout" &&
+      prevProps.agentStatus.currentState === "Ready"
+    ) {
+      log("Wrong number");
+      this.setState({ wrongNumber: true });
     }
   }
 
@@ -99,7 +108,8 @@ class MainScreen extends Component {
       showHeader: true,
       showStatusBar: true,
       showUnavailable: false,
-      callData: undefined
+      callData: undefined,
+      wrongNumber: false
     });
 
     this.props.onHangUp();
@@ -148,7 +158,7 @@ class MainScreen extends Component {
         <StatusBar
           show={showStatusBar}
           title={
-            this.props.wrongNumber
+            this.state.wrongNumber
               ? "Problem"
               : this.props.agentStatus.currentState
           }
@@ -175,7 +185,7 @@ class MainScreen extends Component {
             show={this.state.showCalling}
             callData={this.state.callData}
             onHangUp={this.onHangUp}
-            wrongNumber={this.props.wrongNumber}
+            wrongNumber={this.state.wrongNumber}
             status={this.props.agentStatus.currentState}
             labels={this.props.labels.Calling}
             callDataRecived={this.props.callDataRecived}

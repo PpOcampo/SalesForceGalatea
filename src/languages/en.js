@@ -30,7 +30,7 @@ export const labels = {
     ready: "Disponible",
     dialog: "Dialogo",
     notready: "No disponible",
-    problem: "Problema",
+    problem: "Dialing error",
     wrapup: "Notas",
     ringing: "Llamando"
   }
