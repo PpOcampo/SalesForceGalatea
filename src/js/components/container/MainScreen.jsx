@@ -9,19 +9,11 @@ import NotReady from "./NotReady.jsx";
 import Calling from "./Calling.jsx";
 import Locked from "./Locked.jsx";
 import log from "./Logger.jsx";
+import Integration from "../helper/Integration.js";
 
 class MainScreen extends Component {
   constructor(props) {
     super(props);
-    this.onKeyboardClick = this.onKeyboardClick.bind(this);
-    this.onNotAvailable = this.onNotAvailable.bind(this);
-    this.onLogOut = this.onLogOut.bind(this);
-    this.backButtonHandler = this.backButtonHandler.bind(this);
-    this.makeManualCall = this.makeManualCall.bind(this);
-    this.onHangUp = this.onHangUp.bind(this);
-    this.onUnavailable = this.onUnavailable.bind(this);
-    this.onLockedEnd = this.onLockedEnd.bind(this);
-
     this.state = {
       showKeyBoard: false,
       showNotReady: false,
@@ -67,35 +59,54 @@ class MainScreen extends Component {
     ) {
       this.setState({ wrongNumber: false, hangUp: false });
     }
+
+    if (
+      this.props.callDataRecived !== prevProps.callDataRecived &&
+      !this.state.showCalling
+    ) {
+      log("CallDataRecived ", this.props.callDataRecived);
+      this.setState({
+        showCalling: true,
+        showKeyBoard: false,
+        showStatusBar: true,
+        hangUp: false,
+        showHeader: !this.state.showHeader,
+        callData: {
+          campaign: { Description: "" },
+          phoneNum: this.props.callDataRecived.Phone,
+          clientName: ""
+        }
+      });
+    }
   }
 
-  onKeyboardClick() {
+  onKeyboardClick = () => {
     this.setState({
       showKeyBoard: !this.state.showKeyBoard,
       showNotReady: false,
       showStatusBar: !this.state.showStatusBar
     });
-  }
+  };
 
-  onLogOut() {
+  onLogOut = () => {
     this.props.onLogOut();
-  }
+  };
 
-  onNotAvailable() {
+  onNotAvailable = () => {
     this.setState({
       showNotReady: !this.state.showNotReady
     });
-  }
+  };
 
-  backButtonHandler() {
+  backButtonHandler = () => {
     if (this.state.showNotReady) {
       return this.onNotAvailable();
     } else if (this.state.showKeyBoard) {
       return this.onKeyboardClick();
     }
-  }
+  };
 
-  makeManualCall(phoneNum, campaign, clientName, callKey) {
+  makeManualCall = (phoneNum, campaign, clientName, callKey) => {
     this.setState({
       showCalling: true,
       showKeyBoard: false,
@@ -109,9 +120,9 @@ class MainScreen extends Component {
       }
     });
     this.props.makeManualCall(phoneNum, campaign, clientName, callKey);
-  }
+  };
 
-  onHangUp() {
+  onWrapsEnd = () => {
     this.setState({
       showCalling: false,
       showKeyBoard: false,
@@ -122,11 +133,14 @@ class MainScreen extends Component {
       wrongNumber: false,
       hangUp: true
     });
+  };
 
+  onHangUp = () => {
+    log("onHangUp=>");
     this.props.onHangUp();
-  }
+  };
 
-  onUnavailable(unavailable) {
+  onUnavailable = unavailable => {
     this.props.setUnavailable(unavailable.TypeNotReadyId);
     this.setState({
       showUnavailable: true,
@@ -134,9 +148,9 @@ class MainScreen extends Component {
       showNotReady: false,
       showHeader: false
     });
-  }
+  };
 
-  onLockedEnd() {
+  onLockedEnd = () => {
     this.props.setAvailable();
     this.setState({
       showUnavailable: false,
@@ -144,7 +158,7 @@ class MainScreen extends Component {
       showNotReady: false,
       showHeader: true
     });
-  }
+  };
 
   render() {
     const {
@@ -200,6 +214,7 @@ class MainScreen extends Component {
             status={this.props.agentStatus.currentState}
             labels={this.props.labels.Calling}
             callDataRecived={this.props.callDataRecived}
+            onWrapsEnd={this.onWrapsEnd}
           />
 
           <Locked

@@ -149,8 +149,58 @@
 }
 
 .progressBar {
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   width: 60px;
   height: 60px;
+}
+
+.selectInput,
+.selectInput:hover,
+.selectInput:focus {
+  background-color: inherit;
+  border-color: #667178;
+  height: 36px;
+  width: 248px;
+  margin: 16px 0 16px 0;
+}
+
+button.dispositionBtn {
+  background-color: #cc9e1f;
+  border-color: #d4ad40;
+  width: 115px;
+  height: 36px;
+}
+
+button.dispositionBtn:hover {
+  background-color: #a48522;
+  border-color: #cc9e1f;
+}
+
+button.dispositionBtn:active {
+  background-color: #a48522;
+  border-color: #a48522;
+}
+
+button.dispositionBtn.btn-primary.focus,
+button.dispositionBtn.btn-primary:focus {
+  color: #fff;
+  background-color: #cc9e1f;
+  border-color: #dcbb63;
+  box-shadow: 0 0 0 0.2rem #d4ad40;
+}
+
+button.dispositionBtn.disabled,
+button.dispositionBtn:disabled {
+  background-color: #192a34 !important;
+  border-color: #263640;
+}
+
+button.dispositionBtn.btn-primary:not(:disabled):not(.disabled).active,
+button.dispositionBtn.btn-primary:not(:disabled):not(.disabled):active,
+.dispositionBtn.btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #ffbb00;
+  border-color: #ffbb00;
 }

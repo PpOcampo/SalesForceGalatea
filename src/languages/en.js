@@ -33,6 +33,7 @@ export const labels = {
     problem: "Dialing error",
     wrapup: "Wrapup",
     ringing: "Ringing",
-    callout: "Calling"
+    callout: "Calling",
+    xfer: "Xfer"
   }
 };

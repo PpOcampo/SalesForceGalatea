@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Input, Button } from "reactstrap";
 import styles from "./Calling.css";
 import { CircularProgressbar } from "react-circular-progressbar";
-
+import log from "./Logger.jsx";
 import "!style-loader!css-loader!react-circular-progressbar/dist/styles.css";
+import Integration from "../helper/Integration.js";
 
 class Calling extends Component {
   constructor(props) {
@@ -12,39 +14,59 @@ class Calling extends Component {
       minutes: 0,
       seconds: 1,
       running: false,
-      wrapNote: false
+      data: null,
+      wrapUpTime: -1,
+      disposition: null,
+      dispositionSelected: -1,
+      subDispositionSelected: -1
     };
-    this.handleStartClick = this.handleStartClick.bind(this);
-    this.handleStopClick = this.handleStopClick.bind(this);
-    this.handleResetClick = this.handleResetClick.bind(this);
-    this.inputData = this.inputData.bind(this);
-    this.onHangUp = this.onHangUp.bind(this);
   }
 
-  handleStartClick(event) {
+  componentDidMount() {
+    this.windowListenerFunctions();
+  }
+
+  windowListenerFunctions = () => {
+    let _this = this;
+    window.onDispositions = function(disposition) {
+      log("disposition=>", disposition);
+      _this.setState({ disposition });
+    };
+  };
+
+  handleStartClick = event => {
     var _this = this;
     if (!this.state.running) {
       this.interval = setInterval(() => {
         this.tick();
       }, 1000);
-
       this.setState({ running: true });
     }
-  }
+  };
 
-  handleStopClick(event) {
+  handleWrapNoteStartClick = () => {
+    var _this = this;
+    if (!this.state.running) {
+      this.interval = setInterval(() => {
+        this.setState({ wrapUpTime: this.state.wrapUpTime - 1 });
+      }, 1000);
+      this.setState({ running: true });
+    }
+  };
+
+  handleStopClick = event => {
     if (this.state.running) {
       clearInterval(this.interval);
       this.setState({ running: false });
     }
-  }
+  };
 
-  handleResetClick(event) {
+  handleResetClick = event => {
     this.handleStopClick();
     this.update(0, 0, 0);
-  }
+  };
 
-  tick() {
+  tick = () => {
     let seconds = this.state.seconds + 1;
     let minutes = this.state.minutes;
     let hours = this.state.hours;
@@ -60,66 +82,126 @@ class Calling extends Component {
       hours = hours + 1;
     }
     this.update(seconds, minutes, hours);
-  }
+  };
 
-  zeroPad(value) {
+  zeroPad = value => {
     return value < 10 ? `0${value}` : value;
-  }
+  };
 
-  update(seconds, minutes, hours) {
+  update = (seconds, minutes, hours) => {
     this.setState({
       seconds,
       minutes,
       hours
     });
-  }
+  };
 
-  onHangUp() {
+  onHangUp = () => {
     this.handleResetClick();
+    this.setState({ running: false }, this.handleWrapNoteStartClick);
     this.props.onHangUp();
-  }
+  };
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.show &&
-      this.props.wrongNumber !== prevProps.wrongNumber &&
-      this.props.wrongNumber
-    ) {
-      setTimeout(this.onHangUp, 2000);
+    const { show, wrongNumber, status, callDataRecived } = this.props;
+    if (show && wrongNumber !== prevProps.wrongNumber && wrongNumber) {
+      setTimeout(this.onWrapsEnd, 2000);
     }
-    if (
-      this.props.status.toLowerCase() === "dialog" &&
-      prevProps.status !== this.props.status
-    ) {
+    if (status.toLowerCase() === "dialog" && prevProps.status !== status) {
       this.handleStartClick();
+      this.getDispositions();
+    }
+
+    if (callDataRecived && prevProps.callDataRecived !== callDataRecived) {
+      if (!this.state.data) {
+        this.setState({
+          data: callDataRecived,
+          wrapUpTime: callDataRecived.WrapUpTime
+        });
+      }
+    }
+
+    if (status.toLowerCase() === "wrapup" && prevProps.status !== status) {
+      this.onHangUp();
+    }
+
+    if (this.state.wrapUpTime === 0) {
+      this.onWrapsEnd();
     }
   }
 
-  inputData(value) {
-    if (this.props.callDataRecived) {
-      console.log("data ", this.props.callDataRecived.DataContact);
+  getDispositions = () => {
+    if (this.state.data.CallType === 2) {
+      Integration.getInstance().getCampaignDispositions(this.state.data.Id);
+    } else {
+      Integration.getInstance().getACDDispositions(this.state.data.Id);
     }
+  };
 
-    return (
+  /* Una vez que se termina el tiempo de notas */
+  onWrapsEnd = () => {
+    this.handleStopClick();
+    this.props.onWrapsEnd();
+    this.setState({ wrapUpTime: -1, data: null });
+  };
+
+  inputData = () => {
+    const { data } = this.state;
+    if (data && data.DataContact) {
+      log("DataContact", data.DataContact);
+      return this.mapData(data.DataContact);
+    }
+    return this.mapData(["", "", "", "", ""]);
+  };
+
+  mapData = data => {
+    return data.map((value, index) => (
       <>
+        {log(value)}
         <div className={styles.dataInput}>
-          <div className={styles.dataInputNo}>{value}</div>
+          <div className={styles.dataInputNo}>{index + 1}</div>
           <div className={styles.input}>
-            <input placeholder={"Datos del cliente"} />
+            <input
+              placeholder={"Datos del cliente"}
+              value={value ? value : ""}
+            />
           </div>
         </div>
         <div />
       </>
-    );
-  }
+    ));
+  };
+
+  onDispositionSelection = e => {
+    this.setState({ dispositionSelected: parseInt(e.target.value) });
+  };
+
+  saveDisposition = () => {
+    let { data, dispositionSelected, subDispositionSelected } = this.state;
+    if (this.state.data.CallType === 2) {
+      Integration.getInstance().disposeCampaingCall(
+        dispositionSelected,
+        data.ID,
+        data.CallId,
+        subDispositionSelected
+      );
+    } else {
+      Integration.getInstance().dispositionACDCall(
+        dispositionId,
+        data.CallId,
+        subDispositionSelected
+      );
+    }
+    this.onWrapsEnd();
+  };
 
   render() {
     const { callData, show, labels } = this.props;
+    const { data } = this.state;
     return show && callData ? (
       <div className={styles.main}>
         <div className={styles.number}>
           {this.state.running && (
-            // {true && (
             <div className={styles.timer}>
               <span>{this.zeroPad(this.state.hours)}:</span>
               <span>{this.zeroPad(this.state.minutes)}:</span>
@@ -137,46 +219,66 @@ class Calling extends Component {
             <div className={styles.num}>{callData.phoneNum}</div>
           </div>
         </div>
-        {/* {true ? ( */}
-        {this.state.wrapNote ? (
-          <div className={styles.progressBar}>
-            <CircularProgressbar
-              value={20}
-              maxValue={100}
-              text={`${1 * 90}%`}
-              styles={{
-                path: {
-                  // Path color
-                  stroke: `#FFA61D`,
-                  strokeLinecap: "butt",
-                  // Customize transition animation
-                  transition: "stroke-dashoffset 0.5s ease 0s",
-                  // Rotate the path
-                  transform: "rotate(0.25turn)",
-                  transformOrigin: "center center"
-                },
-                path: {
-                  stroke: `#FFA61D`
-                },
-                trail: {
-                  stroke: `#192A34`
-                },
-                text: {
-                  fill: "#FFA61D",
-                  fontSize: "16px"
-                }
-              }}
-            />
-          </div>
+
+        {this.props.status.toLowerCase() === "wrapup" ? (
+          <>
+            <div className={styles.progressBar}>
+              <CircularProgressbar
+                value={this.state.wrapUpTime}
+                maxValue={data.WrapUpTime}
+                text={`${this.state.wrapUpTime}`}
+                styles={{
+                  path: {
+                    stroke: `#FFA61D`,
+                    strokeLinecap: "butt",
+                    transition: "stroke-dashoffset 0.5s ease 0s",
+                    transform: "rotate(0.25turn)",
+                    transformOrigin: "center center"
+                  },
+                  path: {
+                    stroke: `#FFA61D`
+                  },
+                  trail: {
+                    stroke: `#192A34`
+                  },
+                  text: {
+                    fill: "#FFA61D",
+                    fontSize: "16px"
+                  }
+                }}
+              />
+            </div>
+            <div>Calificar llamada</div>
+            <Input
+              className={styles.selectInput}
+              type="select"
+              name="select"
+              id="dispositionSelection"
+              onChange={this.onDispositionSelection}
+            >
+              <option hidden selected>
+                Seleccione una opcion
+              </option>
+              {this.state.disposition &&
+                this.state.disposition.map(disposition => (
+                  <option value={disposition.Id}>
+                    {disposition.Description}
+                  </option>
+                ))}
+            </Input>
+
+            <Button
+              onClick={this.saveDisposition}
+              className={styles.dispositionBtn}
+            >
+              CALIFICAR
+            </Button>
+          </>
         ) : (
           <>
             <div className={styles.callData}>
               <div className={styles.dataTitle}>Datos del cliente</div>
-              {this.inputData(1)}
-              {this.inputData(2)}
-              {this.inputData(3)}
-              {this.inputData(4)}
-              {this.inputData(5)}
+              {this.inputData()}
             </div>
             <div className={styles.footer}>
               <div className={` ${styles.btn}`} onClick={this.onHangUp}>

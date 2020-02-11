@@ -7,8 +7,9 @@ import MainScreen from "./MainScreen.jsx";
 import LoginScreen from "./LoginScreen.jsx";
 import Keyboard from "./Keyboard.jsx";
 import getLabels from "../../../languages/selector.js";
-import { IntegrationApiFactory } from "../../../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
 import log from "./Logger.jsx";
+
+import Integration from "../helper/Integration.js";
 
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
 
@@ -147,13 +148,15 @@ class Container extends Component {
       event: "LccEvent",
       value: "GetConfig"
     });
-    this.integration = new IntegrationApiFactory().buildClient();
+    // this.integration = new IntegrationApiFactory().buildClient();
+    this.integration = Integration.getInstance();
     // this.setConfiguration({ server: "121.nuxiba.com", language: "es" });
-    // this.setConfiguration({
-    //   server: "121.nuxiba.com",
-    //   language: "es",
-    //   autologin: false
-    // });
+    this.setConfiguration({
+      server: "121.nuxiba.com",
+      language: "es",
+      autologin: false,
+      softphoneType: "WebRTC"
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -257,9 +260,9 @@ class Container extends Component {
           }`}
           name="KolobAgentFrame"
           style={{
-            display: "none"
-            // width: "300px",
-            // height: "500px"
+            // display: "none"
+            width: "300px",
+            height: "500px"
           }}
           allow="geolocation; microphone;"
         ></iframe>

@@ -32,6 +32,7 @@ export const labels = {
     problem: "Error de marcado",
     wrapup: "Notas",
     ringing: "Llamando",
-    callout: "Marcando"
+    callout: "Marcando",
+    xfer: "Transferencia"
   }
 };
