@@ -27,11 +27,12 @@ export const labels = {
     unavailable: "Select unavailable"
   },
   StatusBar: {
-    ready: "Disponible",
-    dialog: "Dialogo",
-    notready: "No disponible",
+    ready: "Ready",
+    dialog: "Dialog",
+    notready: "No available",
     problem: "Dialing error",
-    wrapup: "Notas",
-    ringing: "Llamando"
+    wrapup: "Wrapup",
+    ringing: "Ringing",
+    callout: "Calling"
   }
 };

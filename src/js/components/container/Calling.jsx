@@ -97,7 +97,7 @@ class Calling extends Component {
 
   inputData(value) {
     if (this.props.callDataRecived) {
-      console.log("data aqui ", this.props.callDataRecived.DataContact);
+      console.log("data ", this.props.callDataRecived.DataContact);
     }
 
     return (

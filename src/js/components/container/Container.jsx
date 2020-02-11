@@ -141,6 +141,7 @@ class Container extends Component {
 
   componentDidMount() {
     this.windowListenerFunctions();
+    log("Please Salesforce give me configuration ");
     LCC.addMessageHandler(this.salesForceListener);
     LCC.sendMessage({
       event: "LccEvent",
@@ -148,15 +149,19 @@ class Container extends Component {
     });
     this.integration = new IntegrationApiFactory().buildClient();
     // this.setConfiguration({ server: "121.nuxiba.com", language: "es" });
-    this.setConfiguration({ server: "demo.nuxiba.com", language: "es" });
+    // this.setConfiguration({
+    //   server: "121.nuxiba.com",
+    //   language: "es",
+    //   autologin: false
+    // });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { socketOpen, agentStatus } = this.state;
+    const { socketOpen, agentStatus, configuration } = this.state;
     if (agentStatus !== prevState.agentStatus) {
       switch (agentStatus.currentState) {
         case "logout":
-          if (this.state.autologin) {
+          if (configuration && configuration.autologin) {
             LCC.sendMessage({
               event: "LccEvent",
               value: "GetCredentials"
@@ -226,6 +231,7 @@ class Container extends Component {
 
   hangUp() {
     log("hangUp");
+    this.integration.HangUpManualDial();
     this.integration.HangUpCall();
     this.reset();
   }
@@ -246,12 +252,14 @@ class Container extends Component {
     return configuration ? (
       <>
         <iframe
-          src={`https://${configuration.server}/AgentKolob`}
+          src={`https://${configuration.server}/AgentKolob/?softphone=${
+            configuration.softphoneType ? configuration.softphoneType : "MizuJs"
+          }`}
           name="KolobAgentFrame"
           style={{
-            // display: "none",
-            width: "300px",
-            height: "500px"
+            display: "none"
+            // width: "300px",
+            // height: "500px"
           }}
           allow="geolocation; microphone;"
         ></iframe>

@@ -31,6 +31,7 @@ export const labels = {
     notready: "No disponible",
     problem: "Error de marcado",
     wrapup: "Notas",
-    ringing: "Llamando"
+    ringing: "Llamando",
+    callout: "Marcando"
   }
 };

@@ -31,7 +31,8 @@ class MainScreen extends Component {
       showUnavailable: false,
       callData: undefined,
       unavailable: undefined,
-      wrongNumber: false
+      wrongNumber: false,
+      hangUp: false
     };
   }
 
@@ -52,11 +53,19 @@ class MainScreen extends Component {
       this.props.getCampaignsRelated();
     }
     if (
-      this.props.agentStatus.currentState === "Callout" &&
-      prevProps.agentStatus.currentState === "Ready"
+      prevProps.agentStatus.currentState === "Callout" &&
+      this.props.agentStatus.currentState === "Ready"
     ) {
+      log("=>>>>>>>>>>>>", this.props.agentStatus.currentState);
       log("Wrong number");
       this.setState({ wrongNumber: true });
+    }
+    if (
+      this.props.agentStatus.currentState === "Ready" &&
+      this.state.wrongNumber &&
+      this.state.hangUp
+    ) {
+      this.setState({ wrongNumber: false, hangUp: false });
     }
   }
 
@@ -91,6 +100,7 @@ class MainScreen extends Component {
       showCalling: true,
       showKeyBoard: false,
       showStatusBar: true,
+      hangUp: false,
       showHeader: !this.state.showHeader,
       callData: {
         campaign: campaign,
@@ -109,7 +119,8 @@ class MainScreen extends Component {
       showStatusBar: true,
       showUnavailable: false,
       callData: undefined,
-      wrongNumber: false
+      wrongNumber: false,
+      hangUp: true
     });
 
     this.props.onHangUp();
