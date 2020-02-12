@@ -50,7 +50,7 @@ class Calling extends Component {
       this.interval = setInterval(() => {
         this.setState({ wrapUpTime: this.state.wrapUpTime - 1 });
       }, 1000);
-      this.setState({ running: true });
+      _this.setState({ running: true });
     }
   };
 
@@ -148,7 +148,6 @@ class Calling extends Component {
   inputData = () => {
     const { data } = this.state;
     if (data && data.DataContact) {
-      log("DataContact", data.DataContact);
       return this.mapData(data.DataContact);
     }
     return this.mapData(["", "", "", "", ""]);

@@ -6,12 +6,11 @@ class NotReady extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.onUnavailable = this.onUnavailable.bind(this);
   }
 
-  onUnavailable(unavailable) {
+  onUnavailable = unavailable => {
     this.props.onUnavailable(unavailable);
-  }
+  };
 
   render() {
     return this.props.show ? (

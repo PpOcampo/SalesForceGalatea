@@ -10,17 +10,15 @@ import {
 class MainScreen extends Component {
   constructor(props) {
     super(props);
-    this.onBack = this.onBack.bind(this);
-    this.onLogOut = this.onLogOut.bind(this);
   }
 
-  onBack() {
+  onBack = () => {
     this.props.onBack();
-  }
+  };
 
-  onLogOut() {
+  onLogOut = () => {
     this.props.onLogOut();
-  }
+  };
 
   render() {
     const { showBack, show, labels } = this.props;

@@ -9,7 +9,6 @@ import NotReady from "./NotReady.jsx";
 import Calling from "./Calling.jsx";
 import Locked from "./Locked.jsx";
 import log from "./Logger.jsx";
-import Integration from "../helper/Integration.js";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -40,30 +39,20 @@ class MainScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { showKeyBoard } = this.state;
-    if (showKeyBoard && prevState.showKeyBoard !== showKeyBoard) {
-      this.props.getCampaignsRelated();
-    }
-    if (
-      prevProps.agentStatus.currentState === "Callout" &&
-      this.props.agentStatus.currentState === "Ready"
-    ) {
-      log("=>>>>>>>>>>>>", this.props.agentStatus.currentState);
-      log("Wrong number");
-      this.setState({ wrongNumber: true });
-    }
-    if (
-      this.props.agentStatus.currentState === "Ready" &&
-      this.state.wrongNumber &&
-      this.state.hangUp
-    ) {
-      this.setState({ wrongNumber: false, hangUp: false });
-    }
+    const { showKeyBoard, wrongNumber, hangUp, showCalling } = this.state;
+    const { agentStatus, callDataRecived } = this.props;
 
-    if (
-      this.props.callDataRecived !== prevProps.callDataRecived &&
-      !this.state.showCalling
-    ) {
+    this.getCampaignsOnKeyboardOpen(prevState.showKeyBoard, showKeyBoard);
+    this.onWrongNumber(
+      prevProps.agentStatus.currentState,
+      agentStatus.currentState
+    );
+    this.afterHangUp(agentStatus.currentState, wrongNumber, hangUp);
+    this.onCallRecived(prevProps.callDataRecived, callDataRecived, showCalling);
+  }
+
+  onCallRecived(prevCallDataRecived, currentCallDataRecived, showCalling) {
+    if (currentCallDataRecived !== prevCallDataRecived && !showCalling) {
       log("CallDataRecived ", this.props.callDataRecived);
       this.setState({
         showCalling: true,
@@ -80,11 +69,34 @@ class MainScreen extends Component {
     }
   }
 
+  afterHangUp = (agentStatusState, wrongNumberState, hangUpState) => {
+    if (agentStatusState === "Ready" && wrongNumberState && hangUpState) {
+      this.setState({ wrongNumber: false, hangUp: false });
+    }
+  };
+
+  onWrongNumber = (agentStatusPrevState, agentStatusCurrentState) => {
+    if (
+      agentStatusPrevState === "Callout" &&
+      agentStatusCurrentState === "Ready"
+    ) {
+      log("Wrong number");
+      this.setState({ wrongNumber: true });
+    }
+  };
+
+  getCampaignsOnKeyboardOpen = (prevState, actualState) => {
+    if (actualState && actualState !== prevState) {
+      this.props.getCampaignsRelated();
+    }
+  };
+
   onKeyboardClick = () => {
+    let { showKeyBoard, showStatusBar } = this.state;
     this.setState({
-      showKeyBoard: !this.state.showKeyBoard,
+      showKeyBoard: !showKeyBoard,
       showNotReady: false,
-      showStatusBar: !this.state.showStatusBar
+      showStatusBar: !showStatusBar
     });
   };
 
@@ -167,76 +179,81 @@ class MainScreen extends Component {
       showKeyBoard,
       showCalling,
       showUnavailable,
-      showHeader
+      showHeader,
+      wrongNumber,
+      unavailable
     } = this.state;
+
+    const {
+      labels,
+      unavailables,
+      agentStatus,
+      callDataRecived,
+      campaigns
+    } = this.props;
+
     let mainScreen =
       !showNotReady && !showKeyBoard && !showCalling && !showUnavailable;
+
     return (
       <div className={styles.main}>
+        <StatusBar
+          show={showStatusBar}
+          title={wrongNumber ? "Problem" : agentStatus.currentState}
+          labels={labels.StatusBar}
+        />
         <Header
           show={showHeader}
           onBack={this.backButtonHandler}
           showBack={!mainScreen}
           onLogOut={this.onLogOut}
-          labels={this.props.labels.Header}
+          labels={labels.Header}
         />
-        <StatusBar
-          show={showStatusBar}
-          title={
-            this.state.wrongNumber
-              ? "Problem"
-              : this.props.agentStatus.currentState
-          }
-          labels={this.props.labels.StatusBar}
-        />
+
         <div
           className={`${styles.body} ${!showStatusBar &&
             styles.maximize} ${showCalling && styles.showCalling}`}
         >
           <NotReady
-            unavailables={this.props.unavailables}
+            unavailables={unavailables}
             show={showNotReady}
             onUnavailable={this.onUnavailable}
           />
 
           <Keyboard
             show={showKeyBoard}
-            campaigns={this.props.campaigns}
+            campaigns={campaigns}
             makeManualCall={this.makeManualCall}
-            labels={this.props.labels.Keyboard}
+            labels={labels.Keyboard}
           />
 
           <Calling
             show={this.state.showCalling}
             callData={this.state.callData}
             onHangUp={this.onHangUp}
-            wrongNumber={this.state.wrongNumber}
-            status={this.props.agentStatus.currentState}
-            labels={this.props.labels.Calling}
-            callDataRecived={this.props.callDataRecived}
+            wrongNumber={wrongNumber}
+            status={agentStatus.currentState}
+            labels={labels.Calling}
+            callDataRecived={callDataRecived}
             onWrapsEnd={this.onWrapsEnd}
           />
 
           <Locked
             show={this.state.showUnavailable}
             onLockedEnd={this.onLockedEnd}
-            unavailable={
-              this.state.unavailable ? this.state.unavailable : undefined
-            }
-            labels={this.props.labels.Locked}
+            unavailable={unavailable ? unavailable : undefined}
+            labels={labels.Locked}
           />
 
           {mainScreen && (
             <>
-              <div className={styles.title}>
-                {this.props.labels.MainScreen.menu}
-              </div>
+              <div className={styles.title}>{labels.MainScreen.menu}</div>
               <div
                 className={styles.notAvailable}
                 onClick={this.onNotAvailable}
               >
                 <div className={styles.icon} />
-                <div>{this.props.labels.MainScreen.unavailable}</div>
+                <div>{labels.MainScreen.unavailable}</div>
                 <div className={styles.arrow} />
               </div>
             </>
