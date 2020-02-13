@@ -57,7 +57,7 @@ class LoginScreen extends Component {
   }
 
   render() {
-    const { labels } = this.props;
+    const { labels, agentStatus } = this.props;
     return (
       <div className={styles.main}>
         <div className={styles.imageDiv}>

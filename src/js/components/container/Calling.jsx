@@ -159,6 +159,14 @@ class Calling extends Component {
     return this.mapData(["", "", "", "", ""]);
   };
 
+  onChangeValue = (index, event) => {
+    let loquequieraswey = [...this.state.data.DataContact];
+    loquequieraswey[index] = event.target.value;
+    this.setState({
+      data: { ...this.state.data, DataContact: loquequieraswey }
+    });
+  };
+
   mapData = data => {
     return data.map((value, index) => (
       <>
@@ -168,6 +176,7 @@ class Calling extends Component {
             <input
               placeholder={"Datos del cliente"}
               value={value ? value : ""}
+              onChange={e => this.onChangeValue(index, e)}
             />
           </div>
         </div>

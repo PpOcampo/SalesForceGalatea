@@ -73,7 +73,17 @@
   height: 50px;
   border-radius: 50px;
   background-color: #ff2f2f;
+  cursor: pointer;
 }
+
+.btn:hover {
+  background-color: #ff2222;
+}
+
+.btn:active {
+  background-color: #eb1f1f;
+}
+
 .btn > div {
   width: 48px;
   height: 48px;
