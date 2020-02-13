@@ -8,7 +8,7 @@ import LoginScreen from "./LoginScreen.jsx";
 import Keyboard from "./Keyboard.jsx";
 import getLabels from "../../../languages/selector.js";
 import log from "./Logger.jsx";
-
+import IntegrationListener from "../helper/IntegrationListeners.js";
 import Integration from "../helper/Integration.js";
 
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
@@ -17,7 +17,6 @@ class Container extends Component {
   constructor(props) {
     super(props);
 
-    this.windowListenerFunctions = this.windowListenerFunctions.bind(this);
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
     this.onLogOutClick = this.onLogOutClick.bind(this);
     this.setUnavailable = this.setUnavailable.bind(this);
@@ -47,71 +46,22 @@ class Container extends Component {
     this.labels = getLabels("es");
   }
 
-  windowListenerFunctions() {
-    let _this = this;
-    window.onAgentStatus = function(agentStatus) {
-      log("agentStatus=>", agentStatus);
-      _this.setState({ agentStatus: agentStatus });
-    };
+  componentDidMount() {
+    this.setListeners();
 
-    window.onLogin = function() {
-      log("Login success");
-    };
-
-    window.remoteLoginError = function(message) {
-      message.show = true;
-      log("loginError=>", message);
-      _this.setState({ error: message });
-    };
-
-    window.onLogOut = function() {
-      log("onLogoOut");
-      _this.setState({ logged: false, error: { show: false } });
-    };
-
-    window.onUnavailableTypes = function(unavailables) {
-      log("onUnavailableTypes=>", unavailables);
-      _this.setState({ unavailables: unavailables });
-    };
-
-    window.wrongNumber = function(phoneNumber) {
-      log("wrongNumber " + phoneNumber + " ,but dialing anyway");
-      const {
-        phoneNum,
-        campaignID,
-        clientName,
-        callKey
-      } = _this.state.manualCallData;
-      _this.integration.makeManualCall(
-        phoneNum,
-        campaignID,
-        clientName,
-        callKey
-      );
-      // _this.setState({ wrongNumber: true });
-    };
-
-    window.onCampaigns = function(json) {
-      log("onCampaigns =>", json);
-      if (json === "") {
-        _this.getCampaignsRelated();
-      } else {
-        let arrayCampaigns = Object.values(json);
-        arrayCampaigns.sort(function(a, b) {
-          return b.Default - a.Default;
-        });
-        _this.setState({ campaigns: arrayCampaigns });
-      }
-    };
-
-    window.onDialingNumber = function(message) {
-      log("onDialingNumber => ", message);
-    };
-
-    window.onCallRecieved = function(callDataRecived) {
-      _this.setState({ callDataRecived });
-      log("onCallRecieved =>", callDataRecived);
-    };
+    log("Please Salesforce give me configuration ");
+    LCC.addMessageHandler(this.salesForceListener);
+    LCC.sendMessage({
+      event: "LccEvent",
+      value: "GetConfig"
+    });
+    this.integration = Integration.getInstance();
+    this.setConfiguration({
+      server: "121.nuxiba.com",
+      language: "es",
+      autologin: false,
+      softphoneType: "WebRTC"
+    });
   }
 
   salesForceListener(message) {
@@ -140,24 +90,63 @@ class Container extends Component {
     this.labels = getLabels(configuration.language);
   }
 
-  componentDidMount() {
-    this.windowListenerFunctions();
-    log("Please Salesforce give me configuration ");
-    LCC.addMessageHandler(this.salesForceListener);
-    LCC.sendMessage({
-      event: "LccEvent",
-      value: "GetConfig"
-    });
-    // this.integration = new IntegrationApiFactory().buildClient();
-    this.integration = Integration.getInstance();
-    // this.setConfiguration({ server: "121.nuxiba.com", language: "es" });
-    this.setConfiguration({
-      server: "121.nuxiba.com",
-      language: "es",
-      autologin: false,
-      softphoneType: "WebRTC"
-    });
-  }
+  //----------------- Kolob Agent Listeners------------------------------------------------------------
+  setListeners = () => {
+    IntegrationListener.onLogin(() => {});
+    IntegrationListener.onDialingNumber(() => {});
+    IntegrationListener.onAgentStatus(this.onAgentStatus);
+    IntegrationListener.onRemoteLoginError(this.onRemoteLoginError);
+    IntegrationListener.onLogOut(this.onLogOut);
+    IntegrationListener.onUnavailableTypes(this.onUnavailableTypes);
+    IntegrationListener.onCampaigns(this.onCampaigns);
+    IntegrationListener.onWrongNumber(this.onWrongNumber);
+    IntegrationListener.onCallRecieved(this.onCallRecieved);
+  };
+
+  onAgentStatus = agentStatus => {
+    this.setState({ agentStatus: agentStatus });
+  };
+
+  onRemoteLoginError = message => {
+    message.show = true;
+    this.setState({ error: message });
+  };
+
+  onLogOut = () => {
+    this.setState({ logged: false, error: { show: false } });
+  };
+
+  onUnavailableTypes = unavailables => {
+    this.setState({ unavailables: unavailables });
+  };
+
+  onCampaigns = json => {
+    if (json === "") {
+      this.getCampaignsRelated();
+    } else {
+      let arrayCampaigns = Object.values(json);
+      arrayCampaigns.sort(function(a, b) {
+        return b.Default - a.Default;
+      });
+      this.setState({ campaigns: arrayCampaigns });
+    }
+  };
+
+  onWrongNumber = phoneNumber => {
+    const {
+      phoneNum,
+      campaignID,
+      clientName,
+      callKey
+    } = this.state.manualCallData;
+    this.integration.makeManualCall(phoneNum, campaignID, clientName, callKey);
+  };
+
+  onCallRecieved = callDataRecived => {
+    this.setState({ callDataRecived });
+  };
+
+  //-------------------End Kolob Agent Listeners----------------------------------------------------------
 
   componentDidUpdate(prevProps, prevState) {
     const { socketOpen, agentStatus, configuration } = this.state;

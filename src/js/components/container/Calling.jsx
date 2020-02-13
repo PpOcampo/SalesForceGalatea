@@ -5,6 +5,8 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import log from "./Logger.jsx";
 import "!style-loader!css-loader!react-circular-progressbar/dist/styles.css";
 import Integration from "../helper/Integration.js";
+import IntegrationListener from "../helper/IntegrationListeners.js";
+import * as LCC from "lightning-container";
 
 class Calling extends Component {
   constructor(props) {
@@ -23,15 +25,11 @@ class Calling extends Component {
   }
 
   componentDidMount() {
-    this.windowListenerFunctions();
+    IntegrationListener.onDisposition(this.onDisposition);
   }
 
-  windowListenerFunctions = () => {
-    let _this = this;
-    window.onDispositions = function(disposition) {
-      log("disposition=>", disposition);
-      _this.setState({ disposition });
-    };
+  onDisposition = disposition => {
+    this.setState({ disposition });
   };
 
   handleStartClick = event => {
@@ -118,6 +116,14 @@ class Calling extends Component {
           data: callDataRecived,
           wrapUpTime: callDataRecived.WrapUpTime
         });
+        LCC.sendMessage({
+          event: "LccEvent",
+          value: "onCwData",
+          call: {
+            id: callDataRecived.CallId,
+            data: callDataRecived.DataContact
+          }
+        });
       }
     }
 
@@ -156,7 +162,6 @@ class Calling extends Component {
   mapData = data => {
     return data.map((value, index) => (
       <>
-        {log(value)}
         <div className={styles.dataInput}>
           <div className={styles.dataInputNo}>{index + 1}</div>
           <div className={styles.input}>
