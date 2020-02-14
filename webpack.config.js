@@ -5,6 +5,11 @@ module.exports = {
   externals: {
     frontend: "frontend"
   },
+  devServer: {
+    port: 5000,
+    inline: true,
+    hot: true
+  },
   module: {
     rules: [
       {
