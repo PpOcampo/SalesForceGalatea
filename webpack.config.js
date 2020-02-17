@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+var JavaScriptObfuscator = require("webpack-obfuscator");
 module.exports = {
   entry: "./src/index.js",
   externals: {
@@ -70,6 +71,23 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/index.html",
       filename: "./index.html"
+    }),
+    new JavaScriptObfuscator({
+      rotateUnicodeArray: true
     })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          output: {
+            comments: false
+          }
+        }
+      })
+    ]
+  }
 };

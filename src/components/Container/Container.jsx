@@ -3,31 +3,19 @@ import ReactDOM from "react-dom";
 import { Button, Modal, Spinner } from "reactstrap";
 import * as LCC from "lightning-container";
 import styles from "./Container.css";
-import MainScreen from "./MainScreen.jsx";
-import LoginScreen from "./LoginScreen.jsx";
-import Keyboard from "./Keyboard.jsx";
-import getLabels from "../../../languages/selector.js";
-import log from "./Logger.jsx";
-import IntegrationListener from "../helper/IntegrationListeners.js";
-import Integration from "../helper/Integration.js";
+import MainScreen from "../MainScreen/MainScreen.jsx";
+import LoginScreen from "../LoginScreen/LoginScreen.jsx";
+import getLabels from "../../languages/selector.js";
+import { log } from "../../helper/UtilsHelper.js";
+import IntegrationListener from "../../helper/IntegrationListeners.js";
+import Integration from "../../helper/Integration.js";
+import * as utils from "../../helper/UtilsHelper.js";
 
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
 
 class Container extends Component {
   constructor(props) {
     super(props);
-
-    this.onLoginSubmit = this.onLoginSubmit.bind(this);
-    this.onLogOutClick = this.onLogOutClick.bind(this);
-    this.setUnavailable = this.setUnavailable.bind(this);
-    this.setAvailable = this.setAvailable.bind(this);
-    this.getCampaignsRelated = this.getCampaignsRelated.bind(this);
-    this.makeManualCall = this.makeManualCall.bind(this);
-    this.hangUp = this.hangUp.bind(this);
-    this.reset = this.reset.bind(this);
-    this.salesForceListener = this.salesForceListener.bind(this);
-    this.setConfiguration = this.setConfiguration.bind(this);
-
     this.state = {
       logged: false,
       agentStatus: undefined,
@@ -48,13 +36,9 @@ class Container extends Component {
 
   componentDidMount() {
     this.setListeners();
-
     log("Please Salesforce give me configuration ");
     LCC.addMessageHandler(this.salesForceListener);
-    LCC.sendMessage({
-      event: "LccEvent",
-      value: "GetConfig"
-    });
+    utils.requestSalesForceConfiguration();
     this.integration = Integration.getInstance();
     this.setConfiguration({
       server: "121.nuxiba.com",
@@ -64,13 +48,14 @@ class Container extends Component {
     });
   }
 
-  salesForceListener(message) {
+  salesForceListener = message => {
     log("recivedFromSalesForce => ", message);
+    let { SALESFORCE_EVENT } = utils;
     switch (message.name) {
-      case "configuration":
+      case SALESFORCE_EVENT.onConfiguration:
         this.setConfiguration(message.value);
         break;
-      case "credentials":
+      case SALESFORCE_EVENT.onCredentials:
         this.onLoginSubmit(
           message.value.Username.split("@")[0],
           message.value.Id
@@ -79,16 +64,16 @@ class Container extends Component {
       default:
         break;
     }
-  }
+  };
 
-  setConfiguration(configuration) {
+  setConfiguration = configuration => {
     let secureConnection = true;
     this.integration.WSParameters.server = configuration.server;
     this.integration.WSParameters.secureConnection = secureConnection;
     this.integration.connectToServer();
     this.setState({ configuration });
     this.labels = getLabels(configuration.language);
-  }
+  };
 
   //----------------- Kolob Agent Listeners------------------------------------------------------------
   setListeners = () => {
@@ -121,7 +106,7 @@ class Container extends Component {
   };
 
   onCampaigns = json => {
-    if (json === "") {
+    if (json === "" && typeof yourVariable !== "object") {
       this.getCampaignsRelated();
     } else {
       let arrayCampaigns = Object.values(json);
@@ -150,34 +135,32 @@ class Container extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { socketOpen, agentStatus, configuration } = this.state;
+    let { AGENT_STATUS } = utils;
     if (agentStatus !== prevState.agentStatus) {
       switch (agentStatus.currentState) {
-        case "logout":
+        case AGENT_STATUS.Ready:
+          log("Ready");
+          this.integration.getUnavailables();
+          this.reset();
+          return;
+        case AGENT_STATUS.LogOut:
           if (configuration && configuration.autologin) {
-            LCC.sendMessage({
-              event: "LccEvent",
-              value: "GetCredentials"
-            });
+            utils.requestSalesForceCredentials();
           }
           log("logOut, waiting for login");
           this.setState({ logged: false, autologin: false });
           return;
-        case "NotConnected":
+        case AGENT_STATUS.NotConnected:
           log("NotConnected, integration component hasn't connected");
           this.integration.connectToServer();
           return;
-        case "NotReady":
+        case AGENT_STATUS.NotReady:
           log("NotReady, integration component hasn't connected");
           this.integration.getUnavailables();
           this.setState({ notReady: true, logged: true });
           return;
-        case "Ready":
-          log("Ready");
-          this.integration.getUnavailables();
-          this.reset();
-          // this.setState({ logged: true, notReady: false });
-          return;
-        case "SocketClosed":
+
+        case AGENT_STATUS.SocketClosed:
           log("SocketClosed, check wss configuration");
           if (socketOpen) {
             this.setState({ socketOpen: false, logged: false });
@@ -193,42 +176,42 @@ class Container extends Component {
     }
   }
 
-  onLoginSubmit(username, password) {
+  onLoginSubmit = (username, password) => {
     log("SalesForce ==> ", username, password);
     this.integration.login(username, password);
-  }
+  };
 
-  onLogOutClick() {
+  onLogOutClick = () => {
     this.integration.closeSession();
-  }
+  };
 
-  setUnavailable(unavailableId) {
+  setUnavailable = unavailableId => {
     this.integration.setOnUnavailableStatus(unavailableId);
-  }
+  };
 
-  setAvailable() {
+  setAvailable = () => {
     this.integration.SetAvailable();
-  }
+  };
 
-  getCampaignsRelated() {
+  getCampaignsRelated = () => {
     this.integration.GetCampaignsRelated();
-  }
+  };
 
-  makeManualCall(phoneNum, campaign, clientName, callKey) {
+  makeManualCall = (phoneNum, campaign, clientName, callKey) => {
     this.setState({
       manualCallData: { phoneNum, campaignID: campaign.ID, clientName, callKey }
     });
-    this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey);
-  }
+    this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey); //tambien arriba
+  };
 
-  hangUp() {
+  hangUp = () => {
     log("hangUp");
     this.integration.HangUpManualDial();
     this.integration.HangUpCall();
     this.reset();
-  }
+  };
 
-  reset() {
+  reset = () => {
     this.setState({
       error: { show: false },
       validating: false,
@@ -237,16 +220,17 @@ class Container extends Component {
       logged: true,
       notReady: false
     });
-  }
+  };
 
   render() {
     const { error, unavailables, configuration } = this.state;
     return configuration ? (
       <>
         <iframe
-          src={`https://${configuration.server}/AgentKolob/?softphone=${
-            configuration.softphoneType ? configuration.softphoneType : "MizuJs"
-          }`}
+          src={utils.getKolobAgentAddress(
+            configuration.server,
+            configuration.softphoneType
+          )}
           name="KolobAgentFrame"
           style={{
             // display: "none"

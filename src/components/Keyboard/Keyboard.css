@@ -105,8 +105,8 @@
 }
 
 .inputKeyBoard > div {
-  mask-image: url("../../../images/Icon-backspace.svg");
-  -webkit-mask-image: url("../../../images/Icon-backspace.svg");
+  mask-image: url("../../images/Icon-backspace.svg");
+  -webkit-mask-image: url("../../images/Icon-backspace.svg");
   background-color: #667178;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
@@ -123,8 +123,8 @@
 
 .rowNumbers.telephone > div > div.iconTelephone {
   background-color: white;
-  mask-image: url("../../../images/Icon-call.svg");
-  -webkit-mask-image: url("../../../images/Icon-call.svg");
+  mask-image: url("../../images/Icon-call.svg");
+  -webkit-mask-image: url("../../images/Icon-call.svg");
   mask-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-mask-repeat: no-repeat;

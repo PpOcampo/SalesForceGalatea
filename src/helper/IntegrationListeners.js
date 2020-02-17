@@ -1,4 +1,4 @@
-import log from "../container/Logger.jsx";
+import { log } from "../helper/UtilsHelper.js";
 
 export default class IntegrationListener {
   static onDisposition = delagateFunction => {

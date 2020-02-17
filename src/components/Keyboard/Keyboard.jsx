@@ -5,12 +5,6 @@ import { Modal, ModalHeader, ModalBody, Input } from "reactstrap";
 class Keyboard extends Component {
   constructor(props) {
     super(props);
-    this.onKeyPressed = this.onKeyPressed.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onChangeValue = this.onChangeValue.bind(this);
-    this.onCampaignSelection = this.onCampaignSelection.bind(this);
-    this.manualCall = this.manualCall.bind(this);
-    this.onBackSpaceClick = this.onBackSpaceClick.bind(this);
     this.state = {
       keyboardValue: "",
       campaign: undefined
@@ -18,9 +12,17 @@ class Keyboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.resetOnOpen(prevProps);
+    this.selectDefaultCampaign();
+  }
+
+  resetOnOpen = prevProps => {
     if (prevProps.show !== this.props.show && this.props.show) {
       this.setState({ keyboardValue: "", campaign: undefined });
     }
+  };
+
+  selectDefaultCampaign = () => {
     if (
       this.props.campaigns &&
       this.props.campaigns[0].Default &&
@@ -28,9 +30,9 @@ class Keyboard extends Component {
     ) {
       this.setState({ campaign: this.props.campaigns[0] });
     }
-  }
+  };
 
-  onKeyDown(e) {
+  onKeyDown = e => {
     /* if is *, # or number*/
     let key = e.key.toLowerCase();
     if (/^[0-9*#\b]$/i.test(key) || key === "backspace") {
@@ -43,33 +45,33 @@ class Keyboard extends Component {
         keyBtn.classList.remove(styles.simulateClick);
       }, 200);
     }
-  }
+  };
 
-  onChangeValue(e) {
+  onChangeValue = e => {
     this.setState({ keyboardValue: e.target.value });
-  }
+  };
 
-  onKeyPressed(e) {
+  onKeyPressed = e => {
     this.setState({
       keyboardValue: this.state.keyboardValue + e.target.innerText
     });
-  }
+  };
 
-  onBackSpaceClick(e) {
+  onBackSpaceClick = e => {
     this.setState({ keyboardValue: this.state.keyboardValue.slice(0, -1) });
-  }
+  };
 
-  onCampaignSelection(e) {
+  onCampaignSelection = e => {
     let campaign = this.props.campaigns.find(
       campaign => campaign.ID == e.target.value
     );
     this.setState({ campaign });
-  }
+  };
 
-  manualCall() {
+  manualCall = () => {
     const { keyboardValue, campaign } = this.state;
     this.props.makeManualCall(keyboardValue, campaign, "", "");
-  }
+  };
 
   render() {
     const { labels } = this.props;

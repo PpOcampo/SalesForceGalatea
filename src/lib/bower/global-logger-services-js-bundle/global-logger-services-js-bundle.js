@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var bind = __webpack_require__(5);
+var bind = __webpack_require__(6);
 var isBuffer = __webpack_require__(14);
 
 /*global toString:true*/
@@ -422,10 +422,12 @@ Constants._Log_CONSOLE = {
 Constants._CONFIGURATIONS = {
     _ENABLE_DEFAULT: true,
     _ENABLE_AJAX: false,
-    _SERVER: "http://localhost:11217/",
-    _DOMAIN: "/api/Logger",
+    _SERVER: "http://127.0.0.1",
+    _DOMAIN: "/LogggerWS/api/Logger",
     _SEVERITY: "Trace",
-    _SEVERITY_CONSOLE: "Trace"
+    _SEVERITY_CONSOLE: "Trace",
+    _USE_WINDOW_ORIGIN: true,
+    _FILTER_USER_POST: []
 };
 Constants._REST = {
     _POST_METHOD: "POST",
@@ -459,10 +461,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(6);
+    adapter = __webpack_require__(7);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(6);
+    adapter = __webpack_require__(7);
   }
   return adapter;
 }
@@ -541,6 +543,130 @@ module.exports = defaults;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.LoggerInstance = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _LoggerDispatcher = __webpack_require__(11);
+
+var _Constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var usertype = 'AGENT';
+var userId = "";
+
+var LoggerInstance = function () {
+	function LoggerInstance() {
+		_classCallCheck(this, LoggerInstance);
+	}
+
+	_createClass(LoggerInstance, null, [{
+		key: 'setUsertype',
+		value: function setUsertype(type) {
+			usertype = type;
+			console.log("[INFO][setUsertype]", usertype);
+		}
+	}, {
+		key: 'setUserId',
+		value: function setUserId(type) {
+			userId = type;
+			console.log("[INFO][setUserId]", userId);
+		}
+	}, {
+		key: 'getUserId',
+		value: function getUserId() {
+			return userId;
+		}
+	}, {
+		key: 'SetUseServerWithLocation',
+		value: function SetUseServerWithLocation(useWindowLocation) {
+			_Constants.Constants._USE_WINDOW_LOCATION = useWindowLocation;
+		}
+	}, {
+		key: 'addUserId',
+		value: function addUserId(msg) {
+			if (userId) {
+				var userIdPrint = '[' + userId + ']';
+				msg.unshift(userIdPrint);
+			}
+		}
+	}, {
+		key: 'Trace',
+		value: function Trace() {
+			for (var _len = arguments.length, msg = Array(_len), _key = 0; _key < _len; _key++) {
+				msg[_key] = arguments[_key];
+			}
+
+			LoggerInstance.addUserId(msg);
+			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Trace', msg);
+		}
+	}, {
+		key: 'Debug',
+		value: function Debug() {
+			for (var _len2 = arguments.length, msg = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+				msg[_key2] = arguments[_key2];
+			}
+
+			LoggerInstance.addUserId(msg);
+			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Debug', msg);
+		}
+	}, {
+		key: 'Warning',
+		value: function Warning() {
+			for (var _len3 = arguments.length, msg = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+				msg[_key3] = arguments[_key3];
+			}
+
+			LoggerInstance.addUserId(msg);
+			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Warn', msg);
+		}
+	}, {
+		key: 'Warn',
+		value: function Warn() {
+			for (var _len4 = arguments.length, msg = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+				msg[_key4] = arguments[_key4];
+			}
+
+			LoggerInstance.Warning(msg);
+		}
+	}, {
+		key: 'Info',
+		value: function Info() {
+			for (var _len5 = arguments.length, msg = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+				msg[_key5] = arguments[_key5];
+			}
+
+			LoggerInstance.addUserId(msg);
+			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Info', msg);
+		}
+	}, {
+		key: 'Error',
+		value: function Error() {
+			for (var _len6 = arguments.length, msg = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+				msg[_key6] = arguments[_key6];
+			}
+
+			LoggerInstance.addUserId(msg);
+			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Error', msg);
+		}
+	}]);
+
+	return LoggerInstance;
+}();
+
+exports.LoggerInstance = LoggerInstance;
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -639,13 +765,13 @@ var LoggerUtils = function () {
 exports.LoggerUtils = LoggerUtils;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(13);
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -663,7 +789,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -674,7 +800,7 @@ var settle = __webpack_require__(18);
 var buildURL = __webpack_require__(20);
 var parseHeaders = __webpack_require__(21);
 var isURLSameOrigin = __webpack_require__(22);
-var createError = __webpack_require__(7);
+var createError = __webpack_require__(8);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(23);
 
 module.exports = function xhrAdapter(config) {
@@ -850,7 +976,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -875,7 +1001,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -887,7 +1013,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -913,106 +1039,6 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.LoggerInstance = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _LoggerDispatcher = __webpack_require__(11);
-
-var _Constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var usertype = 'AGENT';
-
-var LoggerInstance = function () {
-	function LoggerInstance() {
-		_classCallCheck(this, LoggerInstance);
-	}
-
-	_createClass(LoggerInstance, null, [{
-		key: 'setUsertype',
-		value: function setUsertype(type) {
-			usertype = type;
-			console.log("[INFO]", usertype);
-		}
-	}, {
-		key: 'SetUseServerWithLocation',
-		value: function SetUseServerWithLocation(useWindowLocation) {
-			console.info("Change _CONFIGURATIONS_USE_WINDOW_LOCATION ", useWindowLocation);
-			_Constants.Constants._USE_WINDOW_LOCATION = useWindowLocation;
-		}
-	}, {
-		key: 'Trace',
-		value: function Trace() {
-			for (var _len = arguments.length, msg = Array(_len), _key = 0; _key < _len; _key++) {
-				msg[_key] = arguments[_key];
-			}
-
-			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Trace', msg);
-		}
-	}, {
-		key: 'Debug',
-		value: function Debug() {
-			for (var _len2 = arguments.length, msg = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-				msg[_key2] = arguments[_key2];
-			}
-
-			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Debug', msg);
-		}
-	}, {
-		key: 'Warning',
-		value: function Warning() {
-			for (var _len3 = arguments.length, msg = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-				msg[_key3] = arguments[_key3];
-			}
-
-			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Warn', msg);
-		}
-	}, {
-		key: 'Warn',
-		value: function Warn() {
-			for (var _len4 = arguments.length, msg = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-				msg[_key4] = arguments[_key4];
-			}
-
-			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Warn', msg);
-		}
-	}, {
-		key: 'Info',
-		value: function Info() {
-			for (var _len5 = arguments.length, msg = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-				msg[_key5] = arguments[_key5];
-			}
-
-			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Info', msg);
-		}
-	}, {
-		key: 'Error',
-		value: function Error() {
-			for (var _len6 = arguments.length, msg = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-				msg[_key6] = arguments[_key6];
-			}
-
-			_LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Error', msg);
-		}
-	}]);
-
-	return LoggerInstance;
-}();
-
-exports.LoggerInstance = LoggerInstance;
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1030,9 +1056,11 @@ var _LoggerRestClient = __webpack_require__(12);
 
 var _Constants = __webpack_require__(1);
 
-var _LoggerUtils = __webpack_require__(3);
+var _LoggerUtils = __webpack_require__(4);
 
 var _LoggerConfigurator = __webpack_require__(32);
+
+var _LoggerInstance = __webpack_require__(3);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1053,7 +1081,15 @@ var LoggerDispatcher = function () {
 		key: 'RemoteOutput',
 		value: function RemoteOutput(usertype, severity, message) {
 			if (_Constants.Constants._CONFIGURATIONS["_ENABLE_AJAX"] && _LoggerUtils.LoggerUtils.IsAllowedRemoteToLogBySeverity(severity)) {
-				_LoggerRestClient.LoggerRestClient.log(usertype, severity, message);
+
+				var isEmptyFilter = _Constants.Constants._CONFIGURATIONS["_FILTER_USER_POST"].length === 0;
+				if (isEmptyFilter || _Constants.Constants._CONFIGURATIONS["_FILTER_USER_POST"].find(function (ele) {
+					return ele.toUpperCase() === _LoggerInstance.LoggerInstance.getUserId().toUpperCase();
+				})) {
+					_LoggerRestClient.LoggerRestClient.log(usertype, severity, '[' + usertype + '] ' + message);
+				} else if (severity.toUpperCase() === "WARN" || severity.toUpperCase() === "ERROR") {
+					_LoggerRestClient.LoggerRestClient.log(usertype, severity, '[' + usertype + '] ' + message);
+				}
 			}
 		}
 	}, {
@@ -1066,7 +1102,8 @@ var LoggerDispatcher = function () {
 					consoleLogLevel = _Constants.Constants._Log_CONSOLE[severity];
 				}
 				var msgFormat = _LoggerUtils.LoggerUtils.ToStringMessage(message);
-				consoleLogLevel.call("[" + severity + "]", "[" + usertype + "]", msgFormat);
+				var time = Date(Date.now()).toString();
+				consoleLogLevel.call(" [" + severity + "]", "[" + usertype + "]", time, msgFormat);
 			}
 		}
 	}]);
@@ -1092,9 +1129,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Constants = __webpack_require__(1);
 
-var _LoggerUtils = __webpack_require__(3);
+var _LoggerUtils = __webpack_require__(4);
 
-var _axios = __webpack_require__(4);
+var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -1133,7 +1170,7 @@ exports.LoggerRestClient = LoggerRestClient;
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(5);
+var bind = __webpack_require__(6);
 var Axios = __webpack_require__(15);
 var defaults = __webpack_require__(2);
 
@@ -1168,9 +1205,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(9);
+axios.Cancel = __webpack_require__(10);
 axios.CancelToken = __webpack_require__(30);
-axios.isCancel = __webpack_require__(8);
+axios.isCancel = __webpack_require__(9);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -1513,7 +1550,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(7);
+var createError = __webpack_require__(8);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -1946,7 +1983,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(27);
-var isCancel = __webpack_require__(8);
+var isCancel = __webpack_require__(9);
 var defaults = __webpack_require__(2);
 var isAbsoluteURL = __webpack_require__(28);
 var combineURLs = __webpack_require__(29);
@@ -2106,7 +2143,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(9);
+var Cancel = __webpack_require__(10);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -2213,7 +2250,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Constants = __webpack_require__(1);
 
-var _axios = __webpack_require__(4);
+var _axios = __webpack_require__(5);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -2238,12 +2275,12 @@ var LoggerConfigurator = function () {
 	}, {
 		key: 'Setup',
 		value: function Setup(configuration, callback) {
-			console.info("Setup ", configuration);
+			console.debug("Setup ", configuration);
 			if (configuration) {
 				Object.keys(configuration).forEach(function (key) {
 					return _Constants.Constants._CONFIGURATIONS[key] = configuration[key];
 				});
-				console.info("_USE_WINDOW_LOCATION ", _Constants.Constants._USE_WINDOW_LOCATION);
+				console.debug("_USE_WINDOW_LOCATION ", _Constants.Constants._USE_WINDOW_LOCATION);
 				if (_Constants.Constants._USE_WINDOW_LOCATION) {
 					LoggerConfigurator.SetConfigurationServer();
 				}
@@ -2290,9 +2327,11 @@ var LoggerConfigurator = function () {
 	}, {
 		key: 'SetConfigurationServer',
 		value: function SetConfigurationServer() {
-			var remoteLocation = window.location.origin;
-			console.info("SetConfigurationServer withLocation", remoteLocation);
-			_Constants.Constants._CONFIGURATIONS["_SERVER"] = remoteLocation;
+			if (_Constants.Constants._CONFIGURATIONS["_USE_WINDOW_ORIGIN"]) {
+				var remoteLocation = window.location.origin;
+				console.debug("SetConfigurationServer withLocation", remoteLocation);
+				_Constants.Constants._CONFIGURATIONS["_SERVER"] = remoteLocation;
+			}
 		}
 	}, {
 		key: 'ExistExternalConfiguration',

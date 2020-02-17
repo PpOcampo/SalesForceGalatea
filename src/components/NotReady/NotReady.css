@@ -22,8 +22,8 @@
 .item > .icon {
   width: 54px;
   height: 54px;
-  mask-image: url("../../../images/icon-anchor.svg");
-  -webkit-mask-image: url("../../../images/icon-anchor.svg");
+  mask-image: url("../../images/icon-anchor.svg");
+  -webkit-mask-image: url("../../images/icon-anchor.svg");
   background-color: whitesmoke;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;

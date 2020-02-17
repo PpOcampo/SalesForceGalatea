@@ -28,8 +28,8 @@
 .dropdownIcon {
   width: 15px;
   height: 20px;
-  mask-image: url("../../../images/Icon-more.svg");
-  -webkit-mask-image: url("../../../images/Icon-more.svg");
+  mask-image: url("../../images/Icon-more.svg");
+  -webkit-mask-image: url("../../images/Icon-more.svg");
   background-color: #b2b7bb;
 }
 .title {
@@ -44,8 +44,8 @@
 }
 
 .title > .arrow {
-  mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
-  -webkit-mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
+  mask-image: url("../../images/icon-punta-flecha-bottom.svg");
+  -webkit-mask-image: url("../../images/icon-punta-flecha-bottom.svg");
   background-color: #99a0a5;
   width: 24px;
   height: 24px;

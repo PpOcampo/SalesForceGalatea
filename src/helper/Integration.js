@@ -1,4 +1,4 @@
-import { IntegrationApiFactory } from "../../../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
+import { IntegrationApiFactory } from "../lib/bower/cw-galatea-integration-api-js-bundle/cw-galatea-integration-api-js-bundle.js";
 
 export default class Integration {
   static instance;

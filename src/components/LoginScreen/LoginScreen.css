@@ -90,8 +90,8 @@
 
 .divInput.password > div {
   background-color: #667178;
-  mask-image: url("../../../images/Icon-not-show-pass.svg");
-  -webkit-mask-image: url("../../../images/Icon-not-show-pass.svg");
+  mask-image: url("../../images/Icon-not-show-pass.svg");
+  -webkit-mask-image: url("../../images/Icon-not-show-pass.svg");
   mask-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-mask-repeat: no-repeat;
@@ -101,8 +101,8 @@
 }
 
 .divInput.password.show > div {
-  mask-image: url("../../../images/icon-pass-show.svg");
-  -webkit-mask-image: url("../../../images/icon-pass-show.svg");
+  mask-image: url("../../images/icon-pass-show.svg");
+  -webkit-mask-image: url("../../images/icon-pass-show.svg");
 }
 
 .alert > div {

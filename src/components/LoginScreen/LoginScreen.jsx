@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Button, Form, FormGroup, Spinner, Alert } from "reactstrap";
-import * as LCC from "lightning-container";
-
-import image from "../../../images/agentLogo.png";
+import image from "../../images/agentLogo.png";
 import styles from "./LoginScreen.css";
 
 class LoginScreen extends Component {

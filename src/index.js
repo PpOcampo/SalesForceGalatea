@@ -1,1 +1,1 @@
-import Container from "./js/components/container/Container.jsx";
+import Container from "./components/Container/Container.jsx";

@@ -46,8 +46,8 @@
 }
 
 .phoneNumber > .logo {
-  mask-image: url("../../../images/Icon-account.svg");
-  -webkit-mask-image: url("../../../images/Icon-account.svg");
+  mask-image: url("../../images/Icon-account.svg");
+  -webkit-mask-image: url("../../images/Icon-account.svg");
   background-color: #99a0a5;
   width: 24px;
   height: 24px;
@@ -84,12 +84,12 @@
   background-color: #eb1f1f;
 }
 
-.btn > div {
+.btn > div.hangUp {
   width: 48px;
   height: 48px;
   background-color: white;
-  mask-image: url("../../../images/Icon-call.svg");
-  -webkit-mask-image: url("../../../images/Icon-call.svg");
+  mask-image: url("../../images/Icon-call.svg");
+  -webkit-mask-image: url("../../images/Icon-call.svg");
   mask-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-mask-repeat: no-repeat;
@@ -115,7 +115,7 @@
   height: 80px;
   flex-direction: row;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   background-color: #192a34;
 }
@@ -213,4 +213,58 @@ button.dispositionBtn.btn-primary:not(:disabled):not(.disabled):active,
   color: #fff;
   background-color: #ffbb00;
   border-color: #ffbb00;
+}
+
+.btnAdvance {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: inherit;
+  border: 1px solid #4c5961;
+  cursor: pointer;
+}
+
+.btnAdvance:hover {
+  background-color: #cc9e1f75;
+  border-color: #cc9e1f;
+}
+
+.btnAdvance:active {
+  background-color: #cc9e1fb0;
+  border-color: #cc9e1f;
+}
+
+.btnAdvance > div {
+  width: 48px;
+  height: 48px;
+  background-color: #cc9e1f;
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+.btnAdvance > div.mute {
+  mask-image: url("../../images/Icon-volume-high.svg");
+  -webkit-mask-image: url("../../images/Icon-volume-high.svg");
+}
+.btnAdvance > div.mute.active {
+  mask-image: url("../../images/Icon-mute.svg");
+  -webkit-mask-image: url("../../images/Icon-mute.svg");
+}
+
+.btnAdvance > div.hold {
+  mask-image: url("../../images/Icon-pause.svg");
+  -webkit-mask-image: url("../../images/Icon-pause.svg");
+}
+
+.btnAdvance > div.hold.active {
+  mask-image: url("../../images/Icon-play.svg");
+  -webkit-mask-image: url("../../images/Icon-play.svg");
+}
+
+.btnAdvance > div.xfer {
+  mask-image: url("../../images/Icon-transfer.svg");
+  -webkit-mask-image: url("../../images/Icon-transfer.svg");
 }

@@ -7,12 +7,12 @@
   ],
   "license": "ISC",
   "homepage": "https://bitbucket.org/nuxibatechnologies/global-logger-services-js-bundle",
-  "version": "2019.9.25",
-  "_release": "2019.9.25",
+  "version": "2020.2.11",
+  "_release": "2020.2.11",
   "_resolution": {
     "type": "version",
-    "tag": "v2019.9.25",
-    "commit": "e8b87029c831facb32e54d45f782d7ad88cc1861"
+    "tag": "v2020.2.11",
+    "commit": "30338bc1eb2138fc474383342f1c02c4469bc4ce"
   },
   "_source": "https://bitbucket.org/nuxibatechnologies/global-logger-services-js-bundle.git",
   "_target": "*",

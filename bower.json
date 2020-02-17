@@ -5,8 +5,8 @@
   "authors": ["Copyright © 2020 Nuxiba Technologies Inc. All Rights Reserved."],
   "license": "MIT",
   "dependencies": {
-    "global-cipher-services-js-bundle": "https://bitbucket.org/nuxibatechnologies/global-cipher-services-js-bundle.git",
-    "global-logger-services-js-bundle": "https://bitbucket.org/nuxibatechnologies/global-logger-services-js-bundle.git",
-    "cw-galatea-integration-api-js-bundle": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle.git"
+    "global-cipher-services-js-bundle": "https://bitbucket.org/nuxibatechnologies/global-cipher-services-js-bundle.git#latest",
+    "global-logger-services-js-bundle": "https://bitbucket.org/nuxibatechnologies/global-logger-services-js-bundle.git#latest",
+    "cw-galatea-integration-api-js-bundle": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle.git#latest"
   }
 }

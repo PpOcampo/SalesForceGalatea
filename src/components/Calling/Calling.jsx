@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Input, Button } from "reactstrap";
 import styles from "./Calling.css";
 import { CircularProgressbar } from "react-circular-progressbar";
-import log from "./Logger.jsx";
+import { log } from "../../helper/UtilsHelper.js";
 import "!style-loader!css-loader!react-circular-progressbar/dist/styles.css";
-import Integration from "../helper/Integration.js";
-import IntegrationListener from "../helper/IntegrationListeners.js";
+import Integration from "../../helper/Integration.js";
+import IntegrationListener from "../../helper/IntegrationListeners.js";
 import * as LCC from "lightning-container";
 
 class Calling extends Component {
@@ -20,7 +20,9 @@ class Calling extends Component {
       wrapUpTime: -1,
       disposition: null,
       dispositionSelected: -1,
-      subDispositionSelected: -1
+      subDispositionSelected: -1,
+      mute: false,
+      hold: false
     };
   }
 
@@ -167,6 +169,19 @@ class Calling extends Component {
     });
   };
 
+  onHold = () => {
+    log("onHold: ");
+    Integration.getInstance().HoldCall();
+    this.setState({ hold: !this.state.hold });
+  };
+
+  onMute = () => {
+    let mute = !this.state.mute;
+    log("Mute: ", mute);
+    Integration.getInstance().SetMute(mute);
+    this.setState({ mute });
+  };
+
   mapData = data => {
     return data.map((value, index) => (
       <>
@@ -210,7 +225,7 @@ class Calling extends Component {
 
   render() {
     const { callData, show, labels } = this.props;
-    const { data } = this.state;
+    const { data, mute, hold } = this.state;
     return show && callData ? (
       <div className={styles.main}>
         <div className={styles.number}>
@@ -294,8 +309,17 @@ class Calling extends Component {
               {this.inputData()}
             </div>
             <div className={styles.footer}>
+              <div className={styles.btnAdvance} onClick={this.onMute}>
+                <div className={`${styles.mute} ${mute && styles.active}`} />
+              </div>
               <div className={` ${styles.btn}`} onClick={this.onHangUp}>
-                <div />
+                <div className={styles.hangUp} />
+              </div>
+              <div className={styles.btnAdvance} onClick={this.onHold}>
+                <div className={`${styles.hold} ${hold && styles.active}`} />
+              </div>
+              <div className={styles.btnAdvance}>
+                <div className={styles.xfer} />
               </div>
             </div>
           </>

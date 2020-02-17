@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import * as LCC from "lightning-container";
 import styles from "./MainScreen.css";
-import BaseBtn from "./BaseBtn.jsx";
-import Keyboard from "./Keyboard.jsx";
-import Header from "./Header.jsx";
-import StatusBar from "./StatusBar.jsx";
-import NotReady from "./NotReady.jsx";
-import Calling from "./Calling.jsx";
-import Locked from "./Locked.jsx";
-import log from "./Logger.jsx";
+import Keyboard from "../Keyboard/Keyboard.jsx";
+import Header from "../Header/Header.jsx";
+import StatusBar from "../StatusBar/StatusBar.jsx";
+import NotReady from "../NotReady/NotReady.jsx";
+import Calling from "../Calling/Calling.jsx";
+import Locked from "../Locked/Locked.jsx";
+import { log } from "../../helper/UtilsHelper.js";
+import * as utils from "../../helper/UtilsHelper.js";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -70,15 +69,19 @@ class MainScreen extends Component {
   }
 
   afterHangUp = (agentStatusState, wrongNumberState, hangUpState) => {
-    if (agentStatusState === "Ready" && wrongNumberState && hangUpState) {
+    if (
+      utils.isStatusReady(agentStatusState) &&
+      wrongNumberState &&
+      hangUpState
+    ) {
       this.setState({ wrongNumber: false, hangUp: false });
     }
   };
 
   onWrongNumber = (agentStatusPrevState, agentStatusCurrentState) => {
     if (
-      agentStatusPrevState === "Callout" &&
-      agentStatusCurrentState === "Ready"
+      utils.isStatusCallOut(agentStatusPrevState) &&
+      utils.isStatusReady(agentStatusCurrentState)
     ) {
       log("Wrong number");
       this.setState({ wrongNumber: true });
