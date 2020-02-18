@@ -7,6 +7,7 @@ import "!style-loader!css-loader!react-circular-progressbar/dist/styles.css";
 import Integration from "../../helper/Integration.js";
 import IntegrationListener from "../../helper/IntegrationListeners.js";
 import * as LCC from "lightning-container";
+import XferScreen from "../XferScreen/XferScreen.jsx";
 
 class Calling extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ class Calling extends Component {
       dispositionSelected: -1,
       subDispositionSelected: -1,
       mute: false,
-      hold: false
+      hold: false,
+      xferScreen: false
     };
   }
 
@@ -150,7 +152,13 @@ class Calling extends Component {
   onWrapsEnd = () => {
     this.handleStopClick();
     this.props.onWrapsEnd();
-    this.setState({ wrapUpTime: -1, data: null });
+    this.setState({
+      wrapUpTime: -1,
+      data: null,
+      hold: false,
+      mute: false,
+      xferScreen: false
+    });
   };
 
   inputData = () => {
@@ -223,105 +231,121 @@ class Calling extends Component {
     this.onWrapsEnd();
   };
 
+  onXfer = () => {
+    this.setState({ xferScreen: !this.state.xferScreen });
+  };
+
   render() {
     const { callData, show, labels } = this.props;
-    const { data, mute, hold } = this.state;
+    const { data, mute, hold, xferScreen } = this.state;
     return show && callData ? (
       <div className={styles.main}>
-        <div className={styles.number}>
-          {this.state.running && (
-            <div className={styles.timer}>
-              <span>{this.zeroPad(this.state.hours)}:</span>
-              <span>{this.zeroPad(this.state.minutes)}:</span>
-              <span>{this.zeroPad(this.state.seconds)}</span>
-            </div>
-          )}
-
-          <div className={styles.title}>
-            <div className={styles.label}>{labels.campaign}</div>
-            <div className={styles.name}>{callData.campaign.Description}</div>
-          </div>
-
-          <div className={styles.phoneNumber}>
-            <div className={styles.logo} />
-            <div className={styles.num}>{callData.phoneNum}</div>
-          </div>
-        </div>
-
-        {this.props.status.toLowerCase() === "wrapup" ? (
-          <>
-            <div className={styles.progressBar}>
-              <CircularProgressbar
-                value={this.state.wrapUpTime}
-                maxValue={data.WrapUpTime}
-                text={`${this.state.wrapUpTime}`}
-                styles={{
-                  path: {
-                    stroke: `#FFA61D`,
-                    strokeLinecap: "butt",
-                    transition: "stroke-dashoffset 0.5s ease 0s",
-                    transform: "rotate(0.25turn)",
-                    transformOrigin: "center center"
-                  },
-                  path: {
-                    stroke: `#FFA61D`
-                  },
-                  trail: {
-                    stroke: `#192A34`
-                  },
-                  text: {
-                    fill: "#FFA61D",
-                    fontSize: "16px"
-                  }
-                }}
-              />
-            </div>
-            <div>Calificar llamada</div>
-            <Input
-              className={styles.selectInput}
-              type="select"
-              name="select"
-              id="dispositionSelection"
-              onChange={this.onDispositionSelection}
-            >
-              <option hidden selected>
-                Seleccione una opcion
-              </option>
-              {this.state.disposition &&
-                this.state.disposition.map(disposition => (
-                  <option value={disposition.Id}>
-                    {disposition.Description}
-                  </option>
-                ))}
-            </Input>
-
-            <Button
-              onClick={this.saveDisposition}
-              className={styles.dispositionBtn}
-            >
-              CALIFICAR
-            </Button>
-          </>
+        {xferScreen ? (
+          <XferScreen></XferScreen>
         ) : (
           <>
-            <div className={styles.callData}>
-              <div className={styles.dataTitle}>Datos del cliente</div>
-              {this.inputData()}
+            <div className={styles.number}>
+              {this.state.running && (
+                <div className={styles.timer}>
+                  <span>{this.zeroPad(this.state.hours)}:</span>
+                  <span>{this.zeroPad(this.state.minutes)}:</span>
+                  <span>{this.zeroPad(this.state.seconds)}</span>
+                </div>
+              )}
+
+              <div className={styles.title}>
+                <div className={styles.label}>{labels.campaign}</div>
+                <div className={styles.name}>
+                  {callData.campaign.Description}
+                </div>
+              </div>
+
+              <div className={styles.phoneNumber}>
+                <div className={styles.logo} />
+                <div className={styles.num}>{callData.phoneNum}</div>
+              </div>
             </div>
-            <div className={styles.footer}>
-              <div className={styles.btnAdvance} onClick={this.onMute}>
-                <div className={`${styles.mute} ${mute && styles.active}`} />
-              </div>
-              <div className={` ${styles.btn}`} onClick={this.onHangUp}>
-                <div className={styles.hangUp} />
-              </div>
-              <div className={styles.btnAdvance} onClick={this.onHold}>
-                <div className={`${styles.hold} ${hold && styles.active}`} />
-              </div>
-              <div className={styles.btnAdvance}>
-                <div className={styles.xfer} />
-              </div>
-            </div>
+
+            {this.props.status.toLowerCase() === "wrapup" ? (
+              <>
+                <div className={styles.progressBar}>
+                  <CircularProgressbar
+                    value={this.state.wrapUpTime}
+                    maxValue={data.WrapUpTime}
+                    text={`${this.state.wrapUpTime}`}
+                    styles={{
+                      path: {
+                        stroke: `#FFA61D`,
+                        strokeLinecap: "butt",
+                        transition: "stroke-dashoffset 0.5s ease 0s",
+                        transform: "rotate(0.25turn)",
+                        transformOrigin: "center center"
+                      },
+                      path: {
+                        stroke: `#FFA61D`
+                      },
+                      trail: {
+                        stroke: `#192A34`
+                      },
+                      text: {
+                        fill: "#FFA61D",
+                        fontSize: "16px"
+                      }
+                    }}
+                  />
+                </div>
+                <div>Calificar llamada</div>
+                <Input
+                  className={styles.selectInput}
+                  type="select"
+                  name="select"
+                  id="dispositionSelection"
+                  onChange={this.onDispositionSelection}
+                >
+                  <option hidden selected>
+                    Seleccione una opcion
+                  </option>
+                  {this.state.disposition &&
+                    this.state.disposition.map(disposition => (
+                      <option value={disposition.Id}>
+                        {disposition.Description}
+                      </option>
+                    ))}
+                </Input>
+
+                <Button
+                  onClick={this.saveDisposition}
+                  className={styles.dispositionBtn}
+                >
+                  CALIFICAR
+                </Button>
+              </>
+            ) : (
+              <>
+                <div className={styles.callData}>
+                  <div className={styles.dataTitle}>Datos del cliente</div>
+                  {this.inputData()}
+                </div>
+                <div className={styles.footer}>
+                  <div className={styles.btnAdvance} onClick={this.onMute}>
+                    <div
+                      className={`${styles.mute} ${mute && styles.active}`}
+                    />
+                  </div>
+                  <div className={` ${styles.btn}`} onClick={this.onHangUp}>
+                    <div className={styles.hangUp} />
+                  </div>
+                  <div className={styles.btnAdvance} onClick={this.onHold}>
+                    <div
+                      className={`${styles.hold} ${hold && styles.active}`}
+                    />
+                  </div>
+                  <div className={styles.btnAdvance} onClick={this.onXfer}>
+                    <div className={styles.xfer} />
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>

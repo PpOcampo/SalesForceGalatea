@@ -1,0 +1,73 @@
+.main {
+  width: 296px;
+  height: 460px;
+  background-color: blue;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  width: 100%;
+  height: 56px;
+  background-color: green;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header > div.back {
+  width: 32px;
+  height: 32px;
+  mask-image: url("../../images/icon-punta-flecha-bottom.svg");
+  -webkit-mask-image: url("../../images/icon-punta-flecha-bottom.svg");
+  background-color: #99a0a5;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+  transform: rotate(180deg);
+  cursor: pointer;
+}
+
+.header > div.lupa {
+  width: 24px;
+  height: 24px;
+  mask-image: url("../../images/icon-lupa.svg");
+  -webkit-mask-image: url("../../images/icon-lupa.svg");
+  background-color: #99a0a5;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+  cursor: pointer;
+}
+
+.tabs {
+  width: 100%;
+  height: 52px;
+  background-color: yellow;
+  display: flex;
+  flex-direction: row;
+}
+
+.tabs > div {
+  width: 33.33%;
+  height: 100%;
+}
+
+.content {
+  width: 100%;
+  height: 284px;
+  max-height: 284px;
+  overflow-y: auto;
+  background-color: purple;
+}
+
+.footer {
+  width: 100%;
+  height: 68px;
+
+  background-color: salmon;
+}

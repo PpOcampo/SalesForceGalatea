@@ -41,7 +41,7 @@ class Container extends Component {
     utils.requestSalesForceConfiguration();
     this.integration = Integration.getInstance();
     this.setConfiguration({
-      server: "121.nuxiba.com",
+      server: "demo.nuxiba.com",
       language: "es",
       autologin: false,
       softphoneType: "WebRTC"
@@ -124,7 +124,7 @@ class Container extends Component {
       clientName,
       callKey
     } = this.state.manualCallData;
-    this.integration.makeManualCall(phoneNum, campaignID, clientName, callKey);
+    // this.integration.makeManualCall(phoneNum, campaignID, clientName, callKey);
   };
 
   onCallRecieved = callDataRecived => {
@@ -201,7 +201,7 @@ class Container extends Component {
     this.setState({
       manualCallData: { phoneNum, campaignID: campaign.ID, clientName, callKey }
     });
-    this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey); //tambien arriba
+    // this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey); //tambien arriba
   };
 
   hangUp = () => {
