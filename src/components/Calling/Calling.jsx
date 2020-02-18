@@ -240,8 +240,9 @@ class Calling extends Component {
     const { data, mute, hold, xferScreen } = this.state;
     return show && callData ? (
       <div className={styles.main}>
+        {/* {false ? ( */}
         {xferScreen ? (
-          <XferScreen></XferScreen>
+          <XferScreen onBackBtn={this.onXfer}></XferScreen>
         ) : (
           <>
             <div className={styles.number}>

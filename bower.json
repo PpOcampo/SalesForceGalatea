@@ -7,6 +7,6 @@
   "dependencies": {
     "global-cipher-services-js-bundle": "https://bitbucket.org/nuxibatechnologies/global-cipher-services-js-bundle.git#latest",
     "global-logger-services-js-bundle": "https://bitbucket.org/nuxibatechnologies/global-logger-services-js-bundle.git#latest",
-    "cw-galatea-integration-api-js-bundle": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle.git#latest"
+    "cw-galatea-integration-api-js-bundle": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle-release.git#latest"
   }
 }

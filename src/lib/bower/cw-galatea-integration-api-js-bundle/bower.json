@@ -10,7 +10,7 @@
     "integration",
     "API"
   ],
-  "homepage": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle",
+  "homepage": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle-release",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -22,6 +22,6 @@
     "coverage"
   ],
   "dependencies": {
-    "global-web-socket-client-js-bundle": "global-web-socket-client-js-bundle#latest"
+    "global-web-socket-client-js-bundle": "global-web-socket-client-js-bundle-release#latest"
   }
 }

@@ -12,7 +12,7 @@
     "client",
     "js"
   ],
-  "homepage": "https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js-bundle",
+  "homepage": "https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js-bundle-release",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -24,16 +24,16 @@
     "coverage"
   ],
   "dependencies": {
-    "global-logger-services-js-bundle": "global-logger-services-js-bundle#latest"
+    "global-logger-services-js-bundle": "global-logger-services-js-bundle-release#latest"
   },
   "version": "0.0.5",
   "_release": "0.0.5",
   "_resolution": {
     "type": "version",
     "tag": "v0.0.5",
-    "commit": "1f6a3cf318a87cb6de628724b74391762a0c3d59"
+    "commit": "301ecf827179cb0a827e6632c6910c06d3a01436"
   },
-  "_source": "https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js-bundle.git",
+  "_source": "https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js-bundle-release.git",
   "_target": "*",
-  "_originalSource": "global-web-socket-client-js-bundle"
+  "_originalSource": "global-web-socket-client-js-bundle-release"
 }

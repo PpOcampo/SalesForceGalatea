@@ -1270,27 +1270,19 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
         }
       }
 
-      var usertype = 'AGENT';
-
       var LoggerInstance = function () {
         function LoggerInstance() {
           _classCallCheck(this, LoggerInstance);
         }
 
         _createClass(LoggerInstance, null, [{
-          key: 'setUsertype',
-          value: function setUsertype(type) {
-            usertype = type;
-            console.log(usertype);
-          }
-        }, {
           key: 'Trace',
           value: function Trace() {
             for (var _len = arguments.length, msg = Array(_len), _key = 0; _key < _len; _key++) {
               msg[_key] = arguments[_key];
             }
 
-            _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Trace', msg);
+            _LoggerDispatcher.LoggerDispatcher.Dispatch('Trace', msg);
           }
         }, {
           key: 'Debug',
@@ -1299,7 +1291,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
               msg[_key2] = arguments[_key2];
             }
 
-            _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Debug', msg);
+            _LoggerDispatcher.LoggerDispatcher.Dispatch('Debug', msg);
           }
         }, {
           key: 'Warning',
@@ -1308,7 +1300,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
               msg[_key3] = arguments[_key3];
             }
 
-            _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Warn', msg);
+            _LoggerDispatcher.LoggerDispatcher.Dispatch('Warn', msg);
           }
         }, {
           key: 'Info',
@@ -1317,7 +1309,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
               msg[_key4] = arguments[_key4];
             }
 
-            _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Info', msg);
+            _LoggerDispatcher.LoggerDispatcher.Dispatch('Info', msg);
           }
         }, {
           key: 'Error',
@@ -1326,7 +1318,16 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
               msg[_key5] = arguments[_key5];
             }
 
-            _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Error', msg);
+            _LoggerDispatcher.LoggerDispatcher.Dispatch('Error', msg);
+          }
+        }, {
+          key: 'Trace',
+          value: function Trace() {
+            for (var _len6 = arguments.length, msg = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+              msg[_key6] = arguments[_key6];
+            }
+
+            _LoggerDispatcher.LoggerDispatcher.Dispatch('Trace', msg);
           }
         }]);
 
@@ -1378,28 +1379,28 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
         _createClass(LoggerDispatcher, null, [{
           key: 'Dispatch',
-          value: function Dispatch(usertype, severity, message) {
+          value: function Dispatch(severity, message) {
 
             _LoggerConfigurator.LoggerConfigurator.Init(function () {
-              LoggerDispatcher.DefaultOutput(usertype, severity, message);
-              LoggerDispatcher.RemoteOutput(usertype, severity, message);
+              LoggerDispatcher.DefaultOutput(severity, message);
+              LoggerDispatcher.RemoteOutput(severity, message);
             });
           }
         }, {
           key: 'RemoteOutput',
-          value: function RemoteOutput(usertype, severity, message) {
+          value: function RemoteOutput(severity, message) {
             if (_Constants.Constants._CONFIGURATIONS["_ENABLE_AJAX"]) {
               if (_LoggerUtils.LoggerUtils.IsAllowedToLogBySeverity(severity)) {
-                _LoggerRestClient.LoggerRestClient.log(usertype, severity, message);
+                _LoggerRestClient.LoggerRestClient.log(severity, message);
               }
             }
           }
         }, {
           key: 'DefaultOutput',
-          value: function DefaultOutput(usertype, severity, message) {
+          value: function DefaultOutput(severity, message) {
             if (_Constants.Constants._CONFIGURATIONS["_ENABLE_DEFAULT"]) {
               if (_LoggerUtils.LoggerUtils.IsAllowedToLogBySeverity(severity)) {
-                console.log("[" + usertype + "]" + "[" + severity + "]" + _LoggerUtils.LoggerUtils.ToStringMessage(message));
+                console.log("[" + severity + "]" + _LoggerUtils.LoggerUtils.ToStringMessage(message));
               }
             }
           }
@@ -1457,9 +1458,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
         _createClass(LoggerRestClient, null, [{
           key: 'log',
-          value: function log(usertype, severity, message) {
+          value: function log(severity, message) {
             if (_Constants.Constants._CONFIGURATIONS["_ENABLE_AJAX"]) {
-              _axios2.default.post(_Constants.Constants._CONFIGURATIONS["_SERVER"] + _Constants.Constants._CONFIGURATIONS["_DOMAIN"], { UserType: usertype, Message: _LoggerUtils.LoggerUtils.ToStringMessage(message), Severity: severity }).then(function (response) {}).catch(function (error) {
+              _axios2.default.post(_Constants.Constants._CONFIGURATIONS["_SERVER"] + _Constants.Constants._CONFIGURATIONS["_DOMAIN"], { Message: _LoggerUtils.LoggerUtils.ToStringMessage(message), Severity: severity }).then(function (response) {}).catch(function (error) {
                 console.log("It was not possible to send the message");
               });
             }

@@ -1,73 +1,73 @@
 import { log } from "../helper/UtilsHelper.js";
 
 export default class IntegrationListener {
-  static onDisposition = delagateFunction => {
+  static onDisposition = delegateFunction => {
     window.onDispositions = function(disposition) {
       log("onDispositions=>", disposition);
-      delagateFunction(disposition);
+      delegateFunction(disposition);
     };
   };
 
-  static onAgentStatus = delagateFunction => {
+  static onAgentStatus = delegateFunction => {
     window.onAgentStatus = function(agentStatus) {
       log("agentStatus=>", agentStatus);
-      delagateFunction(agentStatus);
+      delegateFunction(agentStatus);
     };
   };
 
-  static onLogin = delagateFunction => {
+  static onLogin = delegateFunction => {
     window.onLogin = function() {
       log("Login success");
-      delagateFunction();
+      delegateFunction();
     };
   };
 
-  static onRemoteLoginError = delagateFunction => {
+  static onRemoteLoginError = delegateFunction => {
     window.remoteLoginError = function(message) {
       log("onRemoteLoginError=>", message);
-      delagateFunction(message);
+      delegateFunction(message);
     };
   };
 
-  static onLogOut = delagateFunction => {
+  static onLogOut = delegateFunction => {
     window.onLogOut = function() {
       log("onLogOut");
-      delagateFunction();
+      delegateFunction();
     };
   };
 
-  static onUnavailableTypes = delagateFunction => {
+  static onUnavailableTypes = delegateFunction => {
     window.onUnavailableTypes = function(unavailables) {
       log("onUnavailableTypes=>", unavailables);
-      delagateFunction(unavailables);
+      delegateFunction(unavailables);
     };
   };
 
-  static onWrongNumber = delagateFunction => {
+  static onWrongNumber = delegateFunction => {
     window.wrongNumber = function(phoneNumber) {
       log("onWrongNumber=> " + phoneNumber + " ,but dialing anyway");
-      delagateFunction(phoneNumber);
+      delegateFunction(phoneNumber);
     };
   };
 
-  static onCampaigns = delagateFunction => {
+  static onCampaigns = delegateFunction => {
     window.onCampaigns = function(json) {
       log("onCampaigns=>", json);
-      delagateFunction(json);
+      delegateFunction(json);
     };
   };
 
-  static onDialingNumber = delagateFunction => {
+  static onDialingNumber = delegateFunction => {
     window.onDialingNumber = function(message) {
       log("onDialingNumber=>", message);
-      delagateFunction(message);
+      delegateFunction(message);
     };
   };
 
-  static onCallRecieved = delagateFunction => {
+  static onCallRecieved = delegateFunction => {
     window.onCallRecieved = function(callDataRecived) {
       log("onDialingNumber=>", callDataRecived);
-      delagateFunction(callDataRecived);
+      delegateFunction(callDataRecived);
     };
   };
 

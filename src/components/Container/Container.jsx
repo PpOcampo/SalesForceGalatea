@@ -7,9 +7,9 @@ import MainScreen from "../MainScreen/MainScreen.jsx";
 import LoginScreen from "../LoginScreen/LoginScreen.jsx";
 import getLabels from "../../languages/selector.js";
 import { log } from "../../helper/UtilsHelper.js";
+import * as utils from "../../helper/UtilsHelper.js";
 import IntegrationListener from "../../helper/IntegrationListeners.js";
 import Integration from "../../helper/Integration.js";
-import * as utils from "../../helper/UtilsHelper.js";
 
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
 
@@ -40,12 +40,14 @@ class Container extends Component {
     LCC.addMessageHandler(this.salesForceListener);
     utils.requestSalesForceConfiguration();
     this.integration = Integration.getInstance();
-    this.setConfiguration({
-      server: "demo.nuxiba.com",
-      language: "es",
-      autologin: false,
-      softphoneType: "WebRTC"
-    });
+    setTimeout(() => {
+      this.setConfiguration({
+        server: "121.nuxiba.com",
+        language: "es",
+        autologin: false,
+        softphoneType: "WebRTC"
+      });
+    }, 500);
   }
 
   salesForceListener = message => {
@@ -53,7 +55,7 @@ class Container extends Component {
     let { SALESFORCE_EVENT } = utils;
     switch (message.name) {
       case SALESFORCE_EVENT.onConfiguration:
-        this.setConfiguration(message.value);
+        setTimeout(() => this.setConfiguration(message.value), 500);
         break;
       case SALESFORCE_EVENT.onCredentials:
         this.onLoginSubmit(

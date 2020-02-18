@@ -220,7 +220,7 @@ exports.SingletonWebSocket = SingletonWebSocket;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.IPHelper = undefined;
 
@@ -231,71 +231,67 @@ var _singletonWebSocket = __webpack_require__(0);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var IPHelper = exports.IPHelper = function () {
-  function IPHelper() {
-    _classCallCheck(this, IPHelper);
+    function IPHelper() {
+        _classCallCheck(this, IPHelper);
 
-    this.ip = 0;
-  }
-
-  _createClass(IPHelper, [{
-    key: "GetIp",
-    value: function GetIp() {
-      if ("ActiveXObject" in window) {
-        try {
-          this.getIEIPAddress();
-        } catch (err) {}
-      } else {
-        this.getIPAddress();
-      }
+        this.ip = 0;
     }
-  }, {
-    key: "getIEIPAddress",
-    value: function getIEIPAddress() {
-      var locator = new window.ActiveXObject("WbemScripting.SWbemLocator");
-      var service = locator.ConnectServer(".");
-      var properties = service.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration");
-      var e = new window.Enumerator(properties);
-      for (; !e.atEnd(); e.moveNext()) {
-        var p = e.item();
-        if (p.IPAddress != null) {
-          _singletonWebSocket.SingletonWebSocket.setIPAddress(p.IPAddress(0));
-          break;
+
+    _createClass(IPHelper, [{
+        key: "GetIp",
+        value: function GetIp() {
+            if ("ActiveXObject" in window) {
+                try {
+                    this.getIEIPAddress();
+                } catch (err) {}
+            } else {
+                this.getIPAddress();
+            }
         }
-      }
-    }
-  }, {
-    key: "getIPAddress",
-    value: function getIPAddress() {
-      window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection; //compatibility for firefox and chrome
-      if (window.RTCPeerConnection) {
-        var pc = new RTCPeerConnection({ iceServers: [] }),
-            noop = function noop() {};
-        pc.createDataChannel(""); //create a bogus data channel
-        var _this = this;
-        pc.createOffer(pc.setLocalDescription.bind(pc), noop); // create offer and set local description
-        pc.onicecandidate = function (ice) {
-          //listen for candidate events
-          if (!ice || !ice.candidate || !ice.candidate.candidate) return;
-          if (ice.candidate.foundation) {
-            _this.setIdentifier(ice.candidate.foundation);
-          } else {
-            var ip = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
-            _this.setIdentifier(ip);
-          }
-          pc.onicecandidate = noop;
-        };
-      } else {
-        this.setIP("");
-      }
-    }
-  }, {
-    key: "setIdentifier",
-    value: function setIdentifier(ipAddress) {
-      _singletonWebSocket.SingletonWebSocket.setIPAddress(ipAddress);
-    }
-  }]);
+    }, {
+        key: "getIEIPAddress",
+        value: function getIEIPAddress() {
+            var locator = new window.ActiveXObject("WbemScripting.SWbemLocator");
+            var service = locator.ConnectServer(".");
+            var properties = service.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration");
+            var e = new window.Enumerator(properties);
+            for (; !e.atEnd(); e.moveNext()) {
+                var p = e.item();
+                if (p.IPAddress != null) {
+                    _singletonWebSocket.SingletonWebSocket.setIPAddress(p.IPAddress(0));
+                    break;
+                }
+            }
+        }
+    }, {
+        key: "getIPAddress",
+        value: function getIPAddress() {
+            window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection; //compatibility for firefox and chrome
+            if (window.RTCPeerConnection) {
+                var pc = new RTCPeerConnection({ iceServers: [] }),
+                    noop = function noop() {};
+                pc.createDataChannel(""); //create a bogus data channel
+                var _this = this;
+                pc.createOffer(pc.setLocalDescription.bind(pc), noop); // create offer and set local description
+                pc.onicecandidate = function (ice) {
+                    //listen for candidate events
+                    if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+                    var ip = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
+                    _this.setIP(ip);
+                    pc.onicecandidate = noop;
+                };
+            } else {
+                this.setIP("");
+            }
+        }
+    }, {
+        key: "setIP",
+        value: function setIP(ipAddress) {
+            _singletonWebSocket.SingletonWebSocket.setIPAddress(ipAddress);
+        }
+    }]);
 
-  return IPHelper;
+    return IPHelper;
 }();
 
 /***/ }),
@@ -1705,27 +1701,19 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                 }
               }
 
-              var usertype = 'AGENT';
-
               var LoggerInstance = function () {
                 function LoggerInstance() {
                   _classCallCheck(this, LoggerInstance);
                 }
 
                 _createClass(LoggerInstance, null, [{
-                  key: 'setUsertype',
-                  value: function setUsertype(type) {
-                    usertype = type;
-                    console.log(usertype);
-                  }
-                }, {
                   key: 'Trace',
                   value: function Trace() {
                     for (var _len = arguments.length, msg = Array(_len), _key = 0; _key < _len; _key++) {
                       msg[_key] = arguments[_key];
                     }
 
-                    _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Trace', msg);
+                    _LoggerDispatcher.LoggerDispatcher.Dispatch('Trace', msg);
                   }
                 }, {
                   key: 'Debug',
@@ -1734,7 +1722,7 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                       msg[_key2] = arguments[_key2];
                     }
 
-                    _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Debug', msg);
+                    _LoggerDispatcher.LoggerDispatcher.Dispatch('Debug', msg);
                   }
                 }, {
                   key: 'Warning',
@@ -1743,7 +1731,7 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                       msg[_key3] = arguments[_key3];
                     }
 
-                    _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Warn', msg);
+                    _LoggerDispatcher.LoggerDispatcher.Dispatch('Warn', msg);
                   }
                 }, {
                   key: 'Info',
@@ -1752,7 +1740,7 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                       msg[_key4] = arguments[_key4];
                     }
 
-                    _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Info', msg);
+                    _LoggerDispatcher.LoggerDispatcher.Dispatch('Info', msg);
                   }
                 }, {
                   key: 'Error',
@@ -1761,7 +1749,16 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
                       msg[_key5] = arguments[_key5];
                     }
 
-                    _LoggerDispatcher.LoggerDispatcher.Dispatch(usertype, 'Error', msg);
+                    _LoggerDispatcher.LoggerDispatcher.Dispatch('Error', msg);
+                  }
+                }, {
+                  key: 'Trace',
+                  value: function Trace() {
+                    for (var _len6 = arguments.length, msg = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+                      msg[_key6] = arguments[_key6];
+                    }
+
+                    _LoggerDispatcher.LoggerDispatcher.Dispatch('Trace', msg);
                   }
                 }]);
 
@@ -1813,28 +1810,28 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
                 _createClass(LoggerDispatcher, null, [{
                   key: 'Dispatch',
-                  value: function Dispatch(usertype, severity, message) {
+                  value: function Dispatch(severity, message) {
 
                     _LoggerConfigurator.LoggerConfigurator.Init(function () {
-                      LoggerDispatcher.DefaultOutput(usertype, severity, message);
-                      LoggerDispatcher.RemoteOutput(usertype, severity, message);
+                      LoggerDispatcher.DefaultOutput(severity, message);
+                      LoggerDispatcher.RemoteOutput(severity, message);
                     });
                   }
                 }, {
                   key: 'RemoteOutput',
-                  value: function RemoteOutput(usertype, severity, message) {
+                  value: function RemoteOutput(severity, message) {
                     if (_Constants.Constants._CONFIGURATIONS["_ENABLE_AJAX"]) {
                       if (_LoggerUtils.LoggerUtils.IsAllowedToLogBySeverity(severity)) {
-                        _LoggerRestClient.LoggerRestClient.log(usertype, severity, message);
+                        _LoggerRestClient.LoggerRestClient.log(severity, message);
                       }
                     }
                   }
                 }, {
                   key: 'DefaultOutput',
-                  value: function DefaultOutput(usertype, severity, message) {
+                  value: function DefaultOutput(severity, message) {
                     if (_Constants.Constants._CONFIGURATIONS["_ENABLE_DEFAULT"]) {
                       if (_LoggerUtils.LoggerUtils.IsAllowedToLogBySeverity(severity)) {
-                        console.log("[" + usertype + "]" + "[" + severity + "]" + _LoggerUtils.LoggerUtils.ToStringMessage(message));
+                        console.log("[" + severity + "]" + _LoggerUtils.LoggerUtils.ToStringMessage(message));
                       }
                     }
                   }
@@ -1892,9 +1889,9 @@ var _typeof3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
                 _createClass(LoggerRestClient, null, [{
                   key: 'log',
-                  value: function log(usertype, severity, message) {
+                  value: function log(severity, message) {
                     if (_Constants.Constants._CONFIGURATIONS["_ENABLE_AJAX"]) {
-                      _axios2.default.post(_Constants.Constants._CONFIGURATIONS["_SERVER"] + _Constants.Constants._CONFIGURATIONS["_DOMAIN"], { UserType: usertype, Message: _LoggerUtils.LoggerUtils.ToStringMessage(message), Severity: severity }).then(function (response) {}).catch(function (error) {
+                      _axios2.default.post(_Constants.Constants._CONFIGURATIONS["_SERVER"] + _Constants.Constants._CONFIGURATIONS["_DOMAIN"], { Message: _LoggerUtils.LoggerUtils.ToStringMessage(message), Severity: severity }).then(function (response) {}).catch(function (error) {
                         console.log("It was not possible to send the message");
                       });
                     }
@@ -3911,8 +3908,8 @@ var IntegrationAPI = exports.IntegrationAPI = function () {
             this.Parameters.SingletonWebSocket.close();
         }
     }, {
-        key: "getIdentifier",
-        value: function getIdentifier() {
+        key: "getIpAddress",
+        value: function getIpAddress() {
             return this.Parameters.SingletonWebSocket._ip;
         }
     }, {

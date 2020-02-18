@@ -10,7 +10,7 @@
     "integration",
     "API"
   ],
-  "homepage": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle",
+  "homepage": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle-release",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -22,16 +22,16 @@
     "coverage"
   ],
   "dependencies": {
-    "global-web-socket-client-js-bundle": "global-web-socket-client-js-bundle#latest"
+    "global-web-socket-client-js-bundle": "global-web-socket-client-js-bundle-release#latest"
   },
-  "version": "121.41.2019093001",
-  "_release": "121.41.2019093001",
+  "version": "122.41.2020021701",
+  "_release": "122.41.2020021701",
   "_resolution": {
     "type": "version",
-    "tag": "v121.41.2019093001",
-    "commit": "a33ec1b8b1011dd31de56d4fd3e6d58fbcdb72ad"
+    "tag": "v122.41.2020021701",
+    "commit": "72bd9efb76ae1f15af95ee524436f703546a63f9"
   },
-  "_source": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle.git",
+  "_source": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle-release.git",
   "_target": "*",
-  "_originalSource": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle.git"
+  "_originalSource": "https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js-bundle-release.git"
 }

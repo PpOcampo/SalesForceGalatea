@@ -1,3 +1,3 @@
-# Global Web Socket Client JS #
+# Global Web Socket Client JS Release #
 
-Contains bundle file generated from project [Global Web Socket Client JS](https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js).
+Contains <Release> bundle file generated from project [Global Web Socket Client JS](https://bitbucket.org/nuxibatechnologies/global-web-socket-client-js).

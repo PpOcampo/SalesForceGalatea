@@ -84,6 +84,11 @@
   width: calc(100% - 20px);
 }
 
+.divInput > input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .divInput.password > input {
   width: calc(100% - 60px);
 }

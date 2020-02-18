@@ -9,10 +9,11 @@
 .header {
   width: 100%;
   height: 56px;
-  background-color: green;
+  background-color: #263640;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  color: #cccfd2;
 }
 
 .header > div.back {
@@ -47,14 +48,26 @@
 .tabs {
   width: 100%;
   height: 52px;
-  background-color: yellow;
+  background-color: #192a34;
   display: flex;
   flex-direction: row;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
 }
 
 .tabs > div {
   width: 33.33%;
   height: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border-bottom: 4px solid #fff0;
+  cursor: pointer;
+}
+
+.tabs > div.active {
+  border-bottom: 4px solid #cc9e1f;
 }
 
 .content {
@@ -63,11 +76,16 @@
   max-height: 284px;
   overflow-y: auto;
   background-color: purple;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .footer {
   width: 100%;
   height: 68px;
-
   background-color: salmon;
+}
+
+.radioBtn > label:checked::before {
+  background-color: salmon !important;
 }

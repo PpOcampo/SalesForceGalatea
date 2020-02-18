@@ -1,3 +1,3 @@
-# CW Galatea Integration API JS Bundle #
+# CW Galatea Integration API JS Bundle Release #
 
-Contains bundle file generated from project [CW Galatea Integration API JS](https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js).
+Contains <Release> bundle file generated from project [CW Galatea Integration API JS](https://bitbucket.org/nuxibatechnologies/cw-galatea-integration-api-js).
