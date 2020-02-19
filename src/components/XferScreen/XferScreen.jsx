@@ -1,14 +1,32 @@
 import React, { Component } from "react";
 import styles from "./XferScreen.css";
-import { CustomInput, FormGroup } from "reactstrap";
+import { CustomInput, FormGroup, Button } from "reactstrap";
+import IntegrationListener from "../../helper/IntegrationListeners.js";
+import { log } from "../../helper/UtilsHelper.js";
+import Integration from "../../helper/Integration.js";
 
 class XferScreen extends Component {
   state = {
-    activeTab: 0
+    activeTab: 0,
+    acdList: [],
+    agentList: [],
+    phoneList: [],
+    currentXfer: null
+  };
+
+  componentDidMount() {
+    IntegrationListener.onTransferOptions(this.onTransferOptions);
+  }
+
+  onTransferOptions = xferOptions => {
+    let acdList = xferOptions.data[0];
+    let phoneList = xferOptions.data[1];
+    let agentList = xferOptions.data[2];
+    this.setState({ acdList, agentList, phoneList });
   };
 
   onTabChange = activeTab => {
-    this.setState({ activeTab });
+    this.setState({ activeTab, currentXfer: null });
   };
 
   showContent = () => {
@@ -50,53 +68,49 @@ class XferScreen extends Component {
   };
 
   acdTab = () => {
-    return (
-      <>
-        {this.renderCheckList([
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19,
-          20
-        ])}
-      </>
-    );
+    return <>{this.renderCheckList(this.state.acdList)}</>;
   };
 
   agentTab = () => {
-    return <>{this.renderCheckList([1, 2, 3, 4, 5])}</>;
+    return <>{this.renderCheckList(this.state.agentList)}</>;
   };
 
   numberTab = () => {
-    return <>NumberTab</>;
+    return <>{this.renderCheckList(this.state.phoneList)}</>;
+  };
+
+  onXferSelect = (e, element) => {
+    if (e.currentTarget.checked) {
+      this.setState({ currentXfer: element });
+    }
+  };
+
+  blindXfer = () => {
+    let integration = Integration.getInstance();
+    if (!this.state.currentXfer) return;
+    switch (this.state.activeTab) {
+      case 1:
+        integration.transferCallToAgent(this.state.currentXfer.extid);
+      case 2:
+        integration.transferCallToPhoneNumber(this.state.currentXfer.number);
+      case 0:
+      default:
+        integration.transferCallToACD(this.state.currentXfer.inbound_id);
+    }
+    this.props.onBackBtn();
   };
 
   renderCheckList = list => {
     return (
       <FormGroup>
-        {list.map(element => (
+        {list.map((element, index) => (
           <CustomInput
             type="radio"
-            id={`chkList${element}`}
-            name="customRadio"
-            label="Select this custom radio"
-            color="warning"
+            id={`chkList${index}`}
+            name="radioXfer"
+            label={element.name}
             className={styles.radioBtn}
+            onChange={e => this.onXferSelect(e, element)}
           />
         ))}
       </FormGroup>
@@ -118,7 +132,9 @@ class XferScreen extends Component {
         </div>
         {this.tabMenu()}
         <div className={styles.content}>{this.showContent()}</div>
-        <div className={styles.footer}>footer</div>
+        <div className={styles.footer}>
+          <Button onClick={this.blindXfer}>Trasnferir</Button>
+        </div>
       </div>
     );
   }

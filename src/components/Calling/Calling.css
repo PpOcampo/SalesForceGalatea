@@ -143,6 +143,11 @@
   border-style: none;
 }
 
+.input > input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .dataInput > .input {
   padding-left: 10px;
 }
@@ -267,4 +272,44 @@ button.dispositionBtn.btn-primary:not(:disabled):not(.disabled):active,
 .btnAdvance > div.xfer {
   mask-image: url("../../images/Icon-transfer.svg");
   -webkit-mask-image: url("../../images/Icon-transfer.svg");
+}
+
+.updateBtn {
+  margin-top: 15px;
+}
+.updateBtn > button {
+  background-color: #cc9e1f;
+  border-color: #d4ad40;
+  max-height: 38px;
+}
+
+.updateBtn > button:hover {
+  background-color: #a48522;
+  border-color: #cc9e1f;
+}
+
+.updateBtn > button:active {
+  background-color: #a48522;
+  border-color: #a48522;
+}
+
+.updateBtn > button:focus {
+  color: #fff;
+  background-color: #cc9e1f;
+  border-color: #dcbb63;
+  box-shadow: 0 0 0 0.2rem #d4ad40;
+}
+
+.updateBtn > button.disabled,
+.updateBtn > button:disabled {
+  background-color: #192a34 !important;
+  border-color: #263640;
+}
+
+.updateBtn > button:not(:disabled):not(.disabled).active,
+.updateBtn > button:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #ffbb00;
+  border-color: #ffbb00;
 }

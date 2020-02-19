@@ -109,7 +109,9 @@ class Container extends Component {
 
   onCampaigns = json => {
     if (json === "" && typeof yourVariable !== "object") {
-      this.getCampaignsRelated();
+      setTimeout(() => {
+        this.getCampaignsRelated();
+      }, 700);
     } else {
       let arrayCampaigns = Object.values(json);
       arrayCampaigns.sort(function(a, b) {
@@ -126,7 +128,7 @@ class Container extends Component {
       clientName,
       callKey
     } = this.state.manualCallData;
-    // this.integration.makeManualCall(phoneNum, campaignID, clientName, callKey);
+    this.integration.makeManualCall(phoneNum, campaignID, clientName, callKey);
   };
 
   onCallRecieved = callDataRecived => {
@@ -184,6 +186,9 @@ class Container extends Component {
   };
 
   onLogOutClick = () => {
+    this.setState({
+      configuration: { ...this.state.configuration, autologin: false }
+    });
     this.integration.closeSession();
   };
 
@@ -203,7 +208,7 @@ class Container extends Component {
     this.setState({
       manualCallData: { phoneNum, campaignID: campaign.ID, clientName, callKey }
     });
-    // this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey); //tambien arriba
+    this.integration.makeManualCall(phoneNum, campaign.ID, clientName, callKey); //tambien arriba
   };
 
   hangUp = () => {

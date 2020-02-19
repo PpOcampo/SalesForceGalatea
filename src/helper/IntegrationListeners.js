@@ -71,5 +71,11 @@ export default class IntegrationListener {
     };
   };
 
+  static onTransferOptions = delegateFunction => {
+    window.onTransferOptions = function(data) {
+      log("onTransferOptions=>", data);
+      delegateFunction(data);
+    };
+  };
   //Message from SalesForce
 }

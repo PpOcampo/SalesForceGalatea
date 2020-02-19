@@ -161,19 +161,16 @@ class Calling extends Component {
     });
   };
 
-  inputData = () => {
-    const { data } = this.state;
-    if (data && data.DataContact) {
-      return this.mapData(data.DataContact);
-    }
-    return this.mapData(["", "", "", "", ""]);
-  };
-
   onChangeValue = (index, event) => {
-    let loquequieraswey = [...this.state.data.DataContact];
-    loquequieraswey[index] = event.target.value;
+    let tempData = null;
+    if (this.state.data && this.state.data.DataContact) {
+      tempData = [...this.state.data.DataContact];
+    } else {
+      tempData = ["", "", "", "", ""];
+    }
+    tempData[index] = event.target.value;
     this.setState({
-      data: { ...this.state.data, DataContact: loquequieraswey }
+      data: { ...this.state.data, DataContact: tempData }
     });
   };
 
@@ -191,21 +188,49 @@ class Calling extends Component {
   };
 
   mapData = data => {
-    return data.map((value, index) => (
+    return (
       <>
-        <div className={styles.dataInput}>
-          <div className={styles.dataInputNo}>{index + 1}</div>
-          <div className={styles.input}>
-            <input
-              placeholder={"Datos del cliente"}
-              value={value ? value : ""}
-              onChange={e => this.onChangeValue(index, e)}
-            />
-          </div>
+        {Array(5)
+          .fill()
+          .map((_, i) => (
+            <>
+              <div className={styles.dataInput}>
+                <div className={styles.dataInputNo}>{i + 1}</div>
+                <div className={styles.input}>
+                  <input
+                    placeholder={"Datos del cliente"}
+                    value={
+                      this.state.data && this.state.data.DataContact[i]
+                        ? this.state.data.DataContact[i]
+                        : ""
+                    }
+                    onChange={e => this.onChangeValue(i, e)}
+                  />
+                </div>
+              </div>
+              <div />
+            </>
+          ))}
+        <div className={styles.updateBtn}>
+          <Button onClick={this.updateData}>Actualizar Datos</Button>
         </div>
-        <div />
       </>
-    ));
+    );
+  };
+
+  updateData = () => {
+    let { data } = this.state;
+    if (data && data.DataContact) {
+      log("Updating call data");
+      Integration.getInstance().updateCallData(
+        data.CallOutId,
+        data.DataContact[0],
+        data.DataContact[1],
+        data.DataContact[2],
+        data.DataContact[3],
+        data.DataContact[4]
+      );
+    }
   };
 
   onDispositionSelection = e => {
@@ -232,7 +257,9 @@ class Calling extends Component {
   };
 
   onXfer = () => {
-    this.setState({ xferScreen: !this.state.xferScreen });
+    let { xferScreen } = this.state;
+    !xferScreen && Integration.getInstance().getTransfersOptions();
+    this.setState({ xferScreen: !xferScreen });
   };
 
   render() {
@@ -325,7 +352,7 @@ class Calling extends Component {
               <>
                 <div className={styles.callData}>
                   <div className={styles.dataTitle}>Datos del cliente</div>
-                  {this.inputData()}
+                  {this.mapData()}
                 </div>
                 <div className={styles.footer}>
                   <div className={styles.btnAdvance} onClick={this.onMute}>

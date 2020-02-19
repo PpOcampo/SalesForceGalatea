@@ -58,6 +58,10 @@
   font-size: 15px;
 }
 
+.rowNumbers.telephone {
+  margin-bottom: 0;
+}
+
 .rowNumbers.telephone > div {
   min-width: 50px;
   min-height: 50px;
