@@ -77,5 +77,34 @@ export default class IntegrationListener {
       delegateFunction(data);
     };
   };
+
+  static onErrorOnDialProcess = delegateFunction => {
+    window.errorOnDialProcess = function(data) {
+      log("onErrorOnDialProcess=>", data);
+      delegateFunction(data);
+    };
+  };
+
+  static onError = delegateFunction => {
+    window.onError = function(data) {
+      log("onError=>", data);
+      delegateFunction(data);
+    };
+  };
+
+  static onCallEnds = delegateFunction => {
+    window.onCallEnds = function(data) {
+      log("onCallEnds =>", data);
+      delegateFunction(data);
+    };
+  };
+
+  static onDialResult = delegateFunction => {
+    window.onDialResult = function(callResult) {
+      log("onDialResult =>", callResult);
+      delegateFunction(callResult);
+    };
+  };
+
   //Message from SalesForce
 }

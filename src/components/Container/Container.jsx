@@ -88,6 +88,10 @@ class Container extends Component {
     IntegrationListener.onCampaigns(this.onCampaigns);
     IntegrationListener.onWrongNumber(this.onWrongNumber);
     IntegrationListener.onCallRecieved(this.onCallRecieved);
+    IntegrationListener.onErrorOnDialProcess(() => {});
+    IntegrationListener.onError(() => {});
+    IntegrationListener.onCallEnds(() => {});
+    IntegrationListener.onDialResult(() => {});
   };
 
   onAgentStatus = agentStatus => {

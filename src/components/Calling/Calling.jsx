@@ -107,7 +107,8 @@ class Calling extends Component {
   componentDidUpdate(prevProps) {
     const { show, wrongNumber, status, callDataRecived } = this.props;
     if (show && wrongNumber !== prevProps.wrongNumber && wrongNumber) {
-      setTimeout(this.onWrapsEnd, 2000);
+      log("AQUI => ", status.toLowerCase());
+      // setTimeout(this.onWrapsEnd, 2000);
     }
     if (status.toLowerCase() === "dialog" && prevProps.status !== status) {
       this.handleStartClick();
