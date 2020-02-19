@@ -272,7 +272,10 @@ class Calling extends Component {
           <XferScreen onBackBtn={this.onXfer}></XferScreen>
         ) : (
           <>
-            <div className={styles.number}>
+            <div
+              className={`${styles.number} ${!this.state.running &&
+                styles.beforeCall}`}
+            >
               {this.state.running && (
                 <div className={styles.timer}>
                   <span>{this.zeroPad(this.state.hours)}:</span>
@@ -292,6 +295,12 @@ class Calling extends Component {
                 <div className={styles.logo} />
                 <div className={styles.num}>{callData.phoneNum}</div>
               </div>
+
+              {!this.state.running && (
+                <div className={` ${styles.btn}`} onClick={this.onHangUp}>
+                  <div className={styles.hangUp} />
+                </div>
+              )}
             </div>
 
             {this.props.status.toLowerCase() === "wrapup" ? (
@@ -349,30 +358,32 @@ class Calling extends Component {
                 </Button>
               </>
             ) : (
-              <>
-                <div className={styles.callData}>
-                  <div className={styles.dataTitle}>Datos del cliente</div>
-                  {this.mapData()}
-                </div>
-                <div className={styles.footer}>
-                  <div className={styles.btnAdvance} onClick={this.onMute}>
-                    <div
-                      className={`${styles.mute} ${mute && styles.active}`}
-                    />
+              this.state.running && (
+                <>
+                  <div className={styles.callData}>
+                    <div className={styles.dataTitle}>Datos del cliente</div>
+                    {this.mapData()}
                   </div>
-                  <div className={` ${styles.btn}`} onClick={this.onHangUp}>
-                    <div className={styles.hangUp} />
+                  <div className={styles.footer}>
+                    <div className={styles.btnAdvance} onClick={this.onMute}>
+                      <div
+                        className={`${styles.mute} ${mute && styles.active}`}
+                      />
+                    </div>
+                    <div className={` ${styles.btn}`} onClick={this.onHangUp}>
+                      <div className={styles.hangUp} />
+                    </div>
+                    <div className={styles.btnAdvance} onClick={this.onHold}>
+                      <div
+                        className={`${styles.hold} ${hold && styles.active}`}
+                      />
+                    </div>
+                    <div className={styles.btnAdvance} onClick={this.onXfer}>
+                      <div className={styles.xfer} />
+                    </div>
                   </div>
-                  <div className={styles.btnAdvance} onClick={this.onHold}>
-                    <div
-                      className={`${styles.hold} ${hold && styles.active}`}
-                    />
-                  </div>
-                  <div className={styles.btnAdvance} onClick={this.onXfer}>
-                    <div className={styles.xfer} />
-                  </div>
-                </div>
-              </>
+                </>
+              )
             )}
           </>
         )}

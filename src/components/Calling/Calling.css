@@ -29,6 +29,10 @@
   background-color: #192a34;
 }
 
+.number.beforeCall {
+  height: 100%;
+}
+
 .title > .label {
   font-size: 14px;
 }
@@ -45,6 +49,11 @@
   height: 30px;
 }
 
+.number.beforeCall > .phoneNumber {
+  flex-direction: column;
+  height: 100px;
+}
+
 .phoneNumber > .logo {
   mask-image: url("../../images/Icon-account.svg");
   -webkit-mask-image: url("../../images/Icon-account.svg");
@@ -59,6 +68,11 @@
   mask-position: center;
   -webkit-mask-size: contain;
   mask-size: contain;
+}
+
+.number.beforeCall > .phoneNumber > .logo {
+  width: 64px;
+  height: 64px;
 }
 
 .phoneNumber > .num {
