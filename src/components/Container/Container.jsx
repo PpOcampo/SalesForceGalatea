@@ -91,7 +91,6 @@ class Container extends Component {
     IntegrationListener.onErrorOnDialProcess(() => {});
     IntegrationListener.onError(() => {});
     IntegrationListener.onCallEnds(() => {});
-    IntegrationListener.onDialResult(() => {});
   };
 
   onAgentStatus = agentStatus => {

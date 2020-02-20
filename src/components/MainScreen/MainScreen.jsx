@@ -8,6 +8,7 @@ import Calling from "../Calling/Calling.jsx";
 import Locked from "../Locked/Locked.jsx";
 import { log } from "../../helper/UtilsHelper.js";
 import * as utils from "../../helper/UtilsHelper.js";
+import IntegrationListener from "../../helper/IntegrationListeners.js";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class MainScreen extends Component {
   }
 
   componentDidMount() {
+    IntegrationListener.onDialResult(this.onWrongNumber);
     if (this.props.notReady) {
       this.setState({
         unavailable: this.props.agentStatus,
@@ -42,10 +44,10 @@ class MainScreen extends Component {
     const { agentStatus, callDataRecived } = this.props;
 
     this.getCampaignsOnKeyboardOpen(prevState.showKeyBoard, showKeyBoard);
-    this.onWrongNumber(
-      prevProps.agentStatus.currentState,
-      agentStatus.currentState
-    );
+    // this.onWrongNumber(
+    //   prevProps.agentStatus.currentState,
+    //   agentStatus.currentState
+    // );
     this.afterHangUp(agentStatus.currentState, wrongNumber, hangUp);
     this.onCallRecived(prevProps.callDataRecived, callDataRecived, showCalling);
   }
@@ -78,14 +80,18 @@ class MainScreen extends Component {
     }
   };
 
-  onWrongNumber = (agentStatusPrevState, agentStatusCurrentState) => {
-    if (
-      utils.isStatusCallOut(agentStatusPrevState) &&
-      utils.isStatusReady(agentStatusCurrentState)
-    ) {
-      log("Wrong number");
-      this.setState({ wrongNumber: true });
-    }
+  // onWrongNumber = (agentStatusPrevState, agentStatusCurrentState) => {
+  //   if (
+  //     utils.isStatusCallOut(agentStatusPrevState) &&
+  //     utils.isStatusReady(agentStatusCurrentState)
+  //   ) {
+  //     log("Wrong number");
+  //     this.setState({ wrongNumber: true });
+  //   }
+  // };
+
+  onWrongNumber = callresult => {
+    this.setState({ wrongNumber: true });
   };
 
   getCampaignsOnKeyboardOpen = (prevState, actualState) => {
@@ -138,6 +144,7 @@ class MainScreen extends Component {
   };
 
   onWrapsEnd = () => {
+    log("aqui");
     this.setState({
       showCalling: false,
       showKeyBoard: false,

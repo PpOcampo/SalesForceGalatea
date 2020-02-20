@@ -99,16 +99,16 @@ class Calling extends Component {
   };
 
   onHangUp = () => {
+    this.props.onHangUp();
     this.handleResetClick();
     this.setState({ running: false }, this.handleWrapNoteStartClick);
-    this.props.onHangUp();
   };
 
   componentDidUpdate(prevProps) {
     const { show, wrongNumber, status, callDataRecived } = this.props;
     if (show && wrongNumber !== prevProps.wrongNumber && wrongNumber) {
       log("AQUI => ", status.toLowerCase());
-      // setTimeout(this.onWrapsEnd, 2000);
+      setTimeout(this.onWrapsEnd, 2000);
     }
     if (status.toLowerCase() === "dialog" && prevProps.status !== status) {
       this.handleStartClick();
@@ -151,8 +151,8 @@ class Calling extends Component {
 
   /* Una vez que se termina el tiempo de notas */
   onWrapsEnd = () => {
-    this.handleStopClick();
     this.props.onWrapsEnd();
+    this.handleStopClick();
     this.setState({
       wrapUpTime: -1,
       data: null,
@@ -263,6 +263,10 @@ class Calling extends Component {
     this.setState({ xferScreen: !xferScreen });
   };
 
+  ringingHangUp = () => {
+    this.onHangUp();
+    setTimeout(this.onWrapsEnd, 500);
+  };
   render() {
     const { callData, show, labels } = this.props;
     const { data, mute, hold, xferScreen } = this.state;
@@ -298,7 +302,7 @@ class Calling extends Component {
               </div>
 
               {!this.state.running && (
-                <div className={` ${styles.btn}`} onClick={this.onHangUp}>
+                <div className={` ${styles.btn}`} onClick={this.ringingHangUp}>
                   <div className={styles.hangUp} />
                 </div>
               )}
