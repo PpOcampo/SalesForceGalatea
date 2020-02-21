@@ -288,42 +288,25 @@ button.dispositionBtn.btn-primary:not(:disabled):not(.disabled):active,
   -webkit-mask-image: url("../../images/Icon-transfer.svg");
 }
 
+.btnAdvance > div.xfer {
+  height: 30px;
+  width: unset;
+}
+
 .updateBtn {
-  margin-top: 15px;
-}
-.updateBtn > button {
-  background-color: #cc9e1f;
-  border-color: #d4ad40;
-  max-height: 38px;
+  margin-top: 10px;
 }
 
-.updateBtn > button:hover {
-  background-color: #a48522;
-  border-color: #cc9e1f;
+div.dropdown > div {
+  background-color: #192a34;
+  transform: translate3d(-150px, -80px, 0px) !important;
 }
 
-.updateBtn > button:active {
-  background-color: #a48522;
-  border-color: #a48522;
+div.dropdown > div > button {
+  color: #7f888e;
 }
 
-.updateBtn > button:focus {
-  color: #fff;
-  background-color: #cc9e1f;
-  border-color: #dcbb63;
-  box-shadow: 0 0 0 0.2rem #d4ad40;
-}
-
-.updateBtn > button.disabled,
-.updateBtn > button:disabled {
-  background-color: #192a34 !important;
-  border-color: #263640;
-}
-
-.updateBtn > button:not(:disabled):not(.disabled).active,
-.updateBtn > button:not(:disabled):not(.disabled):active,
-.show > .btn-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #ffbb00;
-  border-color: #ffbb00;
+div.dropdown > div > button:hover {
+  background-color: #273a46;
+  color: #7f888e;
 }

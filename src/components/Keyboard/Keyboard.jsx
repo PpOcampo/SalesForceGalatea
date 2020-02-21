@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styles from "./Keyboard.css";
 import { Modal, ModalHeader, ModalBody, Input } from "reactstrap";
+import BasePhoneInput from "../BasePhoneInput/BasePhoneInput.jsx";
 
 class Keyboard extends Component {
   constructor(props) {
@@ -47,18 +48,14 @@ class Keyboard extends Component {
     }
   };
 
-  onChangeValue = e => {
-    this.setState({ keyboardValue: e.target.value });
+  onChangeValue = keyboardValue => {
+    this.setState({ keyboardValue });
   };
 
   onKeyPressed = e => {
     this.setState({
       keyboardValue: this.state.keyboardValue + e.target.innerText
     });
-  };
-
-  onBackSpaceClick = e => {
-    this.setState({ keyboardValue: this.state.keyboardValue.slice(0, -1) });
   };
 
   onCampaignSelection = e => {
@@ -107,17 +104,13 @@ class Keyboard extends Component {
           </Input>
         </div>
         <div>{labels.number}</div>
-        <div className={styles.inputKeyBoard}>
-          <Input
-            type="text"
-            value={this.state.keyboardValue}
-            onChange={this.onChangeValue}
-            onKeyDown={this.onKeyDown}
-          />
-          {this.state.keyboardValue.length > 0 && (
-            <div id="kbackspace" onClick={this.onBackSpaceClick} />
-          )}
-        </div>
+
+        <BasePhoneInput
+          value={this.state.keyboardValue}
+          onChange={this.onChangeValue}
+          onKeyDown={this.onKeyDown}
+        />
+
         <div className={styles.rowNumbers}>
           <div id="k1" onClick={this.onKeyPressed}>
             1

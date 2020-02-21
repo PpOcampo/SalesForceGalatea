@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Input, Button } from "reactstrap";
+import {
+  Input,
+  Button,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
 import styles from "./Calling.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { log } from "../../helper/UtilsHelper.js";
@@ -8,6 +15,8 @@ import Integration from "../../helper/Integration.js";
 import IntegrationListener from "../../helper/IntegrationListeners.js";
 import * as LCC from "lightning-container";
 import XferScreen from "../XferScreen/XferScreen.jsx";
+import AssistedXfer from "../XferScreen/AssistedXfer.jsx";
+import BaseBtn from "../BaseBtn/BaseBtn.jsx";
 
 class Calling extends Component {
   constructor(props) {
@@ -24,7 +33,8 @@ class Calling extends Component {
       subDispositionSelected: -1,
       mute: false,
       hold: false,
-      xferScreen: false
+      blindXferScreen: false,
+      assistedXfer: false
     };
   }
 
@@ -107,7 +117,6 @@ class Calling extends Component {
   componentDidUpdate(prevProps) {
     const { show, wrongNumber, status, callDataRecived } = this.props;
     if (show && wrongNumber !== prevProps.wrongNumber && wrongNumber) {
-      log("AQUI => ", status.toLowerCase());
       setTimeout(this.onWrapsEnd, 2000);
     }
     if (status.toLowerCase() === "dialog" && prevProps.status !== status) {
@@ -158,7 +167,8 @@ class Calling extends Component {
       data: null,
       hold: false,
       mute: false,
-      xferScreen: false
+      blindXferScreen: false,
+      assistedXfer: false
     });
   };
 
@@ -213,7 +223,7 @@ class Calling extends Component {
             </>
           ))}
         <div className={styles.updateBtn}>
-          <Button onClick={this.updateData}>Actualizar Datos</Button>
+          <BaseBtn onClick={this.updateData}>Actualizar Datos</BaseBtn>
         </div>
       </>
     );
@@ -257,24 +267,38 @@ class Calling extends Component {
     this.onWrapsEnd();
   };
 
-  onXfer = () => {
-    let { xferScreen } = this.state;
-    !xferScreen && Integration.getInstance().getTransfersOptions();
-    this.setState({ xferScreen: !xferScreen });
+  onBlindXfer = () => {
+    let { blindXferScreen } = this.state;
+    !blindXferScreen && Integration.getInstance().getTransfersOptions();
+    this.setState({ blindXferScreen: !blindXferScreen });
+  };
+
+  onAssistedXfer = () => {
+    let { assistedXfer } = this.state;
+    !assistedXfer && Integration.getInstance().getTransfersOptions();
+    this.setState({ assistedXfer: !assistedXfer });
   };
 
   ringingHangUp = () => {
     this.onHangUp();
     setTimeout(this.onWrapsEnd, 500);
   };
+
   render() {
     const { callData, show, labels } = this.props;
-    const { data, mute, hold, xferScreen } = this.state;
+    const { data, mute, hold, blindXferScreen, assistedXfer } = this.state;
     return show && callData ? (
       <div className={styles.main}>
         {/* {false ? ( */}
-        {xferScreen ? (
-          <XferScreen onBackBtn={this.onXfer}></XferScreen>
+        {blindXferScreen || assistedXfer ? (
+          <>
+            {blindXferScreen && (
+              <XferScreen onBackBtn={this.onBlindXfer}></XferScreen>
+            )}
+            {assistedXfer && (
+              <AssistedXfer onBackBtn={this.onAssistedXfer}></AssistedXfer>
+            )}
+          </>
         ) : (
           <>
             <div
@@ -383,9 +407,22 @@ class Calling extends Component {
                         className={`${styles.hold} ${hold && styles.active}`}
                       />
                     </div>
-                    <div className={styles.btnAdvance} onClick={this.onXfer}>
-                      <div className={styles.xfer} />
-                    </div>
+                    <UncontrolledDropdown
+                      direction="left"
+                      className={styles.dropdown}
+                    >
+                      <DropdownToggle className={styles.btnAdvance}>
+                        <div className={styles.xfer} />
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={this.onBlindXfer}>
+                          Transferencia ciega
+                        </DropdownItem>
+                        <DropdownItem onClick={this.onAssistedXfer}>
+                          Transferencia Asistida
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                   </div>
                 </>
               )

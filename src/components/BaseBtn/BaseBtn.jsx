@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styles from "./BaseBtn.css";
+import { Button } from "reactstrap";
 
 class BaseBtn extends Component {
   constructor(props) {
@@ -12,11 +13,10 @@ class BaseBtn extends Component {
 
   render() {
     return (
-      <div
-        className={`${styles.main} ${styles[this.props.type]}`}
-        onClick={this.onClick}
-      >
-        <div className={`${styles.icon}  ${styles[this.props.type]}`}></div>
+      <div className={styles.submitBtn}>
+        <Button onClick={this.onClick} disabled={this.props.disabled}>
+          {this.props.children}
+        </Button>
       </div>
     );
   }

@@ -133,7 +133,7 @@ class XferScreen extends Component {
         {this.tabMenu()}
         <div className={styles.content}>{this.showContent()}</div>
         <div className={styles.footer}>
-          <Button onClick={this.blindXfer}>Trasnferir</Button>
+          <Button onClick={this.blindXfer}>Transferir</Button>
         </div>
       </div>
     );

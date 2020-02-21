@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Form, FormGroup, Spinner, Alert } from "reactstrap";
 import image from "../../images/agentLogo.png";
 import styles from "./LoginScreen.css";
+import BaseBtn from "../BaseBtn/BaseBtn.jsx";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -105,9 +106,12 @@ class LoginScreen extends Component {
             {this.state.loading ? (
               <Spinner className={styles.spinner} />
             ) : (
-              <Button onClick={this.onSubmit} disabled={this.state.disabledBtn}>
+              <BaseBtn
+                onClick={this.onSubmit}
+                disabled={this.state.disabledBtn}
+              >
                 {labels.btnSubmit}
-              </Button>
+              </BaseBtn>
             )}
           </FormGroup>
         </div>

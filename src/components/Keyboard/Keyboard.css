@@ -86,40 +86,6 @@
 .rowNumbers > div:active {
   background-color: #4a5b66;
 }
-.inputKeyBoard {
-  display: flex;
-  flex-direction: row;
-  border-color: khaki;
-  border: 1px solid #667178;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.inputKeyBoard > input {
-  background-color: inherit;
-  border-style: none;
-  width: calc(100% - 40px);
-}
-
-.inputKeyBoard > input:hover,
-.inputKeyBoard > input:focus {
-  background-color: inherit;
-  border-color: #667178;
-  box-shadow: none;
-}
-
-.inputKeyBoard > div {
-  mask-image: url("../../images/Icon-backspace.svg");
-  -webkit-mask-image: url("../../images/Icon-backspace.svg");
-  background-color: #667178;
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  background-attachment: fixed;
-  mask-position: center;
-  -webkit-mask-position: center;
-  width: 40px;
-  height: calc(1.5em + 0.75rem + 2px);
-}
 
 .simulateClick {
   background-color: #4a5b66 !important;

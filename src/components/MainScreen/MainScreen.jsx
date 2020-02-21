@@ -144,7 +144,6 @@ class MainScreen extends Component {
   };
 
   onWrapsEnd = () => {
-    log("aqui");
     this.setState({
       showCalling: false,
       showKeyBoard: false,
