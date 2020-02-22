@@ -19,8 +19,8 @@
 .header > div.back {
   width: 32px;
   height: 32px;
-  mask-image: url("../../images/icon-punta-flecha-bottom.svg");
-  -webkit-mask-image: url("../../images/icon-punta-flecha-bottom.svg");
+  mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
+  -webkit-mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
   background-color: #99a0a5;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;

@@ -14,9 +14,9 @@ import "!style-loader!css-loader!react-circular-progressbar/dist/styles.css";
 import Integration from "../../helper/Integration.js";
 import IntegrationListener from "../../helper/IntegrationListeners.js";
 import * as LCC from "lightning-container";
-import XferScreen from "../XferScreen/XferScreen.jsx";
-import AssistedXfer from "../XferScreen/AssistedXfer.jsx";
-import BaseBtn from "../BaseBtn/BaseBtn.jsx";
+import XferScreen from "../XferScreen/BindXfer/XferScreen.jsx";
+import AssistedXfer from "../XferScreen/AssistedXfer/AssistedXfer.jsx";
+import BaseBtn from "../common/BaseBtn/BaseBtn.jsx";
 
 class Calling extends Component {
   constructor(props) {

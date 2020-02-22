@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Form, FormGroup, Spinner, Alert } from "reactstrap";
 import image from "../../images/agentLogo.png";
 import styles from "./LoginScreen.css";
-import BaseBtn from "../BaseBtn/BaseBtn.jsx";
+import BaseBtn from "../common/BaseBtn/BaseBtn.jsx";
 
 class LoginScreen extends Component {
   constructor(props) {

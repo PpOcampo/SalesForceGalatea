@@ -21,8 +21,8 @@
 }
 
 .inputKeyBoard > div {
-  mask-image: url("../../images/Icon-backspace.svg");
-  -webkit-mask-image: url("../../images/Icon-backspace.svg");
+  mask-image: url("../../../images/Icon-backspace.svg");
+  -webkit-mask-image: url("../../../images/Icon-backspace.svg");
   background-color: #667178;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;

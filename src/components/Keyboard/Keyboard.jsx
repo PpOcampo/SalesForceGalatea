@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styles from "./Keyboard.css";
 import { Modal, ModalHeader, ModalBody, Input } from "reactstrap";
-import BasePhoneInput from "../BasePhoneInput/BasePhoneInput.jsx";
+import BasePhoneInput from "../common/BasePhoneInput/BasePhoneInput.jsx";
 
 class Keyboard extends Component {
   constructor(props) {

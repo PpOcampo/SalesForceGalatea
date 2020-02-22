@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styles from "./XferScreen.css";
 import { CustomInput, FormGroup, Button } from "reactstrap";
-import IntegrationListener from "../../helper/IntegrationListeners.js";
-import { log } from "../../helper/UtilsHelper.js";
-import Integration from "../../helper/Integration.js";
+import IntegrationListener from "../../../helper/IntegrationListeners.js";
+import { log } from "../../../helper/UtilsHelper.js";
+import Integration from "../../../helper/Integration.js";
 
 class XferScreen extends Component {
   state = {

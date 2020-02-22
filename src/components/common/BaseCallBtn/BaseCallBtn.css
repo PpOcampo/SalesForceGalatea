@@ -1,0 +1,101 @@
+.btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: #ff2f2f;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #ff2222;
+}
+
+.btn:active {
+  background-color: #eb1f1f;
+}
+
+.btn > div.hangUp {
+  width: 48px;
+  height: 48px;
+  background-color: white;
+  mask-image: url("../../../images/Icon-call.svg");
+  -webkit-mask-image: url("../../../images/Icon-call.svg");
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+.btnAdvance {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: inherit;
+  border: 1px solid #4c5961;
+  cursor: pointer;
+}
+
+.btnAdvance:hover {
+  background-color: #cc9e1f75;
+  border-color: #cc9e1f;
+}
+
+.btnAdvance:active {
+  background-color: #cc9e1fb0;
+  border-color: #cc9e1f;
+}
+
+.btnAdvance > div {
+  width: 48px;
+  height: 48px;
+  background-color: #cc9e1f;
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+.btnAdvance > div.mute {
+  mask-image: url("../../../images/Icon-volume-high.svg");
+  -webkit-mask-image: url("../../../images/Icon-volume-high.svg");
+}
+.btnAdvance > div.mute.active {
+  mask-image: url("../../../images/Icon-mute.svg");
+  -webkit-mask-image: url("../../../images/Icon-mute.svg");
+}
+
+.btnAdvance > div.hold {
+  mask-image: url("../../../images/Icon-pause.svg");
+  -webkit-mask-image: url("../../../images/Icon-pause.svg");
+}
+
+.btnAdvance > div.hold.active {
+  mask-image: url("../../../images/Icon-play.svg");
+  -webkit-mask-image: url("../../../images/Icon-play.svg");
+}
+
+.btnAdvance > div.xfer {
+  mask-image: url("../../../images/Icon-transfer.svg");
+  -webkit-mask-image: url("../../../images/Icon-transfer.svg");
+}
+
+.btnAdvance > div.xfer {
+  height: 30px;
+  width: unset;
+}
+
+div.dropdown > div {
+  background-color: #192a34;
+  transform: translate3d(-150px, -80px, 0px) !important;
+}
+
+div.dropdown > div > button {
+  color: #7f888e;
+}
+
+div.dropdown > div > button:hover {
+  background-color: #273a46;
+  color: #7f888e;
+}
