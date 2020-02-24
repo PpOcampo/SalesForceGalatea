@@ -106,5 +106,26 @@ export default class IntegrationListener {
     };
   };
 
+  static onSecondCallConected = delegateFunction => {
+    window.onSecondCallConected = function() {
+      log("onSecondCallConected");
+      delegateFunction();
+    };
+  };
+
+  static onSecondCall = delegateFunction => {
+    window.onSecondCall = function(phone) {
+      log("onSecondCall =>", phone);
+      delegateFunction(phone);
+    };
+  };
+
+  static onSecondCallHangUp = delegateFunction => {
+    window.onSecondCallHangUp = function() {
+      log("onSecondCallHangUp");
+      delegateFunction(callResult);
+    };
+  };
+
   //Message from SalesForce
 }

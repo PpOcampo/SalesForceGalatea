@@ -13,7 +13,6 @@ export default function BaseCircularProgress(props) {
   };
 
   useEffect(() => {
-    console.log(props.running);
     if (!props.running) {
       stopTimer();
     } else {

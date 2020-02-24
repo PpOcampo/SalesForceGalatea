@@ -1,46 +1,6 @@
 .main {
   width: 296px;
   height: 460px;
-  background-color: blue;
   display: flex;
   flex-direction: column;
-}
-
-.header {
-  width: 100%;
-  height: 56px;
-  background-color: #263640;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  color: #cccfd2;
-}
-
-.header > div.back {
-  width: 32px;
-  height: 32px;
-  mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
-  -webkit-mask-image: url("../../../images/icon-punta-flecha-bottom.svg");
-  background-color: #99a0a5;
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  background-attachment: fixed;
-  mask-position: center;
-  -webkit-mask-position: center;
-  transform: rotate(180deg);
-  cursor: pointer;
-}
-
-.content {
-  width: 100%;
-  height: 404px;
-  max-height: 404px;
-  overflow-y: auto;
-  background-color: #0d1f2a;
-  padding-left: 25px;
-  padding-right: 25px;
-}
-
-.mainScreen {
-  margin-top: 30px;
 }

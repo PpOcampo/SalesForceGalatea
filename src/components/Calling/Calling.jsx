@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Input,
-  Button,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
 import styles from "./Calling.css";
-import { CircularProgressbar } from "react-circular-progressbar";
 import { log } from "../../helper/UtilsHelper.js";
 import "!style-loader!css-loader!react-circular-progressbar/dist/styles.css";
 import Integration from "../../helper/Integration.js";
@@ -17,17 +8,24 @@ import * as LCC from "lightning-container";
 import XferScreen from "../XferScreen/BindXfer/XferScreen.jsx";
 import AssistedXfer from "../XferScreen/AssistedXfer/AssistedXfer.jsx";
 import BaseBtn from "../common/BaseBtn/BaseBtn.jsx";
+import BaseCheckBox from "../common/BaseCheckBox/BaseCheckBox.jsx";
+import BaseStopWatch from "../common/BaseStopWatch/BaseStopWatch.jsx";
+
+import {
+  XferBtn,
+  HoldBtn,
+  MuteBtn,
+  HangUpBtn
+} from "../common/BaseCallBtn/BaseCallBtn.jsx";
+import BaseCircularProgress from "../common/BaseCircularProgress/BaseCircularProgress.jsx";
 
 class Calling extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hours: 0,
-      minutes: 0,
-      seconds: 1,
-      running: false,
+      runCallTimer: false,
+      runWrapUpTimer: false,
       data: null,
-      wrapUpTime: -1,
       disposition: null,
       dispositionSelected: -1,
       subDispositionSelected: -1,
@@ -40,78 +38,20 @@ class Calling extends Component {
 
   componentDidMount() {
     IntegrationListener.onDisposition(this.onDisposition);
+    IntegrationListener.onSecondCallHangUp(this.onSecondCallHangUp);
   }
+
+  onSecondCallHangUp = () => {
+    this.setState({ blindXferScreen: false, assistedXfer: false });
+  };
 
   onDisposition = disposition => {
     this.setState({ disposition });
   };
 
-  handleStartClick = event => {
-    var _this = this;
-    if (!this.state.running) {
-      this.interval = setInterval(() => {
-        this.tick();
-      }, 1000);
-      this.setState({ running: true });
-    }
-  };
-
-  handleWrapNoteStartClick = () => {
-    var _this = this;
-    if (!this.state.running) {
-      this.interval = setInterval(() => {
-        this.setState({ wrapUpTime: this.state.wrapUpTime - 1 });
-      }, 1000);
-      _this.setState({ running: true });
-    }
-  };
-
-  handleStopClick = event => {
-    if (this.state.running) {
-      clearInterval(this.interval);
-      this.setState({ running: false });
-    }
-  };
-
-  handleResetClick = event => {
-    this.handleStopClick();
-    this.update(0, 0, 0);
-  };
-
-  tick = () => {
-    let seconds = this.state.seconds + 1;
-    let minutes = this.state.minutes;
-    let hours = this.state.hours;
-
-    if (seconds === 60) {
-      seconds = 0;
-      minutes = minutes + 1;
-    }
-
-    if (minutes === 60) {
-      seconds = 0;
-      minutes = 0;
-      hours = hours + 1;
-    }
-    this.update(seconds, minutes, hours);
-  };
-
-  zeroPad = value => {
-    return value < 10 ? `0${value}` : value;
-  };
-
-  update = (seconds, minutes, hours) => {
-    this.setState({
-      seconds,
-      minutes,
-      hours
-    });
-  };
-
   onHangUp = () => {
     this.props.onHangUp();
-    this.handleResetClick();
-    this.setState({ running: false }, this.handleWrapNoteStartClick);
+    this.setState({ runCallTimer: false, runWrapUpTimer: true });
   };
 
   componentDidUpdate(prevProps) {
@@ -120,7 +60,7 @@ class Calling extends Component {
       setTimeout(this.onWrapsEnd, 2000);
     }
     if (status.toLowerCase() === "dialog" && prevProps.status !== status) {
-      this.handleStartClick();
+      this.setState({ runCallTimer: true });
       this.getDispositions();
     }
 
@@ -145,7 +85,10 @@ class Calling extends Component {
       this.onHangUp();
     }
 
-    if (this.state.wrapUpTime === 0) {
+    if (
+      prevProps.status.toLowerCase() === "wrapup" &&
+      prevProps.status !== status
+    ) {
       this.onWrapsEnd();
     }
   }
@@ -161,14 +104,15 @@ class Calling extends Component {
   /* Una vez que se termina el tiempo de notas */
   onWrapsEnd = () => {
     this.props.onWrapsEnd();
-    this.handleStopClick();
     this.setState({
+      runCallTimer: false,
       wrapUpTime: -1,
       data: null,
       hold: false,
       mute: false,
       blindXferScreen: false,
-      assistedXfer: false
+      assistedXfer: false,
+      runWrapUpTimer: false
     });
   };
 
@@ -244,8 +188,8 @@ class Calling extends Component {
     }
   };
 
-  onDispositionSelection = e => {
-    this.setState({ dispositionSelected: parseInt(e.target.value) });
+  onDispositionSelection = option => {
+    this.setState({ dispositionSelected: parseInt(option.Id) });
   };
 
   saveDisposition = () => {
@@ -286,7 +230,8 @@ class Calling extends Component {
 
   render() {
     const { callData, show, labels } = this.props;
-    const { data, mute, hold, blindXferScreen, assistedXfer } = this.state;
+    const { data, blindXferScreen, assistedXfer } = this.state;
+
     return show && callData ? (
       <div className={styles.main}>
         {/* {false ? ( */}
@@ -302,16 +247,11 @@ class Calling extends Component {
         ) : (
           <>
             <div
-              className={`${styles.number} ${!this.state.running &&
+              className={`${styles.number} ${!this.state.runCallTimer &&
+                !this.state.runWrapUpTimer &&
                 styles.beforeCall}`}
             >
-              {this.state.running && (
-                <div className={styles.timer}>
-                  <span>{this.zeroPad(this.state.hours)}:</span>
-                  <span>{this.zeroPad(this.state.minutes)}:</span>
-                  <span>{this.zeroPad(this.state.seconds)}</span>
-                </div>
-              )}
+              <BaseStopWatch running={this.state.runCallTimer} />
 
               <div className={styles.title}>
                 <div className={styles.label}>{labels.campaign}</div>
@@ -325,104 +265,44 @@ class Calling extends Component {
                 <div className={styles.num}>{callData.phoneNum}</div>
               </div>
 
-              {!this.state.running && (
-                <div className={` ${styles.btn}`} onClick={this.ringingHangUp}>
-                  <div className={styles.hangUp} />
-                </div>
+              {!this.state.runCallTimer && !this.state.runWrapUpTimer && (
+                <HangUpBtn onClick={this.ringingHangUp} />
               )}
             </div>
 
             {this.props.status.toLowerCase() === "wrapup" ? (
               <>
-                <div className={styles.progressBar}>
-                  <CircularProgressbar
-                    value={this.state.wrapUpTime}
-                    maxValue={data.WrapUpTime}
-                    text={`${this.state.wrapUpTime}`}
-                    styles={{
-                      path: {
-                        stroke: `#FFA61D`,
-                        strokeLinecap: "butt",
-                        transition: "stroke-dashoffset 0.5s ease 0s",
-                        transform: "rotate(0.25turn)",
-                        transformOrigin: "center center"
-                      },
-                      path: {
-                        stroke: `#FFA61D`
-                      },
-                      trail: {
-                        stroke: `#192A34`
-                      },
-                      text: {
-                        fill: "#FFA61D",
-                        fontSize: "16px"
-                      }
-                    }}
-                  />
-                </div>
-                <div>Calificar llamada</div>
-                <Input
-                  className={styles.selectInput}
-                  type="select"
-                  name="select"
-                  id="dispositionSelection"
-                  onChange={this.onDispositionSelection}
-                >
-                  <option hidden selected>
-                    Seleccione una opcion
-                  </option>
-                  {this.state.disposition &&
-                    this.state.disposition.map(disposition => (
-                      <option value={disposition.Id}>
-                        {disposition.Description}
-                      </option>
-                    ))}
-                </Input>
+                <BaseCircularProgress
+                  initial={data.WrapUpTime}
+                  running={this.props.status.toLowerCase() === "wrapup"}
+                  onEnd={this.onWrapsEnd}
+                  onStop={this.onWrapsEnd}
+                />
 
-                <Button
-                  onClick={this.saveDisposition}
-                  className={styles.dispositionBtn}
-                >
-                  CALIFICAR
-                </Button>
+                <div>Calificar llamada</div>
+
+                <BaseCheckBox
+                  hiddenOption={"Seleccione una opcion"}
+                  options={this.state.disposition}
+                  onChange={this.onDispositionSelection}
+                />
+                <BaseBtn onClick={this.saveDisposition}>CALIFICAR</BaseBtn>
               </>
             ) : (
-              this.state.running && (
+              this.state.runCallTimer && (
                 <>
                   <div className={styles.callData}>
                     <div className={styles.dataTitle}>Datos del cliente</div>
                     {this.mapData()}
                   </div>
                   <div className={styles.footer}>
-                    <div className={styles.btnAdvance} onClick={this.onMute}>
-                      <div
-                        className={`${styles.mute} ${mute && styles.active}`}
-                      />
-                    </div>
-                    <div className={` ${styles.btn}`} onClick={this.onHangUp}>
-                      <div className={styles.hangUp} />
-                    </div>
-                    <div className={styles.btnAdvance} onClick={this.onHold}>
-                      <div
-                        className={`${styles.hold} ${hold && styles.active}`}
-                      />
-                    </div>
-                    <UncontrolledDropdown
-                      direction="left"
-                      className={styles.dropdown}
-                    >
-                      <DropdownToggle className={styles.btnAdvance}>
-                        <div className={styles.xfer} />
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        <DropdownItem onClick={this.onBlindXfer}>
-                          Transferencia ciega
-                        </DropdownItem>
-                        <DropdownItem onClick={this.onAssistedXfer}>
-                          Transferencia Asistida
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
+                    <MuteBtn onClick={this.onMute} />
+                    <HangUpBtn onClick={this.onHangUp} />
+                    <HoldBtn onClick={this.onHold} />
+                    <XferBtn
+                      onBlindXfer={this.onBlindXfer}
+                      onAssistedXfer={this.onAssistedXfer}
+                    />
                   </div>
                 </>
               )

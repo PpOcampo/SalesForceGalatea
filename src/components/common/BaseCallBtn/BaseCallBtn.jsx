@@ -46,6 +46,38 @@ export function HoldBtn(props) {
   );
 }
 
+/************* XferCallBtn *************/
+export function XferCallBtn(props) {
+  const [xferCall, setXferCall] = useState(false);
+
+  const onClick = () => {
+    setXferCall(!xferCall);
+    props.onClick();
+  };
+
+  return (
+    <div className={styles.btnAdvance} onClick={onClick}>
+      <div className={`${styles.xferCall} ${xferCall && styles.active}`} />
+    </div>
+  );
+}
+
+/************* XferCallBtn *************/
+export function ConferenceBtn(props) {
+  const [conference, setConference] = useState(false);
+
+  const onClick = () => {
+    setConference(!conference);
+    props.onClick();
+  };
+
+  return (
+    <div className={styles.btnAdvance} onClick={onClick}>
+      <div className={`${styles.conference} ${conference && styles.active}`} />
+    </div>
+  );
+}
+
 /************* XferBtn *************/
 export const XferBtn = props => (
   <UncontrolledDropdown direction="left" className={styles.dropdown}>

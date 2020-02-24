@@ -1,0 +1,66 @@
+.radioBtn {
+  background-color: white;
+}
+
+/* .custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #cc9e1f;
+  background-color: #cc9e1f;
+} */
+
+/* .custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+
+  border-color: #007bff;
+
+  background-color: #007bff;
+} */
+
+.custom-radio .custom-control-label::before {
+  width: 1.25rem;
+  height: 1.25rem;
+  top: 2px;
+  left: -22px;
+  background-color: transparent;
+  border: 3px solid gray;
+
+  transition: border-color 0.3s ease-out;
+}
+.custom-radio .custom-control-label::after {
+  background: transparent;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  top: 0.4rem;
+  left: -1.3rem;
+
+  transition: background-color 0.3s ease-out;
+}
+
+.custom-radio .custom-control-label {
+  color: #cc9e1f;
+  font-weight: 700;
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: transparent;
+  border-color: #cc9e1f;
+}
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+  background-image: none;
+  background-color: #cc9e1f;
+}
+.custom-radio
+  .custom-control-input:not(:disabled):active
+  ~ .custom-control-label::before {
+  background-color: transparent;
+  border-color: gray;
+}
+.custom-radio .custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 0 10px #cc9e1f49;
+}
+.custom-radio
+  .custom-control-input:not(:checked):focus
+  ~ .custom-control-label::before {
+  box-shadow: 0 0 0 10px #cc9e1f49;
+}

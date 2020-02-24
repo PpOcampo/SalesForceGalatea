@@ -4,6 +4,7 @@ import { CustomInput, FormGroup, Button } from "reactstrap";
 import IntegrationListener from "../../../helper/IntegrationListeners.js";
 import { log } from "../../../helper/UtilsHelper.js";
 import Integration from "../../../helper/Integration.js";
+import BaseBtn from "../../common/BaseBtn/BaseBtn.jsx";
 
 class XferScreen extends Component {
   state = {
@@ -133,7 +134,7 @@ class XferScreen extends Component {
         {this.tabMenu()}
         <div className={styles.content}>{this.showContent()}</div>
         <div className={styles.footer}>
-          <Button onClick={this.blindXfer}>Transferir</Button>
+          <BaseBtn onClick={this.blindXfer}>Transferir</BaseBtn>
         </div>
       </div>
     );

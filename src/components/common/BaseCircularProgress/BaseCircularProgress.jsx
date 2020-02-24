@@ -27,6 +27,7 @@ export default function BaseCircularProgress(props) {
   const stopTimer = () => {
     clearInterval(timer);
     setTimer(null);
+    props.onStop();
   };
 
   useEffect(() => {

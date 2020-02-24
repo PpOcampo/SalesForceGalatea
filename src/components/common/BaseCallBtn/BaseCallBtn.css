@@ -81,6 +81,16 @@
   -webkit-mask-image: url("../../../images/Icon-transfer.svg");
 }
 
+.btnAdvance > div.xferCall {
+  mask-image: url("../../../images/Icon-transfer-hang.svg");
+  -webkit-mask-image: url("../../../images/Icon-transfer-hang.svg");
+}
+
+.btnAdvance > div.conference {
+  mask-image: url("../../../images/Icon-transfer-hang.svg");
+  -webkit-mask-image: url("../../../images/Icon-transfer-hang.svg");
+}
+
 .btnAdvance > div.xfer {
   height: 30px;
   width: unset;
