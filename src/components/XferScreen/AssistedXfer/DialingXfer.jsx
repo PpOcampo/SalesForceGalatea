@@ -8,7 +8,7 @@ import {
 } from "../../common/BaseCallBtn/BaseCallBtn.jsx";
 
 export default function DialingXfer(props) {
-  const [firstCallHold, setFirstCallHold] = useState(true);
+  const [firstCallActive, setFirstCallActive] = useState(true);
 
   const onHangUpXfer = () => {
     Integration.getInstance().assistedXFerHangUP();
@@ -23,27 +23,44 @@ export default function DialingXfer(props) {
   };
 
   const useMainCall = () => {
-    Integration.getInstance().assistedXFerUseMainCall();
-    setFirstCallHold(!firstCallHold);
+    if (!firstCallActive) {
+      Integration.getInstance().assistedXFerUseMainCall();
+      setFirstCallActive(!firstCallActive);
+    }
   };
 
   const useSecondCall = () => {
-    Integration.getInstance().assistedXFerUseSecondCall();
-    setFirstCallHold(!firstCallHold);
+    if (firstCallActive) {
+      Integration.getInstance().assistedXFerUseSecondCall();
+      setFirstCallActive(!firstCallActive);
+    }
+  };
+
+  const item = (active, onClick, onHanUp, text) => {
+    return (
+      <div className={`${styles.item} ${!active && styles.hold}`}>
+        <div onClick={onClick} className={styles.click}>
+          <div
+            className={`${active ? styles.pauseIcon : styles.phoneIcon}`}
+          ></div>
+          <div>
+            <div>{text}</div>
+            <div>{active ? "En dialogo" : "En espera"}</div>
+          </div>
+        </div>
+        <div className={styles.itemHangUp}>
+          <HangUpBtn onClick={onHanUp} />
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className={styles.content}>
       <div className={styles.title}>LLAMADAS</div>
       <div className={styles.items}>
-        <div
-          className={`${styles.item} ${firstCallHold && styles.hold}`}
-          onClick={useMainCall}
-        />
-        <div
-          className={`${styles.item} ${!firstCallHold && styles.hold}`}
-          onClick={useSecondCall}
-        />
+        {item(firstCallActive, useMainCall, () => {}, "Primera llamada")}
+        {item(!firstCallActive, useSecondCall, () => {}, "Segunda llamada")}
       </div>
 
       <div className={styles.footer}>

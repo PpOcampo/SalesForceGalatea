@@ -26,6 +26,10 @@
   border: 1px solid #00e300;
   margin-bottom: 5px;
   margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+
+  color: #ffffff;
 }
 .item.hold {
   background-color: #f09a23;
@@ -40,4 +44,38 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+.click {
+  width: 220px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+div.pauseIcon,
+div.phoneIcon {
+  width: 48px;
+  height: 48px;
+  background-color: white;
+  mask-image: url("../../../images/Icon-pause.svg");
+  -webkit-mask-image: url("../../../images/Icon-pause.svg");
+  mask-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+div.phoneIcon {
+  -webkit-mask-image: url("../../../images/Icon-call.svg");
+}
+
+.itemHangUp {
+  visibility: hidden;
+}
+
+.item:hover .itemHangUp {
+  visibility: visible;
 }

@@ -5,6 +5,7 @@ import Integration from "../../../helper/Integration.js";
 import CallingXfer from "./CallingXfer.jsx";
 import Main from "./Main.jsx";
 import BaseRadioBtn from "../../common/BaseRadioBtn/BaseRadioBtn.jsx";
+import { CustomInput, FormGroup, Button } from "reactstrap";
 
 export default function AssistedXfer(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -22,13 +23,15 @@ export default function AssistedXfer(props) {
 
   return (
     <div className={styles.main}>
-      {/* {showNext ? (
+      {showNext ? (
         <CallingXfer phoneNumber={phoneNumber} />
       ) : (
         <Main onXfer={onXfer} onBackBtn={onBackBtn} />
-      )} */}
-      <BaseRadioBtn />
-      <BaseRadioBtn />
+      )}
+      {/* <FormGroup>
+        <BaseRadioBtn id={"1"} name={"xfer"} label={"seleccionado"} />
+        <BaseRadioBtn id={"2"} name={"xfer"} label={"seleccionado"} />
+      </FormGroup> */}
     </div>
   );
 }

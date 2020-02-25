@@ -87,8 +87,8 @@
 }
 
 .btnAdvance > div.conference {
-  mask-image: url("../../../images/Icon-transfer-hang.svg");
-  -webkit-mask-image: url("../../../images/Icon-transfer-hang.svg");
+  mask-image: url("../../../images/Icon-conference.svg");
+  -webkit-mask-image: url("../../../images/Icon-conference.svg");
 }
 
 .btnAdvance > div.xfer {

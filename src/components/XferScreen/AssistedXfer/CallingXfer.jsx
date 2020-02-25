@@ -22,8 +22,8 @@ export default function CallingXfer(props) {
 
   return (
     <div className={styles.content}>
-      {/* {false ? ( */}
-      {!secondCall ? (
+      {false ? (
+        // {!secondCall ? (
         <div className={styles.calling}>
           <div className={styles.title}>Transferencia Asistida</div>
           <div className={styles.center}>

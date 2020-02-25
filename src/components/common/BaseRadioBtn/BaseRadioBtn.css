@@ -31,13 +31,13 @@
   width: 0.7rem;
   height: 0.7rem;
   border-radius: 50%;
-  top: 0.4rem;
+  top: 0.43rem;
   left: -1.3rem;
 
   transition: background-color 0.3s ease-out;
 }
 
-.custom-radio .custom-control-label {
+.radioBtn.active.custom-radio .custom-control-label {
   color: #cc9e1f;
   font-weight: 700;
 }
