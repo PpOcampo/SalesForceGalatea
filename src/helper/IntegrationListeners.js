@@ -123,7 +123,14 @@ export default class IntegrationListener {
   static onSecondCallHangUp = delegateFunction => {
     window.onSecondCallHangUp = function() {
       log("onSecondCallHangUp");
-      delegateFunction(callResult);
+      delegateFunction();
+    };
+  };
+
+  static onPhoneNumbers = delegateFunction => {
+    window.onPhoneNumbers = function(phoneNumbers) {
+      log("onPhoneNumbers", phoneNumbers);
+      delegateFunction(phoneNumbers);
     };
   };
 

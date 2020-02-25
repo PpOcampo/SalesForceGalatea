@@ -8,10 +8,11 @@ import {
 } from "../../common/BaseCallBtn/BaseCallBtn.jsx";
 
 export default function DialingXfer(props) {
-  const [firstCallActive, setFirstCallActive] = useState(true);
+  const [firstCallActive, setFirstCallActive] = useState(false);
 
   const onHangUpXfer = () => {
     Integration.getInstance().assistedXFerHangUP();
+    props.onHangUpXfer();
   };
 
   const onXferHangUp = () => {
@@ -34,6 +35,14 @@ export default function DialingXfer(props) {
       Integration.getInstance().assistedXFerUseSecondCall();
       setFirstCallActive(!firstCallActive);
     }
+  };
+
+  const assistedXFerDropSecondCall = () => {
+    Integration.getInstance().assistedXFerDropSecondCall();
+  };
+
+  const assistedXFerDropFirstCall = () => {
+    Integration.getInstance().assistedXFerDropFirstCall();
   };
 
   const item = (active, onClick, onHanUp, text) => {
@@ -59,14 +68,24 @@ export default function DialingXfer(props) {
     <div className={styles.content}>
       <div className={styles.title}>LLAMADAS</div>
       <div className={styles.items}>
-        {item(firstCallActive, useMainCall, () => {}, "Primera llamada")}
-        {item(!firstCallActive, useSecondCall, () => {}, "Segunda llamada")}
+        {item(
+          firstCallActive,
+          useMainCall,
+          assistedXFerDropFirstCall,
+          "Primera llamada"
+        )}
+        {item(
+          !firstCallActive,
+          useSecondCall,
+          assistedXFerDropSecondCall,
+          "Segunda llamada"
+        )}
       </div>
 
       <div className={styles.footer}>
-        <ConferenceBtn onClick={onConference} />
+        {firstCallActive && <ConferenceBtn onClick={onConference} />}
         <HangUpBtn onClick={onHangUpXfer} />
-        <XferCallBtn onClick={onXferHangUp} />
+        {firstCallActive && <XferCallBtn onClick={onXferHangUp} />}
       </div>
     </div>
   );

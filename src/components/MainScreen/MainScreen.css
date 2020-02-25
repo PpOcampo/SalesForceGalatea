@@ -63,6 +63,7 @@
 
 .body.showCalling {
   height: calc(100% - 36px);
+  max-height: calc(100% - 36px);
 }
 
 .body.maximize {

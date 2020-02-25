@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Main.css";
 import BaseBtn from "../../common/BaseBtn/BaseBtn.jsx";
 import BasePhoneInput from "../../common/BasePhoneInput/BasePhoneInput.jsx";
+import BaseRadioBtn from "../../common/BaseRadioBtn/BaseRadioBtn.jsx";
 
 export default function Main(props) {
   const [input, setInput] = useState("");

@@ -10,6 +10,7 @@ import AssistedXfer from "../XferScreen/AssistedXfer/AssistedXfer.jsx";
 import BaseBtn from "../common/BaseBtn/BaseBtn.jsx";
 import BaseCheckBox from "../common/BaseCheckBox/BaseCheckBox.jsx";
 import BaseStopWatch from "../common/BaseStopWatch/BaseStopWatch.jsx";
+import Reprogram from "./Reprogram.jsx";
 
 import {
   XferBtn,
@@ -19,6 +20,8 @@ import {
 } from "../common/BaseCallBtn/BaseCallBtn.jsx";
 import BaseCircularProgress from "../common/BaseCircularProgress/BaseCircularProgress.jsx";
 
+import { element } from "prop-types";
+
 class Calling extends Component {
   constructor(props) {
     super(props);
@@ -27,26 +30,39 @@ class Calling extends Component {
       runWrapUpTimer: false,
       data: null,
       disposition: null,
-      dispositionSelected: -1,
-      subDispositionSelected: -1,
+      dispositionSelected: null,
+      subDispositionSelected: null,
       mute: false,
       hold: false,
       blindXferScreen: false,
-      assistedXfer: false
+      assistedXfer: false,
+      reprogram: false,
+      phoneNumbers: null
     };
   }
 
   componentDidMount() {
     IntegrationListener.onDisposition(this.onDisposition);
     IntegrationListener.onSecondCallHangUp(this.onSecondCallHangUp);
+    IntegrationListener.onPhoneNumbers(this.onPhoneNumbers);
   }
+
+  onPhoneNumbers = phoneNumbers => {
+    this.setState({ phoneNumbers });
+  };
 
   onSecondCallHangUp = () => {
     this.setState({ blindXferScreen: false, assistedXfer: false });
   };
 
   onDisposition = disposition => {
-    this.setState({ disposition });
+    let copyDisposition = [...disposition];
+    let newDisposition = copyDisposition.map(element => ({
+      ...element,
+      SubDisposition: Object.values(element.SubDisposition)
+    }));
+    log(newDisposition);
+    this.setState({ disposition: newDisposition });
   };
 
   onHangUp = () => {
@@ -99,6 +115,11 @@ class Calling extends Component {
     } else {
       Integration.getInstance().getACDDispositions(this.state.data.Id);
     }
+    setTimeout(
+      () =>
+        Integration.getInstance().getPhoneNumbers(this.state.data.CallOutId),
+      2000
+    );
   };
 
   /* Una vez que se termina el tiempo de notas */
@@ -112,7 +133,10 @@ class Calling extends Component {
       mute: false,
       blindXferScreen: false,
       assistedXfer: false,
-      runWrapUpTimer: false
+      runWrapUpTimer: false,
+      dispositionSelected: null,
+      subDispositionSelected: null,
+      disposition: null
     });
   };
 
@@ -189,23 +213,34 @@ class Calling extends Component {
   };
 
   onDispositionSelection = option => {
-    this.setState({ dispositionSelected: parseInt(option.Id) });
+    this.setState({
+      dispositionSelected: option,
+      reprogram: option.CanReprogram,
+      SubDisposition: null
+    });
+  };
+
+  onSubdispositionSelection = option => {
+    this.setState({
+      subDispositionSelected: option,
+      reprogram: option.CanReprogram
+    });
   };
 
   saveDisposition = () => {
     let { data, dispositionSelected, subDispositionSelected } = this.state;
     if (this.state.data.CallType === 2) {
       Integration.getInstance().disposeCampaingCall(
-        dispositionSelected,
+        dispositionSelected.Id,
         data.ID,
         data.CallId,
-        subDispositionSelected
+        subDispositionSelected ? subDispositionSelected.Id : ""
       );
     } else {
       Integration.getInstance().dispositionACDCall(
-        dispositionId,
+        dispositionSelected.Id,
         data.CallId,
-        subDispositionSelected
+        subDispositionSelected ? subDispositionSelected.Id : ""
       );
     }
     this.onWrapsEnd();
@@ -230,12 +265,28 @@ class Calling extends Component {
 
   render() {
     const { callData, show, labels } = this.props;
-    const { data, blindXferScreen, assistedXfer } = this.state;
+    const {
+      data,
+      blindXferScreen,
+      assistedXfer,
+      runWrapUpTimer,
+      dispositionSelected,
+      subDispositionSelected,
+      disposition
+    } = this.state;
 
     return show && callData ? (
       <div className={styles.main}>
-        {/* {false ? ( */}
-        {blindXferScreen || assistedXfer ? (
+        <div
+          className={`${styles.stopWatch} ${!(
+            blindXferScreen ||
+            assistedXfer ||
+            runWrapUpTimer
+          ) && styles.show}`}
+        >
+          <BaseStopWatch running={this.state.runCallTimer} />
+        </div>
+        {(blindXferScreen || assistedXfer) && !runWrapUpTimer ? (
           <>
             {blindXferScreen && (
               <XferScreen onBackBtn={this.onBlindXfer}></XferScreen>
@@ -248,10 +299,11 @@ class Calling extends Component {
           <>
             <div
               className={`${styles.number} ${!this.state.runCallTimer &&
-                !this.state.runWrapUpTimer &&
+                !runWrapUpTimer &&
                 styles.beforeCall}`}
             >
-              <BaseStopWatch running={this.state.runCallTimer} />
+              {/* <BaseStopWatch running={true} />
+              <BaseStopWatch running={this.state.runCallTimer} /> */}
 
               <div className={styles.title}>
                 <div className={styles.label}>{labels.campaign}</div>
@@ -278,14 +330,41 @@ class Calling extends Component {
                   onEnd={this.onWrapsEnd}
                   onStop={this.onWrapsEnd}
                 />
-
                 <div>Calificar llamada</div>
 
                 <BaseCheckBox
                   hiddenOption={"Seleccione una opcion"}
-                  options={this.state.disposition}
+                  options={disposition}
                   onChange={this.onDispositionSelection}
                 />
+
+                {dispositionSelected &&
+                  dispositionSelected.SubDisposition.length > 0 && (
+                    <BaseCheckBox
+                      hiddenOption={"Seleccione una opcion"}
+                      options={dispositionSelected.SubDisposition}
+                      onChange={this.onSubdispositionSelection}
+                    />
+                  )}
+
+                {this.state.reprogram && (
+                  <Reprogram phoneNumbers={this.state.phoneNumbers} />
+                  // <div>
+
+                  //   <div>Seleccionar o agregar numero</div>
+                  //   {this.state.phoneNumbers.map(
+                  //     (element, i) =>
+                  //       element.length > 0 && (
+                  //         <BaseRadioBtn
+                  //           id={`rRadio-${i}`}
+                  //           name={"reprogramRadio"}
+                  //           label={`${element}`}
+                  //         />
+                  //       )
+                  //   )}
+                  // </div>
+                )}
+
                 <BaseBtn onClick={this.saveDisposition}>CALIFICAR</BaseBtn>
               </>
             ) : (

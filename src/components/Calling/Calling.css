@@ -24,7 +24,7 @@
 
 .number {
   width: 100%;
-  height: 164px;
+  height: 124px;
   justify-content: space-around;
   background-color: #192a34;
 }
@@ -309,4 +309,18 @@ div.dropdown > div > button {
 div.dropdown > div > button:hover {
   background-color: #273a46;
   color: #7f888e;
+}
+
+.stopWatch {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: end;
+  background-color: #192a34;
+  justify-content: center;
+  display: none;
+}
+
+.stopWatch.show {
+  display: flex;
 }

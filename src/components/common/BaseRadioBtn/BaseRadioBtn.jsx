@@ -5,13 +5,10 @@ import { CustomInput, FormGroup, Button } from "reactstrap";
 import "!style-loader!css-loader!./BaseRadioBtn.css";
 
 export default function BaseRadioBtn(props) {
-  const [active, setActive] = useState(false);
-
-  const onChange = e => {
-    console.log(e.currentTarget);
-    setActive(e.currentTarget.checked);
-    props.onChange({ id: props.id, name: props.name });
+  const onClick = e => {
+    props.onClick(props.value);
   };
+
   return (
     <>
       <CustomInput
@@ -19,8 +16,8 @@ export default function BaseRadioBtn(props) {
         id={props.id}
         name={props.name}
         label={props.label}
-        className={`radioBtn ${active && "active"}`}
-        onChange={onChange}
+        className={`radioBtn ${props.active && "active"}`}
+        onClick={onClick}
       />
     </>
   );

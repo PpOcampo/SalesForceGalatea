@@ -1,0 +1,13 @@
+.main {
+  width: 250px;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  background-color: #0d1f2a;
+}
+
+.defaultRadio {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+}

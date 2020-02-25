@@ -20,10 +20,14 @@ export default function CallingXfer(props) {
     console.log("HangUp");
   };
 
+  const onHangUpXfer = () => {
+    props.onHangUpXfer();
+  };
+
   return (
     <div className={styles.content}>
-      {false ? (
-        // {!secondCall ? (
+      {/* {false ? ( */}
+      {!secondCall ? (
         <div className={styles.calling}>
           <div className={styles.title}>Transferencia Asistida</div>
           <div className={styles.center}>
@@ -33,7 +37,7 @@ export default function CallingXfer(props) {
           <HangUpBtn onClick={onHangUp} phoneNumber={props.phoneNumber} />
         </div>
       ) : (
-        <DialingXfer />
+        <DialingXfer onHangUpXfer={onHangUpXfer} />
       )}
     </div>
   );
