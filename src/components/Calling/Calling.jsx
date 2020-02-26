@@ -37,7 +37,9 @@ class Calling extends Component {
       blindXferScreen: false,
       assistedXfer: false,
       reprogram: false,
-      phoneNumbers: null
+      phoneNumbers: null,
+      callBackNumber: null,
+      dateTime: null
     };
   }
 
@@ -228,7 +230,12 @@ class Calling extends Component {
   };
 
   saveDisposition = () => {
-    let { data, dispositionSelected, subDispositionSelected } = this.state;
+    let {
+      data,
+      dispositionSelected,
+      subDispositionSelected,
+      reprogram
+    } = this.state;
     if (this.state.data.CallType === 2) {
       Integration.getInstance().disposeCampaingCall(
         dispositionSelected.Id,
@@ -236,15 +243,54 @@ class Calling extends Component {
         data.CallId,
         subDispositionSelected ? subDispositionSelected.Id : ""
       );
+
+      this.state.reprogram && this.state.dateTime && this.state.callBackNumber;
+      Integration.getInstance().reprogramCampaignCall(
+        data.ID,
+        dispositionSelected.Id,
+        data.CallId,
+        this.state.dateTime,
+        this.state.callBackNumber,
+        false, // hay que ver que pedo
+        subDispositionSelected.Id
+      );
     } else {
       Integration.getInstance().dispositionACDCall(
         dispositionSelected.Id,
         data.CallId,
         subDispositionSelected ? subDispositionSelected.Id : ""
       );
+      let dataContact = this.state.data.DataContact[i];
+      this.state.reprogram &&
+        this.state.dateTime &&
+        this.state.callBackNumber &&
+        Integration.getInstance().CallBackAcd(
+          data.ID,
+          dispositionSelected.Id,
+          data.CallId,
+          this.state.dateTime,
+          this.state.callBackNumber,
+          "CallKey", // hay que ver que pedo
+          dataContact[0],
+          dataContact[1],
+          dataContact[2],
+          dataContact[3],
+          dataContact[4],
+          false, // hay que ver que pedo
+          subDispositionSelected.Id
+        );
+    }
+    if (reprogram) {
+      this.saveCallBack();
     }
     this.onWrapsEnd();
   };
+
+  onReprogramChange = (callBackNumber, dateTime) => {
+    this.setState({ callBackNumber, dateTime });
+  };
+
+  saveCallBack = () => {};
 
   onBlindXfer = () => {
     let { blindXferScreen } = this.state;
@@ -324,48 +370,39 @@ class Calling extends Component {
 
             {this.props.status.toLowerCase() === "wrapup" ? (
               <>
-                <BaseCircularProgress
-                  initial={data.WrapUpTime}
-                  running={this.props.status.toLowerCase() === "wrapup"}
-                  onEnd={this.onWrapsEnd}
-                  onStop={this.onWrapsEnd}
-                />
-                <div>Calificar llamada</div>
+                <div className={styles.wrapUpBody}>
+                  <BaseCircularProgress
+                    initial={data.WrapUpTime}
+                    running={this.props.status.toLowerCase() === "wrapup"}
+                    onEnd={this.onWrapsEnd}
+                    onStop={this.onWrapsEnd}
+                  />
+                  <div>Calificar llamada</div>
 
-                <BaseCheckBox
-                  hiddenOption={"Seleccione una opcion"}
-                  options={disposition}
-                  onChange={this.onDispositionSelection}
-                />
+                  <BaseCheckBox
+                    hiddenOption={"Seleccione una opcion"}
+                    options={disposition}
+                    onChange={this.onDispositionSelection}
+                  />
 
-                {dispositionSelected &&
-                  dispositionSelected.SubDisposition.length > 0 && (
-                    <BaseCheckBox
-                      hiddenOption={"Seleccione una opcion"}
-                      options={dispositionSelected.SubDisposition}
-                      onChange={this.onSubdispositionSelection}
+                  {dispositionSelected &&
+                    dispositionSelected.SubDisposition.length > 0 && (
+                      <BaseCheckBox
+                        hiddenOption={"Seleccione una opcion"}
+                        options={dispositionSelected.SubDisposition}
+                        onChange={this.onSubdispositionSelection}
+                      />
+                    )}
+
+                  {this.state.reprogram && (
+                    <Reprogram
+                      phoneNumbers={this.state.phoneNumbers}
+                      onChange={this.onReprogramChange}
                     />
                   )}
 
-                {this.state.reprogram && (
-                  <Reprogram phoneNumbers={this.state.phoneNumbers} />
-                  // <div>
-
-                  //   <div>Seleccionar o agregar numero</div>
-                  //   {this.state.phoneNumbers.map(
-                  //     (element, i) =>
-                  //       element.length > 0 && (
-                  //         <BaseRadioBtn
-                  //           id={`rRadio-${i}`}
-                  //           name={"reprogramRadio"}
-                  //           label={`${element}`}
-                  //         />
-                  //       )
-                  //   )}
-                  // </div>
-                )}
-
-                <BaseBtn onClick={this.saveDisposition}>CALIFICAR</BaseBtn>
+                  <BaseBtn onClick={this.saveDisposition}>CALIFICAR</BaseBtn>
+                </div>
               </>
             ) : (
               this.state.runCallTimer && (

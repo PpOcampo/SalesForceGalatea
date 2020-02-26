@@ -1,0 +1,8 @@
+div.popover {
+  background-color: #0d1f2a;
+}
+
+.bs-popover-auto[x-placement^="bottom"] > .arrow::after,
+.bs-popover-bottom > .arrow::after {
+  border-bottom-color: #0d1f2a;
+}

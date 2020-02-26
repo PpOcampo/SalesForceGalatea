@@ -8,6 +8,43 @@
 
 .defaultRadio {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: row;
+}
+
+.phoneInput {
+  width: 200px;
+}
+
+.popOverHrs {
+  display: flex;
+}
+
+.mainPopOver {
+  width: 245px;
+  height: 150px;
+}
+
+.inputHr {
+  width: 110px;
+  height: 36px;
+}
+
+.popOverTitle {
+  font-size: 20px;
+  color: #b2b7bb;
+  padding-bottom: 15px;
+  font-weight: 700;
+}
+
+.dots {
+  font-size: 20px;
+  color: #b2b7bb;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.btnHrs {
+  display: flex;
+  justify-content: start;
 }

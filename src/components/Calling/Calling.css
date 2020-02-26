@@ -324,3 +324,13 @@ div.dropdown > div > button:hover {
 .stopWatch.show {
   display: flex;
 }
+
+.wrapUpBody {
+  height: 330px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

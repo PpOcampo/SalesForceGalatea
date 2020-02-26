@@ -65,10 +65,3 @@ div.react-datepicker-popper[data-placement^="bottom"]
   div.react-datepicker__triangle::before {
   border-bottom-color: #192a34;
 }
-
-div.datePicker-input {
-  background-color: inherit !important;
-  border-style: solid;
-  border-color: #4c5961;
-  color: #cc9e1f;
-}

@@ -1,0 +1,12 @@
+.base-input {
+  background-color: #0d1f2a;
+  border-color: #667178;
+}
+
+.base-input:active,
+.base-input:focus {
+  background-color: #0d1f2a;
+  border-color: #667178;
+  outline-style: none;
+  box-shadow: none;
+}

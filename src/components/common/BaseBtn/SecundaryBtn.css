@@ -1,0 +1,48 @@
+.submitBtn {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  max-height: 48px;
+  min-height: 48px;
+}
+
+.submitBtn > button {
+  background-color: #0d1f2a;
+  border-color: #4c5961;
+  max-height: 38px;
+  color: #d4ad40;
+}
+
+.submitBtn > button:hover {
+  background-color: #0d1f2a;
+  border-color: #4c5961;
+  color: #d4ad40;
+}
+
+.submitBtn > button:active {
+  background-color: #0d1f2a;
+  border-color: #4c5961;
+  color: #d4ad40;
+}
+
+.submitBtn > button.focus,
+.submitBtn > button:focus {
+  color: #fff;
+  background-color: #0d1f2a !important;
+  border-color: #0d1f2a !important;
+  box-shadow: 0 0 0 0.2rem #d4ad40 !important;
+}
+
+.submitBtn > button.disabled,
+.submitBtn > button:disabled {
+  background-color: #192a34 !important;
+  border-color: #263640;
+}
+
+.submitBtn > button.btn-primary:not(:disabled):not(.disabled).active,
+.submitBtn > button.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #ffbb00;
+  border-color: #ffbb00;
+}
