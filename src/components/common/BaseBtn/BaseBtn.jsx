@@ -13,7 +13,11 @@ class BaseBtn extends Component {
 
   render() {
     return (
-      <div className={styles.submitBtn}>
+      <div
+        className={`${styles.submitBtn} ${
+          this.props.className ? this.props.className : ""
+        }`}
+      >
         <Button onClick={this.onClick} disabled={this.props.disabled}>
           {this.props.children}
         </Button>

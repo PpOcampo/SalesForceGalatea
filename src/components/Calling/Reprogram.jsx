@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import BaseRadioBtn from "../common/BaseRadioBtn/BaseRadioBtn.jsx";
 import styles from "./Reprogram.css";
 import { FormGroup } from "reactstrap";
+import BaseDatePicker from "../common/BaseDatePicker/BaseDatePicker.jsx";
 
 export default function WrapUp(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -45,6 +46,7 @@ export default function WrapUp(props) {
             placeholder={"Ingresa un numero"}
           />
         </div>
+        <BaseDatePicker />
       </FormGroup>
     </div>
   );
