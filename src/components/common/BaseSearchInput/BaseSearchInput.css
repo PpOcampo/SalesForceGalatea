@@ -1,0 +1,46 @@
+.base-search-input {
+  background-color: #0d1f2a;
+  border-color: #667178;
+  border: 0px none;
+}
+
+.base-search-input:active,
+.base-search-input:focus {
+  background-color: #0d1f2a;
+  outline-style: none;
+  box-shadow: none;
+  border: 0px none;
+}
+
+.search-icon-btn,
+.close-icon-btn {
+  width: 24px;
+  height: 24px;
+  mask-image: url("../../../images/icon-lupa.svg");
+  -webkit-mask-image: url("../../../images/icon-lupa.svg");
+  background-color: #99a0a5;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  background-attachment: fixed;
+  mask-position: center;
+  -webkit-mask-position: center;
+  cursor: pointer;
+  padding-left: 30px;
+}
+
+.close-icon-btn {
+  mask-image: url("../../../images/icon-lupa.svg");
+  -webkit-mask-image: url("../../../images/icon-lupa.svg");
+  padding-right: 30px;
+  padding-left: 0px;
+}
+
+.main-search-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  background-color: #0d1f2a;
+  border: 1px solid #667178;
+  border-radius: 4px;
+}

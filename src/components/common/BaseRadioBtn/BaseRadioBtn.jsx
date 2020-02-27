@@ -18,6 +18,7 @@ export default function BaseRadioBtn(props) {
         label={props.label}
         className={`radioBtn ${props.active && "active"}`}
         onClick={onClick}
+        checked={props.active}
       />
     </>
   );

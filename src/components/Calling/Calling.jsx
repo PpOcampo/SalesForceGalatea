@@ -39,7 +39,8 @@ class Calling extends Component {
       reprogram: false,
       phoneNumbers: null,
       callBackNumber: null,
-      dateTime: null
+      dateTime: null,
+      existingNumber: false
     };
   }
 
@@ -138,7 +139,11 @@ class Calling extends Component {
       runWrapUpTimer: false,
       dispositionSelected: null,
       subDispositionSelected: null,
-      disposition: null
+      disposition: null,
+      reprogram: false,
+      phoneNumbers: null,
+      callBackNumber: null,
+      existingNumber: false
     });
   };
 
@@ -251,7 +256,7 @@ class Calling extends Component {
         data.CallId,
         this.state.dateTime,
         this.state.callBackNumber,
-        false, // hay que ver que pedo
+        this.state.existingNumber,
         subDispositionSelected.Id
       );
     } else {
@@ -270,13 +275,13 @@ class Calling extends Component {
           data.CallId,
           this.state.dateTime,
           this.state.callBackNumber,
-          "CallKey", // hay que ver que pedo
+          data.CalKey,
           dataContact[0],
           dataContact[1],
           dataContact[2],
           dataContact[3],
           dataContact[4],
-          false, // hay que ver que pedo
+          this.state.existingNumber,
           subDispositionSelected.Id
         );
     }
@@ -286,8 +291,8 @@ class Calling extends Component {
     this.onWrapsEnd();
   };
 
-  onReprogramChange = (callBackNumber, dateTime) => {
-    this.setState({ callBackNumber, dateTime });
+  onReprogramChange = (callBackNumber, dateTime, existingNumber) => {
+    this.setState({ callBackNumber, dateTime, existingNumber });
   };
 
   saveCallBack = () => {};

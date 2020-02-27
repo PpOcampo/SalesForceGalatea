@@ -21,7 +21,10 @@ class BasePhoneInput extends Component {
   };
 
   onChange = e => {
-    this.setState({ value: e.target.value });
+    let regex = /^\d*$/i;
+    if (regex.test(e.target.value)) {
+      this.setState({ value: e.target.value });
+    }
   };
 
   onKeyDown = e => {
@@ -30,10 +33,10 @@ class BasePhoneInput extends Component {
 
   render() {
     return (
-      <div className={styles.inputKeyBoard}>
+      <div className={`${styles.inputKeyBoard} ${this.props.className}`}>
         <Input
           type="text"
-          value={this.state.value}
+          value={this.props.value}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
         />

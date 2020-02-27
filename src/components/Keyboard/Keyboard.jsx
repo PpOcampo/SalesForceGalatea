@@ -68,6 +68,7 @@ class Keyboard extends Component {
   manualCall = () => {
     const { keyboardValue, campaign } = this.state;
     this.props.makeManualCall(keyboardValue, campaign, "", "");
+    this.setState({ keyboardValue: "" });
   };
 
   render() {

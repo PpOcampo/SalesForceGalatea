@@ -12,7 +12,6 @@ export default function DialingXfer(props) {
 
   const onHangUpXfer = () => {
     Integration.getInstance().assistedXFerHangUP();
-    props.onHangUpXfer();
   };
 
   const onXferHangUp = () => {
@@ -50,7 +49,7 @@ export default function DialingXfer(props) {
       <div className={`${styles.item} ${!active && styles.hold}`}>
         <div onClick={onClick} className={styles.click}>
           <div
-            className={`${active ? styles.pauseIcon : styles.phoneIcon}`}
+            className={`${!active ? styles.pauseIcon : styles.phoneIcon}`}
           ></div>
           <div>
             <div>{text}</div>
@@ -83,7 +82,7 @@ export default function DialingXfer(props) {
       </div>
 
       <div className={styles.footer}>
-        {firstCallActive && <ConferenceBtn onClick={onConference} />}
+        {/* {firstCallActive && <ConferenceBtn onClick={onConference} />} */}
         <HangUpBtn onClick={onHangUpXfer} />
         {firstCallActive && <XferCallBtn onClick={onXferHangUp} />}
       </div>

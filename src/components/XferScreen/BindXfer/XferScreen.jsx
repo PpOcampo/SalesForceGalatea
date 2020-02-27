@@ -5,6 +5,8 @@ import IntegrationListener from "../../../helper/IntegrationListeners.js";
 import { log } from "../../../helper/UtilsHelper.js";
 import Integration from "../../../helper/Integration.js";
 import BaseBtn from "../../common/BaseBtn/BaseBtn.jsx";
+import BaseRadioBtn from "../../common/BaseRadioBtn/BaseRadioBtn.jsx";
+import BaseSearchInput from "../../common/BaseSearchInput/BaseSearchInput.jsx";
 
 class XferScreen extends Component {
   state = {
@@ -12,7 +14,8 @@ class XferScreen extends Component {
     acdList: [],
     agentList: [],
     phoneList: [],
-    currentXfer: null
+    currentXfer: null,
+    searching: false
   };
 
   componentDidMount() {
@@ -20,9 +23,18 @@ class XferScreen extends Component {
   }
 
   onTransferOptions = xferOptions => {
-    let acdList = xferOptions.data[0];
-    let phoneList = xferOptions.data[1];
-    let agentList = xferOptions.data[2];
+    let acdList = xferOptions.data[0].map(item => ({
+      ...item,
+      id: item.inbound_id
+    }));
+    let phoneList = xferOptions.data[1].map(item => ({
+      ...item,
+      id: item.number
+    }));
+    let agentList = xferOptions.data[2].map(item => ({
+      ...item,
+      id: item.extid
+    }));
     this.setState({ acdList, agentList, phoneList });
   };
 
@@ -31,6 +43,9 @@ class XferScreen extends Component {
   };
 
   showContent = () => {
+    if (this.state.searching) {
+      return this.searching();
+    }
     switch (this.state.activeTab) {
       case 1:
         return this.agentTab();
@@ -40,6 +55,10 @@ class XferScreen extends Component {
       default:
         return this.acdTab();
     }
+  };
+
+  searching = () => {
+    return <>{this.renderCheckList(this.state.acdList)}</>;
   };
 
   tabMenu = () => {
@@ -80,10 +99,8 @@ class XferScreen extends Component {
     return <>{this.renderCheckList(this.state.phoneList)}</>;
   };
 
-  onXferSelect = (e, element) => {
-    if (e.currentTarget.checked) {
-      this.setState({ currentXfer: element });
-    }
+  onXferSelect = element => {
+    this.setState({ currentXfer: element });
   };
 
   blindXfer = () => {
@@ -91,27 +108,28 @@ class XferScreen extends Component {
     if (!this.state.currentXfer) return;
     switch (this.state.activeTab) {
       case 1:
-        integration.transferCallToAgent(this.state.currentXfer.extid);
+        integration.transferCallToAgent(this.state.currentXfer.id);
       case 2:
-        integration.transferCallToPhoneNumber(this.state.currentXfer.number);
+        integration.transferCallToPhoneNumber(this.state.currentXfer.id);
       case 0:
       default:
-        integration.transferCallToACD(this.state.currentXfer.inbound_id);
+        integration.transferCallToACD(this.state.currentXfer.id);
     }
     this.props.onBackBtn();
   };
 
   renderCheckList = list => {
+    let { currentXfer } = this.state;
     return (
       <FormGroup>
         {list.map((element, index) => (
-          <CustomInput
-            type="radio"
+          <BaseRadioBtn
             id={`chkList${index}`}
             name="radioXfer"
             label={element.name}
-            className={styles.radioBtn}
-            onChange={e => this.onXferSelect(e, element)}
+            value={element}
+            onClick={this.onXferSelect}
+            active={currentXfer && currentXfer.id === element.id}
           />
         ))}
       </FormGroup>
@@ -122,17 +140,38 @@ class XferScreen extends Component {
     this.props.onBackBtn();
   };
 
+  onSearch = () => {
+    this.setState({ searching: true });
+  };
+
+  onSearchClose = () => {
+    this.setState({ searching: false });
+  };
+
   render() {
-    const { activeTab } = this.state;
+    const { activeTab, searching } = this.state;
     return (
       <div className={styles.main}>
         <div className={styles.header}>
-          <div className={styles.back} onClick={this.onBackBtn} />
-          <div>Transferencia</div>
-          <div className={styles.lupa}></div>
+          {!searching ? (
+            <>
+              <div className={styles.back} onClick={this.onBackBtn} />
+              <div>Transferencia</div>
+              <div className={styles.lupa} onClick={this.onSearch}></div>
+            </>
+          ) : (
+            <>
+              <div className={styles.searchInput}>
+                <BaseSearchInput onClose={this.onSearchClose}></BaseSearchInput>
+              </div>
+            </>
+          )}
         </div>
-        {this.tabMenu()}
-        <div className={styles.content}>{this.showContent()}</div>
+        {!searching && this.tabMenu()}
+        <div className={`${styles.content} ${searching && styles.search}`}>
+          {this.showContent()}
+        </div>
+
         <div className={styles.footer}>
           <BaseBtn onClick={this.blindXfer}>Transferir</BaseBtn>
         </div>

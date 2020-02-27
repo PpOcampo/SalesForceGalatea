@@ -4,6 +4,7 @@ import { HangUpBtn } from "../../common/BaseCallBtn/BaseCallBtn.jsx";
 import StatusBar from "../../StatusBar/StatusBar.jsx";
 import DialingXfer from "./DialingXfer.jsx";
 import IntegrationListener from "../../../helper/IntegrationListeners.js";
+import Integration from "../../../helper/Integration.js";
 
 export default function CallingXfer(props) {
   const [input, setInput] = useState("");
@@ -17,11 +18,7 @@ export default function CallingXfer(props) {
     setSecondCall(true);
   };
   const onHangUp = () => {
-    console.log("HangUp");
-  };
-
-  const onHangUpXfer = () => {
-    props.onHangUpXfer();
+    Integration.getInstance().assistedXFerHangUP();
   };
 
   return (
@@ -37,7 +34,7 @@ export default function CallingXfer(props) {
           <HangUpBtn onClick={onHangUp} phoneNumber={props.phoneNumber} />
         </div>
       ) : (
-        <DialingXfer onHangUpXfer={onHangUpXfer} />
+        <DialingXfer />
       )}
     </div>
   );

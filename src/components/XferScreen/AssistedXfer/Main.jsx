@@ -30,7 +30,9 @@ export default function Main(props) {
         <div className={styles.mainScreen}>
           <div>Numero</div>
           <BasePhoneInput value={input} onChange={onChange}></BasePhoneInput>
-          <BaseBtn onClick={onBtnClick}>Transferir</BaseBtn>
+          <BaseBtn onClick={onBtnClick} disabled={input.length < 4}>
+            Transferir
+          </BaseBtn>
         </div>
       </div>
     </div>

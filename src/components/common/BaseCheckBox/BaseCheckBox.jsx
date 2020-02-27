@@ -18,9 +18,12 @@ export default function BaseCheckBox(props) {
       id={`chk-${props.id}`}
       onChange={onChange}
     >
-      <option hidden selected>
-        {props.hiddenOption}
-      </option>
+      {props.default && (
+        <option hidden selected>
+          {props.hiddenOption}
+        </option>
+      )}
+
       {props.options &&
         props.options.map(option => (
           <option value={option.Id}>{option.Description}</option>

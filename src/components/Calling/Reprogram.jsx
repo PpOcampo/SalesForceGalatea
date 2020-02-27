@@ -9,32 +9,36 @@ import SecundaryBtn from "../common/BaseBtn/SecundaryBtn.jsx";
 import BaseCheckBox from "../common/BaseCheckBox/BaseCheckBox.jsx";
 import BasePopOver from "../common/BasePopOver/BasePopOver.jsx";
 import { log } from "../../helper/UtilsHelper.js";
+import BasePhoneInput from "../common/BasePhoneInput/BasePhoneInput.jsx";
 
 export default function WrapUp(props) {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [date, setDate] = useState(null);
   const [fullHr, setFulHr] = useState(null);
+  const [existingNum, setExistingNum] = useState(false);
 
   //auxiliars
-  const [phoneInput, setPhoneInput] = useState(null);
+  const [phoneInput, setPhoneInput] = useState("");
   const [currentRadio, setCurrentRadio] = useState(null);
-  const [minutes, setMinutes] = useState(null);
-  const [hrs, setHrs] = useState(null);
+  const [minutes, setMinutes] = useState(30);
+  const [hrs, setHrs] = useState(12);
   const [clock, setClock] = useState(null);
 
   useEffect(() => {
-    log("AQUI", phoneNumber, date, fullHr);
+    log("AQUI", phoneNumber, date, fullHr, existingNum);
     if (phoneNumber && date && fullHr) {
-      props.onChange(phoneNumber, date + " " + fullHr);
+      props.onChange(phoneNumber, date + " " + fullHr, existingNum);
     }
-  }, [phoneNumber, date, fullHr]);
+  }, [phoneNumber, date, fullHr, existingNum]);
 
   useEffect(() => {
     if (minutes && hrs && clock) {
       let hrs24 = hrs;
       let min = minutes < 10 ? "0" + minutes : minutes;
       if (clock === "PM") {
-        hrs24 += 12;
+        hrs24 = hrs === 12 ? hrs : hrs24 + 12;
+      } else if (clock === "AM" && hrs === 12) {
+        hrs24 = 0;
       }
       setFulHr(hrs24 + ":" + min);
     }
@@ -43,15 +47,15 @@ export default function WrapUp(props) {
   const onClick = currentRadio => {
     setCurrentRadio(currentRadio);
     let value = currentRadio.Id === "default" ? phoneInput : currentRadio.phone;
+    currentRadio.Id === "default";
+    setExistingNum(currentRadio.Id !== "default");
     setPhoneNumber(value);
   };
 
-  const onPhoneInput = e => {
-    let inputValue = e.target.value;
-    if (currentRadio && currentRadio.Id === "default") {
-      setPhoneNumber(inputValue);
-    }
-    setPhoneInput(inputValue);
+  const onPhoneInput = value => {
+    setCurrentRadio({ Id: "default", phone: value });
+    setPhoneNumber(value);
+    setPhoneInput(value);
   };
 
   const onDateChange = date => {
@@ -97,19 +101,20 @@ export default function WrapUp(props) {
             value={{ Id: "default", phone: "" }}
             active={currentRadio && currentRadio.Id === "default"}
           />
-          <BaseInput
-            type={"text"}
-            name={"wrapPhoneInput"}
-            id={"wrapPhoneInput__"}
-            className={styles.phoneInput}
+
+          <BasePhoneInput
+            value={phoneInput}
             onChange={onPhoneInput}
+            className={styles.phoneInput}
           />
         </div>
         <div>Fecha</div>
         <BaseDatePicker onChange={onDateChange} />
         <div>Hora</div>
         <div className={styles.btnHrs}>
-          <SecundaryBtn id={"PopoverLegacy"}>Seleccione una Hora</SecundaryBtn>
+          <SecundaryBtn id={"PopoverLegacy"}>
+            {fullHr ? fullHr + " hrs" : "Seleccione una Hora"}
+          </SecundaryBtn>
         </div>
         <BasePopOver
           placement="top"
@@ -128,7 +133,7 @@ export default function WrapUp(props) {
                   onChange={onHrs}
                   min={1}
                   max={12}
-                  value={10}
+                  value={hrs}
                   regex={"^([1-9]|1[012])$"}
                 />
                 <div className={styles.dots}>:</div>
@@ -140,7 +145,7 @@ export default function WrapUp(props) {
                   onChange={onMinutes}
                   min={1}
                   max={59}
-                  value={5}
+                  value={minutes}
                   regex={"^[0-5]?[0-9]$"}
                 />
               </div>
@@ -152,6 +157,7 @@ export default function WrapUp(props) {
                   { Id: 2, Description: "PM" }
                 ]}
                 onChange={onClock}
+                default={true}
               />
             </div>
           </div>
