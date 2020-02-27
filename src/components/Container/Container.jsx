@@ -236,14 +236,14 @@ class Container extends Component {
   render() {
     const { error, unavailables, configuration } = this.state;
     // return <AssistedXfer />;
-    // return (
-    //   <Reprogram
-    //     phoneNumbers={["2014", "2015"]}
-    //     onChange={() => {
-    //       log("aja");
-    //     }}
-    //   />
-    // );
+    return (
+      <Reprogram
+        phoneNumbers={["2014", "2015"]}
+        onChange={() => {
+          log("aja");
+        }}
+      />
+    );
     return configuration ? (
       <>
         <iframe

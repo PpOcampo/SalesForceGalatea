@@ -23,7 +23,6 @@ export default function WrapUp(props) {
   const [clock, setClock] = useState(null);
 
   useEffect(() => {
-    // props.onChange(phoneNumber, date, hrs);
     log("AQUI", phoneNumber, date, fullHr);
     if (phoneNumber && date && fullHr) {
       props.onChange(phoneNumber, date + " " + fullHr);
@@ -49,7 +48,7 @@ export default function WrapUp(props) {
 
   const onPhoneInput = e => {
     let inputValue = e.target.value;
-    if (currentRadio.Id === "default") {
+    if (currentRadio && currentRadio.Id === "default") {
       setPhoneNumber(inputValue);
     }
     setPhoneInput(inputValue);
@@ -129,6 +128,8 @@ export default function WrapUp(props) {
                   onChange={onHrs}
                   min={1}
                   max={12}
+                  value={10}
+                  regex={"^([1-9]|1[012])$"}
                 />
                 <div className={styles.dots}>:</div>
                 <BaseInput
@@ -139,6 +140,8 @@ export default function WrapUp(props) {
                   onChange={onMinutes}
                   min={1}
                   max={59}
+                  value={5}
+                  regex={"^[0-5]?[0-9]$"}
                 />
               </div>
 
@@ -146,7 +149,7 @@ export default function WrapUp(props) {
                 id={`wrapHrCk`}
                 options={[
                   { Id: 1, Description: "AM" },
-                  { Id: 1, Description: "PM" }
+                  { Id: 2, Description: "PM" }
                 ]}
                 onChange={onClock}
               />
