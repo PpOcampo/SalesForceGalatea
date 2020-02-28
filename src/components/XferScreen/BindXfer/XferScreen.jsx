@@ -15,7 +15,9 @@ class XferScreen extends Component {
     agentList: [],
     phoneList: [],
     currentXfer: null,
-    searching: false
+    searching: false,
+    search: "",
+    mainList: []
   };
 
   componentDidMount() {
@@ -35,7 +37,10 @@ class XferScreen extends Component {
       ...item,
       id: item.extid
     }));
-    this.setState({ acdList, agentList, phoneList });
+
+    let mainList = [].concat(acdList, phoneList, agentList);
+
+    this.setState({ acdList, agentList, phoneList, mainList });
   };
 
   onTabChange = activeTab => {
@@ -58,7 +63,15 @@ class XferScreen extends Component {
   };
 
   searching = () => {
-    return <>{this.renderCheckList(this.state.acdList)}</>;
+    return (
+      <>
+        {this.renderCheckList(
+          this.state.mainList.filter(item =>
+            item.name.toLowerCase().includes(this.state.search.toLowerCase())
+          )
+        )}
+      </>
+    );
   };
 
   tabMenu = () => {
@@ -148,6 +161,10 @@ class XferScreen extends Component {
     this.setState({ searching: false });
   };
 
+  onFilterChange = value => {
+    this.setState({ search: value });
+  };
+
   render() {
     const { activeTab, searching } = this.state;
     return (
@@ -162,7 +179,10 @@ class XferScreen extends Component {
           ) : (
             <>
               <div className={styles.searchInput}>
-                <BaseSearchInput onClose={this.onSearchClose}></BaseSearchInput>
+                <BaseSearchInput
+                  onChange={this.onFilterChange}
+                  onClose={this.onSearchClose}
+                ></BaseSearchInput>
               </div>
             </>
           )}

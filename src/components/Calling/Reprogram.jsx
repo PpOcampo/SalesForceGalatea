@@ -25,7 +25,6 @@ export default function WrapUp(props) {
   const [clock, setClock] = useState(null);
 
   useEffect(() => {
-    log("AQUI", phoneNumber, date, fullHr, existingNum);
     if (phoneNumber && date && fullHr) {
       props.onChange(phoneNumber, date + " " + fullHr, existingNum);
     }
@@ -157,7 +156,6 @@ export default function WrapUp(props) {
                   { Id: 2, Description: "PM" }
                 ]}
                 onChange={onClock}
-                default={true}
               />
             </div>
           </div>

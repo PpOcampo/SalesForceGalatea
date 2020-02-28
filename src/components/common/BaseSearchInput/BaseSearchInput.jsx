@@ -9,6 +9,10 @@ export default function BaseSearchInput(props) {
     props.onClose();
   };
 
+  const onChange = e => {
+    props.onChange(e.target.value);
+  };
+
   return (
     <>
       <div className={"main-search-btn"}>
@@ -17,6 +21,7 @@ export default function BaseSearchInput(props) {
           <Input
             className={`base-search-input ${props.className}`}
             type={"text"}
+            onChange={onChange}
           />
         </div>
 

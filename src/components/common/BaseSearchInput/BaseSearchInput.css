@@ -29,8 +29,8 @@
 }
 
 .close-icon-btn {
-  mask-image: url("../../../images/icon-lupa.svg");
-  -webkit-mask-image: url("../../../images/icon-lupa.svg");
+  mask-image: url("../../../images/Icon-exit-v02.svg");
+  -webkit-mask-image: url("../../../images/Icon-exit-v02.svg");
   padding-right: 30px;
   padding-left: 0px;
 }
