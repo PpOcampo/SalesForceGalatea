@@ -17,7 +17,46 @@ export const labels = {
     logout: "Logout"
   },
   Calling: {
-    campaign: "Campaign"
+    campaign: "Campaign",
+    customerData: "Customer data",
+    updateDataBtn: "Update data",
+    defaultOption: "Select an option",
+    rateCallTitle: "Rate call",
+    rateCallBtn: "RATE",
+    XFerScreen: {
+      title: "Transfer",
+      btn: "Transfer",
+      acdTab: "ACD",
+      agentTab: "Agent",
+      numberTab: "Number"
+    },
+    AssistedXfer: {
+      Main: {
+        title: "Assisted Transfer",
+        numLabel: "Telephone",
+        xferBtn: "Transfer"
+      },
+      CallingXfer: {
+        title: "Assisted Transfer",
+        DialingXfer: {
+          dialogueLabel: "In dialogue",
+          holdLabel: "On hold",
+          title: "CALLS",
+          firstCall: "First call",
+          scdCall: "Second call"
+        }
+      }
+    },
+    XferBtn: {
+      blind: "Blind Transfer",
+      assisted: "Assisted Transfer"
+    },
+    Reprogram: {
+      title: "Select or add a number",
+      date: "Date",
+      hour: "Hour",
+      selectHour: "Select hour"
+    }
   },
   Locked: {
     exitBtn: "Exit"

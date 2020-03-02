@@ -23,15 +23,15 @@ export default function Main(props) {
     <div className={styles.main}>
       <div className={styles.header}>
         <div className={styles.back} onClick={onBackBtn} />
-        <div className={styles.title}>Transferencia Asistida</div>
+        <div className={styles.title}>{props.labels.title}</div>
         <div></div>
       </div>
       <div className={styles.content}>
         <div className={styles.mainScreen}>
-          <div>Numero</div>
+          <div>{props.labels.numLabel}</div>
           <BasePhoneInput value={input} onChange={onChange}></BasePhoneInput>
           <BaseBtn onClick={onBtnClick} disabled={input.length < 4}>
-            Transferir
+            {props.labels.xferBtn}
           </BaseBtn>
         </div>
       </div>

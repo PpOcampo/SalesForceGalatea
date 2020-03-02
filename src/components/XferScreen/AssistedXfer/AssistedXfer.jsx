@@ -24,9 +24,16 @@ export default function AssistedXfer(props) {
   return (
     <div className={styles.main}>
       {showNext ? (
-        <CallingXfer phoneNumber={phoneNumber} />
+        <CallingXfer
+          phoneNumber={phoneNumber}
+          labels={props.labels.CallingXfer}
+        />
       ) : (
-        <Main onXfer={onXfer} onBackBtn={onBackBtn} />
+        <Main
+          onXfer={onXfer}
+          onBackBtn={onBackBtn}
+          labels={props.labels.Main}
+        />
       )}
       {/* <FormGroup>
         <BaseRadioBtn id={"1"} name={"xfer"} label={"seleccionado"} />

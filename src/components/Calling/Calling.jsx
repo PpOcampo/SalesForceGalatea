@@ -174,6 +174,7 @@ class Calling extends Component {
   };
 
   mapData = data => {
+    let { labels } = this.props;
     return (
       <>
         {Array(5)
@@ -184,7 +185,7 @@ class Calling extends Component {
                 <div className={styles.dataInputNo}>{i + 1}</div>
                 <div className={styles.input}>
                   <input
-                    placeholder={"Datos del cliente"}
+                    placeholder={labels.customerData}
                     value={
                       this.state.data && this.state.data.DataContact[i]
                         ? this.state.data.DataContact[i]
@@ -198,7 +199,7 @@ class Calling extends Component {
             </>
           ))}
         <div className={styles.updateBtn}>
-          <BaseBtn onClick={this.updateData}>Actualizar Datos</BaseBtn>
+          <BaseBtn onClick={this.updateData}>{labels.updateDataBtn}</BaseBtn>
         </div>
       </>
     );
@@ -340,10 +341,16 @@ class Calling extends Component {
         {(blindXferScreen || assistedXfer) && !runWrapUpTimer ? (
           <>
             {blindXferScreen && (
-              <XferScreen onBackBtn={this.onBlindXfer}></XferScreen>
+              <XferScreen
+                onBackBtn={this.onBlindXfer}
+                labels={labels.XFerScreen}
+              ></XferScreen>
             )}
             {assistedXfer && (
-              <AssistedXfer onBackBtn={this.onAssistedXfer}></AssistedXfer>
+              <AssistedXfer
+                onBackBtn={this.onAssistedXfer}
+                labels={labels.AssistedXfer}
+              ></AssistedXfer>
             )}
           </>
         ) : (
@@ -382,10 +389,10 @@ class Calling extends Component {
                     onEnd={this.onWrapsEnd}
                     onStop={this.onWrapsEnd}
                   />
-                  <div>Calificar llamada</div>
+                  <div>{labels.rateCallTitle}</div>
 
                   <BaseCheckBox
-                    hiddenOption={"Seleccione una opcion"}
+                    hiddenOption={labels.defaultOption}
                     options={disposition}
                     onChange={this.onDispositionSelection}
                   />
@@ -393,7 +400,7 @@ class Calling extends Component {
                   {dispositionSelected &&
                     dispositionSelected.SubDisposition.length > 0 && (
                       <BaseCheckBox
-                        hiddenOption={"Seleccione una opcion"}
+                        hiddenOption={labels.defaultOption}
                         options={dispositionSelected.SubDisposition}
                         onChange={this.onSubdispositionSelection}
                       />
@@ -403,17 +410,22 @@ class Calling extends Component {
                     <Reprogram
                       phoneNumbers={this.state.phoneNumbers}
                       onChange={this.onReprogramChange}
+                      labels={labels.Reprogram}
                     />
                   )}
 
-                  <BaseBtn onClick={this.saveDisposition}>CALIFICAR</BaseBtn>
+                  <BaseBtn onClick={this.saveDisposition}>
+                    {labels.rateCallBtn}
+                  </BaseBtn>
                 </div>
               </>
             ) : (
               this.state.runCallTimer && (
                 <>
                   <div className={styles.callData}>
-                    <div className={styles.dataTitle}>Datos del cliente</div>
+                    <div className={styles.dataTitle}>
+                      {labels.customerData}
+                    </div>
                     {this.mapData()}
                   </div>
                   <div className={styles.footer}>
@@ -423,6 +435,7 @@ class Calling extends Component {
                     <XferBtn
                       onBlindXfer={this.onBlindXfer}
                       onAssistedXfer={this.onAssistedXfer}
+                      labels={labels.XferBtn}
                     />
                   </div>
                 </>

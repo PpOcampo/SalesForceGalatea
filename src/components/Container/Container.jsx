@@ -13,6 +13,7 @@ import Integration from "../../helper/Integration.js";
 import AssistedXfer from "../XferScreen/AssistedXfer/AssistedXfer.jsx";
 import XferScreen from "../XferScreen/BindXfer/XferScreen.jsx";
 import Reprogram from "../Calling/Reprogram.jsx";
+import BaseCheckBox from "../common/BaseCheckBox/BaseCheckBox.jsx";
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
 
 class Container extends Component {
@@ -38,14 +39,14 @@ class Container extends Component {
 
   componentDidMount() {
     this.setListeners();
-    log("Please Salesforce give me configuration ");
+    log("Please Salesforce give me  configuration ");
     LCC.addMessageHandler(this.salesForceListener);
     utils.requestSalesForceConfiguration();
     this.integration = Integration.getInstance();
     setTimeout(() => {
       this.setConfiguration({
         server: "121.nuxiba.com",
-        language: "es",
+        language: "en",
         autologin: false,
         softphoneType: "WebRTC"
       });
@@ -235,17 +236,20 @@ class Container extends Component {
   };
 
   render() {
+    return (
+      <BaseCheckBox
+        id={"checkBox"}
+        options={[
+          { Id: "123", Description: "aja" },
+          { Id: "123", Description: "aja" },
+          { Id: "123", Description: "aja" },
+          { Id: "123", Description: "aja" },
+          { Id: "123", Description: "aja" },
+          { Id: "123", Description: "aja" }
+        ]}
+      />
+    );
     const { error, unavailables, configuration } = this.state;
-    // return <XferScreen />;
-    // return <AssistedXfer />;
-    // return (
-    //   <Reprogram
-    //     phoneNumbers={["2014", "2015"]}
-    //     onChange={() => {
-    //       log("aja");
-    //     }}
-    //   />
-    // );
     return configuration ? (
       <>
         <iframe

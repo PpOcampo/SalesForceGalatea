@@ -26,7 +26,7 @@ export default function CallingXfer(props) {
       {/* {false ? ( */}
       {!secondCall ? (
         <div className={styles.calling}>
-          <div className={styles.title}>Transferencia Asistida</div>
+          <div className={styles.title}>{props.labels.title}</div>
           <div className={styles.center}>
             <div className={styles.logo} />
             <div className={styles.number}>{props.phoneNumber}</div>
@@ -34,7 +34,7 @@ export default function CallingXfer(props) {
           <HangUpBtn onClick={onHangUp} phoneNumber={props.phoneNumber} />
         </div>
       ) : (
-        <DialingXfer />
+        <DialingXfer labels={props.labels.DialingXfer} />
       )}
     </div>
   );

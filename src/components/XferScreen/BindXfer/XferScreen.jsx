@@ -75,6 +75,7 @@ class XferScreen extends Component {
   };
 
   tabMenu = () => {
+    const { labels } = this.props;
     const { activeTab } = this.state;
     return (
       <div className={styles.tabs}>
@@ -82,19 +83,19 @@ class XferScreen extends Component {
           className={`${activeTab === 0 && styles.active}`}
           onClick={() => this.onTabChange(0)}
         >
-          ACD
+          {labels.acdTab}
         </div>
         <div
           className={`${activeTab === 1 && styles.active}`}
           onClick={() => this.onTabChange(1)}
         >
-          Agente
+          {labels.agentTab}
         </div>
         <div
           className={`${activeTab === 2 && styles.active}`}
           onClick={() => this.onTabChange(2)}
         >
-          Numero
+          {labels.numberTab}
         </div>
       </div>
     );
@@ -166,6 +167,7 @@ class XferScreen extends Component {
   };
 
   render() {
+    const { labels } = this.props;
     const { activeTab, searching } = this.state;
     return (
       <div className={styles.main}>
@@ -173,7 +175,7 @@ class XferScreen extends Component {
           {!searching ? (
             <>
               <div className={styles.back} onClick={this.onBackBtn} />
-              <div>Transferencia</div>
+              <div>{labels.title}</div>
               <div className={styles.lupa} onClick={this.onSearch}></div>
             </>
           ) : (
@@ -193,7 +195,7 @@ class XferScreen extends Component {
         </div>
 
         <div className={styles.footer}>
-          <BaseBtn onClick={this.blindXfer}>Transferir</BaseBtn>
+          <BaseBtn onClick={this.blindXfer}>{labels.btn}</BaseBtn>
         </div>
       </div>
     );

@@ -77,7 +77,7 @@ export default function WrapUp(props) {
 
   return (
     <div className={styles.main}>
-      <div>Seleccionar o agregar numero</div>
+      <div>{props.labels.title}</div>
       <FormGroup>
         {props.phoneNumbers.map(
           (element, i) =>
@@ -107,12 +107,12 @@ export default function WrapUp(props) {
             className={styles.phoneInput}
           />
         </div>
-        <div>Fecha</div>
+        <div>{props.labels.date}</div>
         <BaseDatePicker onChange={onDateChange} />
-        <div>Hora</div>
+        <div>{props.labels.hour}</div>
         <div className={styles.btnHrs}>
           <SecundaryBtn id={"PopoverLegacy"}>
-            {fullHr ? fullHr + " hrs" : "Seleccione una Hora"}
+            {fullHr ? fullHr + " hrs" : props.labels.selectHour}
           </SecundaryBtn>
         </div>
         <BasePopOver
@@ -121,7 +121,7 @@ export default function WrapUp(props) {
           className={styles.mainPopOver}
         >
           <div>
-            <div className={styles.popOverTitle}>Hora</div>
+            <div className={styles.popOverTitle}>{props.labels.hour}</div>
             <div>
               <div className={styles.popOverHrs}>
                 <BaseInput

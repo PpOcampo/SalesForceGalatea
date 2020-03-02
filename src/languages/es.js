@@ -16,7 +16,46 @@ export const labels = {
     logout: "Cerrar sesión"
   },
   Calling: {
-    campaign: "Campaña"
+    campaign: "Campaña",
+    customerData: "Datos del cliente",
+    updateDataBtn: "Actualizar Datos",
+    defaultOption: "Seleccione una opción",
+    rateCallTitle: "Calificar llamada",
+    rateCallBtn: "CALIFICAR",
+    XFerScreen: {
+      title: "Transferencia",
+      btn: "Transferir",
+      acdTab: "ACD",
+      agentTab: "Agente",
+      numberTab: "Número"
+    },
+    AssistedXfer: {
+      Main: {
+        title: "Transferencia Asistida",
+        numLabel: "Número",
+        xferBtn: "Transferir"
+      },
+      CallingXfer: {
+        title: "Transferencia Asistida",
+        DialingXfer: {
+          dialogueLabel: "En diálogo",
+          holdLabel: "En espera",
+          title: "LLAMADAS",
+          firstCall: "Primera llamada",
+          scdCall: "Segunda llamada"
+        }
+      }
+    },
+    XferBtn: {
+      blind: "Transferencia ciega",
+      assisted: "Transferencia Asistida"
+    },
+    Reprogram: {
+      title: "Seleccionar o agregar número",
+      date: "Fecha",
+      hour: "Hora",
+      selectHour: "Seleccione una Hora"
+    }
   },
   Locked: {
     exitBtn: "Salir"

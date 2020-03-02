@@ -42,13 +42,21 @@
   margin-left: 10px;
   margin-right: 10px;
   background-color: inherit;
-  color: #667178;
+  color: #667178 !important;
   width: calc(100% - 20px);
 }
 
 .divInput > input:focus {
   outline: none;
   box-shadow: none;
+}
+
+.divInput > input:-webkit-autofill,
+.divInput > input:-webkit-autofill:hover,
+.divInput > input:-webkit-autofill:focus,
+.divInput > input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #0d1f2a inset !important;
+  -webkit-text-fill-color: #667178 !important;
 }
 
 .divInput.password > input {

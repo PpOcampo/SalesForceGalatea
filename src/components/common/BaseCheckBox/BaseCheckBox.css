@@ -1,9 +1,19 @@
 .selectInput,
 .selectInput:hover,
 .selectInput:focus {
-  background-color: inherit;
-  border-color: #667178;
+  background-color: #0d1f2a;
+  border: 1px solid #7f888e;
   height: 36px;
   width: 248px;
   margin: 16px 0 16px 0;
+  color: #667178;
+}
+
+.selectInput option {
+  background-color: #263640;
+}
+
+.selectInput:hover,
+.selectInput:active {
+  outline: 0 !important;
 }

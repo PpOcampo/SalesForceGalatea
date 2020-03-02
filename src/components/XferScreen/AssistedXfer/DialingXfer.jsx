@@ -19,7 +19,7 @@ export default function DialingXfer(props) {
   };
 
   const onConference = () => {
-    console.log("asdasd");
+    console.log("");
   };
 
   const useMainCall = () => {
@@ -53,7 +53,9 @@ export default function DialingXfer(props) {
           ></div>
           <div>
             <div>{text}</div>
-            <div>{active ? "En dialogo" : "En espera"}</div>
+            <div>
+              {active ? props.labels.dialogueLabel : props.labels.holdLabel}
+            </div>
           </div>
         </div>
         <div className={styles.itemHangUp}>
@@ -65,19 +67,19 @@ export default function DialingXfer(props) {
 
   return (
     <div className={styles.content}>
-      <div className={styles.title}>LLAMADAS</div>
+      <div className={styles.title}>{props.labels.title}</div>
       <div className={styles.items}>
         {item(
           firstCallActive,
           useMainCall,
           assistedXFerDropFirstCall,
-          "Primera llamada"
+          props.labels.firstCall
         )}
         {item(
           !firstCallActive,
           useSecondCall,
           assistedXFerDropSecondCall,
-          "Segunda llamada"
+          props.labels.scdCall
         )}
       </div>
 

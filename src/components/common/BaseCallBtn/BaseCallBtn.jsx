@@ -86,10 +86,10 @@ export const XferBtn = props => (
     </DropdownToggle>
     <DropdownMenu>
       <DropdownItem onClick={props.onBlindXfer}>
-        Transferencia ciega
+        {props.labels.blind}
       </DropdownItem>
       <DropdownItem onClick={props.onAssistedXfer}>
-        Transferencia Asistida
+        {props.labels.assisted}
       </DropdownItem>
     </DropdownMenu>
   </UncontrolledDropdown>
