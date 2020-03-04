@@ -1,5 +1,7 @@
 import * as LCC from "lightning-container";
 
+// import process from "process";
+
 export function log(...args) {
   console.log("iLog => ", ...args);
 }
@@ -53,4 +55,8 @@ export function getKolobAgentAddress(server, softphoneType) {
   return `https://${server}/AgentKolob/?softphone=${
     softphoneType ? softphoneType : "MizuJs"
   }`;
+}
+
+export function isDev() {
+  return !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 }

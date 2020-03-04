@@ -10,10 +10,7 @@ import { log } from "../../helper/UtilsHelper.js";
 import * as utils from "../../helper/UtilsHelper.js";
 import IntegrationListener from "../../helper/IntegrationListeners.js";
 import Integration from "../../helper/Integration.js";
-import AssistedXfer from "../XferScreen/AssistedXfer/AssistedXfer.jsx";
-import XferScreen from "../XferScreen/BindXfer/XferScreen.jsx";
-import Reprogram from "../Calling/Reprogram.jsx";
-import BaseCheckBox from "../common/BaseCheckBox/BaseCheckBox.jsx";
+
 /*https://xd.adobe.com/view/0c6d8b4e-a668-4927-6bef-3c4a4432aa6e-7a5c/ */
 
 class Container extends Component {
@@ -41,16 +38,18 @@ class Container extends Component {
     this.setListeners();
     log("Please Salesforce give me  configuration ");
     LCC.addMessageHandler(this.salesForceListener);
-    utils.requestSalesForceConfiguration();
+    setTimeout(() => utils.requestSalesForceConfiguration(), 1000);
     this.integration = Integration.getInstance();
-    setTimeout(() => {
-      this.setConfiguration({
-        server: "121.nuxiba.com",
-        language: "en",
-        autologin: false,
-        softphoneType: "WebRTC"
-      });
-    }, 500);
+
+    utils.isDev() &&
+      setTimeout(() => {
+        this.setConfiguration({
+          server: "121.nuxiba.com",
+          language: "es",
+          autologin: false,
+          softphoneType: "WebRTC"
+        });
+      }, 2500);
   }
 
   salesForceListener = message => {
@@ -162,7 +161,7 @@ class Container extends Component {
           return;
         case AGENT_STATUS.NotConnected:
           log("NotConnected, integration component hasn't connected");
-          this.integration.connectToServer();
+          // this.integration.connectToServer();
           return;
         case AGENT_STATUS.NotReady:
           log("NotReady, integration component hasn't connected");
@@ -172,6 +171,7 @@ class Container extends Component {
 
         case AGENT_STATUS.SocketClosed:
           log("SocketClosed, check wss configuration");
+          // this.integration.connectToServer();
           if (socketOpen) {
             this.setState({ socketOpen: false, logged: false });
           }
@@ -187,7 +187,7 @@ class Container extends Component {
   }
 
   onLoginSubmit = (username, password) => {
-    log("SalesForce ==> ", username, password);
+    log("SalesForce ==> ", username);
     this.integration.login(username, password);
   };
 
@@ -236,19 +236,6 @@ class Container extends Component {
   };
 
   render() {
-    return (
-      <BaseCheckBox
-        id={"checkBox"}
-        options={[
-          { Id: "123", Description: "aja" },
-          { Id: "123", Description: "aja" },
-          { Id: "123", Description: "aja" },
-          { Id: "123", Description: "aja" },
-          { Id: "123", Description: "aja" },
-          { Id: "123", Description: "aja" }
-        ]}
-      />
-    );
     const { error, unavailables, configuration } = this.state;
     return configuration ? (
       <>
@@ -258,13 +245,9 @@ class Container extends Component {
             configuration.softphoneType
           )}
           name="KolobAgentFrame"
-          style={{
-            // display: "none"
-            width: "700px",
-            height: "700px"
-          }}
+          className={`${styles.iframeKolob} ${utils.isDev() && styles.dev}`}
           allow="geolocation; microphone;"
-        ></iframe>
+        />
 
         <div className={styles.main}>
           {this.state.logged ? (

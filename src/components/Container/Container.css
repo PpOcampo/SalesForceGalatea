@@ -13,3 +13,13 @@
   height: 48px;
   color: #cc9e1f;
 }
+
+.iframeKolob {
+  display: none;
+}
+
+.iframeKolob.dev {
+  display: block;
+  width: 700px;
+  height: 700px;
+}

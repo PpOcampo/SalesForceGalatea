@@ -4,7 +4,7 @@ export const labels = {
     inputUserPh: "User",
     pwd: "Password",
     inputPwdPh: "Password",
-    btnSubmit: "Login"
+    btnSubmit: "Log in"
   },
 
   Keyboard: {
@@ -14,7 +14,7 @@ export const labels = {
   },
   Header: {
     title: "Centerware Kolob",
-    logout: "Logout"
+    logout: "Log out"
   },
   Calling: {
     campaign: "Campaign",
@@ -33,7 +33,7 @@ export const labels = {
     AssistedXfer: {
       Main: {
         title: "Assisted Transfer",
-        numLabel: "Telephone",
+        numLabel: "Phone number",
         xferBtn: "Transfer"
       },
       CallingXfer: {
