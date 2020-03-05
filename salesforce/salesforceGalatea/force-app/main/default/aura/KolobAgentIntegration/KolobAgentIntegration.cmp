@@ -1,0 +1,11 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+  controller="KolobAgentController"
+>
+
+	<div style="width:296px; height: 496px; max-width:296px; background-color:#0d1f2a"><lightning:container  class="main" aura:id="ReactApp"
+                       src="{!$Resource.KolobAgentIntegration + '/index.html'}"
+                       onmessage="{!c.handleMessage}"
+                       onerror="{!c.handleError}"/></div>
+</aura:component>
