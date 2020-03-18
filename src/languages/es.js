@@ -1,15 +1,15 @@
 export const labels = {
   LoginScreen: {
-    user: "Usuario",
-    inputUserPh: "Usuario",
+    user: "Nombre de usuario",
+    inputUserPh: "Nombre de usuario",
     pwd: "Contraseña",
     inputPwdPh: "Contraseña",
-    btnSubmit: "Entrar"
+    btnSubmit: "Iniciar sesión"
   },
   Keyboard: {
     campaignTitle: "Campaña",
-    defaultOption: "Seleccione una campaña",
-    number: "Número:"
+    defaultOption: "Seleccione una opción",
+    number: "Teléfono:"
   },
   Header: {
     title: "Centerware Kolob",
@@ -18,27 +18,27 @@ export const labels = {
   Calling: {
     campaign: "Campaña",
     customerData: "Datos del cliente",
-    updateDataBtn: "Actualizar Datos",
+    updateDataBtn: "Actualizar base de datos",
     defaultOption: "Seleccione una opción",
-    rateCallTitle: "Calificar llamada",
-    rateCallBtn: "CALIFICAR",
+    rateCallTitle: "Calificación de llamada",
+    rateCallBtn: "GUARDAR",
     XFerScreen: {
-      title: "Transferencia",
-      btn: "Transferir",
-      acdTab: "ACD",
+      title: "Transferir a",
+      btn: "TRANSFERIR",
+      acdTab: "Campaña",
       agentTab: "Agente",
-      numberTab: "Número"
+      numberTab: "Área"
     },
     AssistedXfer: {
       Main: {
-        title: "Transferencia Asistida",
-        numLabel: "Número",
-        xferBtn: "Transferir"
+        title: "Transferencia asistida",
+        numLabel: "Teléfono",
+        xferBtn: "TRANSFERIR"
       },
       CallingXfer: {
-        title: "Transferencia Asistida",
+        title: "Transferencia asistida",
         DialingXfer: {
-          dialogueLabel: "En diálogo",
+          dialogueLabel: "En curso",
           holdLabel: "En espera",
           title: "LLAMADAS",
           firstCall: "Primera llamada",
@@ -48,29 +48,29 @@ export const labels = {
     },
     XferBtn: {
       blind: "Transferencia ciega",
-      assisted: "Transferencia Asistida"
+      assisted: "Transferencia asistida"
     },
     Reprogram: {
-      title: "Seleccionar o agregar número",
+      title: "Seleccionar o ingresar teléfono",
       date: "Fecha",
       hour: "Hora",
-      selectHour: "Seleccione una Hora"
+      selectHour: "Configurar"
     }
   },
   Locked: {
-    exitBtn: "Salir"
+    exitBtn: "Salir de estado"
   },
   MainScreen: {
-    menu: "MENU",
-    unavailable: "Selección no disponible"
+    menu: "MENÚ",
+    unavailable: "Estado no disponible"
   },
   StatusBar: {
     ready: "Disponible",
-    dialog: "Dialogo",
+    dialog: "Diálogo",
     notready: "No disponible",
-    problem: "Error de marcado",
-    wrapup: "Notas",
-    ringing: "Llamando",
+    problem: "Error de marcación",
+    wrapup: "Tiempo de notas",
+    ringing: "Timbrando",
     callout: "Marcando",
     xfer: "Transferencia"
   }

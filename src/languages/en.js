@@ -1,45 +1,45 @@
 export const labels = {
   LoginScreen: {
-    user: "User",
-    inputUserPh: "User",
+    user: "Username",
+    inputUserPh: "Username",
     pwd: "Password",
     inputPwdPh: "Password",
-    btnSubmit: "Log in"
+    btnSubmit: "Log In"
   },
 
   Keyboard: {
     campaignTitle: "Campaign",
-    defaultOption: "Select a campaign",
+    defaultOption: "Select an option",
     number: "Phone number:"
   },
   Header: {
     title: "Centerware Kolob",
-    logout: "Log out"
+    logout: "Log Out"
   },
   Calling: {
     campaign: "Campaign",
     customerData: "Customer data",
-    updateDataBtn: "Update data",
+    updateDataBtn: "Update database",
     defaultOption: "Select an option",
-    rateCallTitle: "Rate call",
-    rateCallBtn: "RATE",
+    rateCallTitle: "Call disposition",
+    rateCallBtn: "SAVE",
     XFerScreen: {
-      title: "Transfer",
-      btn: "Transfer",
-      acdTab: "ACD",
+      title: "Transfer to",
+      btn: "TRANSFER",
+      acdTab: "Campaign",
       agentTab: "Agent",
-      numberTab: "Number"
+      numberTab: "Area"
     },
     AssistedXfer: {
       Main: {
-        title: "Assisted Transfer",
+        title: "Assisted transfer",
         numLabel: "Phone number",
-        xferBtn: "Transfer"
+        xferBtn: "TRANSFER"
       },
       CallingXfer: {
         title: "Assisted Transfer",
         DialingXfer: {
-          dialogueLabel: "In dialogue",
+          dialogueLabel: "Active",
           holdLabel: "On hold",
           title: "CALLS",
           firstCall: "First call",
@@ -48,31 +48,31 @@ export const labels = {
       }
     },
     XferBtn: {
-      blind: "Blind Transfer",
+      blind: "Blind transfer",
       assisted: "Assisted Transfer"
     },
     Reprogram: {
-      title: "Select or add a number",
+      title: "Select or enter phone number",
       date: "Date",
-      hour: "Hour",
-      selectHour: "Select hour"
+      hour: "Time",
+      selectHour: "Configure"
     }
   },
   Locked: {
-    exitBtn: "Exit"
+    exitBtn: "Switch to ready"
   },
   MainScreen: {
     menu: "MENU",
-    unavailable: "Select unavailable"
+    unavailable: "Unavailable status"
   },
   StatusBar: {
     ready: "Ready",
-    dialog: "Dialog",
-    notready: "No available",
+    dialog: "Talking",
+    notready: "Unavailable",
     problem: "Dialing error",
-    wrapup: "Wrapup",
+    wrapup: "Wrap-up time",
     ringing: "Ringing",
-    callout: "Calling",
-    xfer: "Xfer"
+    callout: "Dialing",
+    xfer: "Transfer"
   }
 };

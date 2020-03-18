@@ -161,7 +161,7 @@ class Calling extends Component {
   };
 
   onHold = () => {
-    log("onHold: ");
+    log("onHold ");
     Integration.getInstance().HoldCall();
     this.setState({ hold: !this.state.hold });
   };
